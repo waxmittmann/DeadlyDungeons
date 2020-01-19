@@ -9,8 +9,8 @@ class ObjectDrawer {
         }
     }
 
-    private fun draw(batch: SpriteBatch, items: SceneObject) {
-        batch.draw(items.objectType.texture, items.x + 0.0f, items.y + 0.0f, items.objectType.width + 0.0f,
+    fun draw(batch: SpriteBatch, items: SceneObject) {
+        batch.draw(items.objectType.texture, items.xc + 0.0f, items.yc + 0.0f, items.objectType.width + 0.0f,
                 items.objectType.height + 0.0f)
     }
 }
