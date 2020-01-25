@@ -1,0 +1,33 @@
+BulletSheet.png
+size: 512, 128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Bullet2_0
+  rotate: false
+  xy: 1, 1
+  size: 114, 110
+  orig: 114, 110
+  offset: 0, 0
+  index: -1
+Bullet2_1
+  rotate: false
+  xy: 117, 1
+  size: 114, 110
+  orig: 114, 110
+  offset: 0, 0
+  index: -1
+Bullet2_2
+  rotate: false
+  xy: 233, 1
+  size: 114, 110
+  orig: 114, 110
+  offset: 0, 0
+  index: -1
+Bullet2_3
+  rotate: false
+  xy: 349, 1
+  size: 114, 110
+  orig: 114, 110
+  offset: 0, 0
+  index: -1

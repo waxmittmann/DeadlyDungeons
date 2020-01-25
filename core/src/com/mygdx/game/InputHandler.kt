@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input
 
 class InputHandler {
 
-    fun handleInput(player: SceneObject) {
+    fun handleInput(player: SceneObject): String {
         if (Gdx.input.isKeyPressed(Input.Keys.UP))
             player.yc += 10
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
@@ -14,6 +14,12 @@ class InputHandler {
             player.xc -= 10
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             player.xc += 10
+
+        var action = ""
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+            action = "fire"
+
+        return action
     }
 
 }
