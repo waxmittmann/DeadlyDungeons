@@ -66,11 +66,21 @@ class SomeGame : ApplicationAdapter() {
         val drawer = ObjectDrawer()
         batch.enableBlending();
         batch.begin()
-        drawer.draw(batch, stateTime, mountain)
-        drawer.draw(batch, stateTime, mobs)
-        drawer.draw(batch, stateTime, player)
-        drawer.draw(batch, stateTime, bullets)
-        drawer.draw(batch, stateTime, SceneObject(textures.bulletDrawable, 10, 10))
+
+        val toDraw: MutableList<SceneObject> = mutableListOf()
+        toDraw += mountain
+        toDraw += mobs
+        toDraw += player
+        toDraw += bullets
+        toDraw += SceneObject(textures.bulletDrawable, 10, 10)
+
+        drawer.draw(batch, Gdx.graphics.deltaTime, toDraw)
+
+//        drawer.draw(batch, stateTime, mountain)
+//        drawer.draw(batch, stateTime, mobs)
+//        drawer.draw(batch, stateTime, player)
+//        drawer.draw(batch, stateTime, bullets)
+//        drawer.draw(batch, stateTime, SceneObject(textures.bulletDrawable, 10, 10))
         batch.end()
     }
 
