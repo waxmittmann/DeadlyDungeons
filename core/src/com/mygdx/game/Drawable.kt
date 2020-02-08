@@ -13,7 +13,6 @@ interface Drawable {
 
 class TextureDrawable(val texture: Texture, override val width: Int, override val height: Int) : Drawable {
     override fun draw(sb: SpriteBatch, delta: Float, x: Int, y: Int) {
-//        sb.draw(texture, width.toFloat(), height.toFloat(), x.toFloat(), y.toFloat())
         sb.draw(texture, x.toFloat(), y.toFloat(), width.toFloat(), height.toFloat())
     }
 }
@@ -22,7 +21,6 @@ class AnimationDrawable(val animation: Animation<TextureRegion>, var animTime: F
     override fun draw(sb: SpriteBatch, delta: Float, x: Int, y: Int) {
         animTime += delta
         val frame = animation.getKeyFrame(animTime, true)
-//        sb.draw(frame, width.toFloat(), height.toFloat(), x.toFloat(), y.toFloat())
         sb.draw(frame, x.toFloat(), y.toFloat(), width.toFloat(), height.toFloat())
     }
 }
