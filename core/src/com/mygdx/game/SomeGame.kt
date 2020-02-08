@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.*
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
+import javafx.scene.Scene
 import org.danilopianini.util.FlexibleQuadTree
 import java.util.stream.Collectors
 import kotlin.random.Random
@@ -13,14 +14,16 @@ import kotlin.random.Random
 
 class SomeGame : ApplicationAdapter() {
     private lateinit var bulletTexture: Texture
-    private lateinit var ot2: ObjectType
+//    private lateinit var ot2: ObjectType
+    private lateinit var playerDrawable: TextureDrawable
     private lateinit var avatarTexture: Texture
     lateinit var mountain: SceneObject
     lateinit var batch: SpriteBatch
     lateinit var img: Texture
     lateinit var yetiTexture: Texture
     lateinit var mountainTexture: Texture
-    lateinit var ot: ObjectType
+//    lateinit var ot: ObjectType
+    lateinit var yetiDrawable: TextureDrawable
     lateinit var mobs: Set<SceneObject>
     var bullets: Set<SceneObject> = setOf()
     lateinit var player: SceneObject
@@ -35,7 +38,7 @@ class SomeGame : ApplicationAdapter() {
 
     private var lastSpawn: Long = -1
 
-    private lateinit var runningAnimation: Animation<TextureRegion>;
+    private lateinit var bulletAnimation: Animation<TextureRegion>;
 
     override fun create() {
         batch = SpriteBatch()
@@ -44,18 +47,21 @@ class SomeGame : ApplicationAdapter() {
         mountainTexture = Texture("Mountain.jpg")
         avatarTexture = Texture("Avatar.jpeg")
         bulletTexture = Texture("Bullet.png")
-        ot = ObjectType(yetiTexture, 50, 50)
-        ot2 = ObjectType(avatarTexture, 50, 50)
-        mobs = setOf(SceneObject(ot, 0, 0), SceneObject(ot, 100, 100))
+//        ot = ObjectType(yetiTexture, 50, 50)
+        yetiDrawable = TextureDrawable(yetiTexture, 50, 50)
+//        ot2 = ObjectType(avatarTexture, 50, 50)
+        playerDrawable = TextureDrawable(avatarTexture, 50, 50)
+
+        mobs = setOf(SceneObject(yetiDrawable, 0, 0), SceneObject(yetiDrawable, 100, 100))
 //        quadTree.insert(mobs[0], 0.0, 0.0)
 //        quadTree.insert(mobs[1], 100.0, 100.0)
 
         bulletAtlas = TextureAtlas("BulletSheet.txt");
         bulletSprite = bulletAtlas.createSprite("Bullet2")
 
-        player = SceneObject(ot2, 0, 0)
+        player = SceneObject(playerDrawable, 0, 0)
 
-        mountain = SceneObject(ObjectType(mountainTexture, 650, 300), 0, 200);
+        mountain = SceneObject(TextureDrawable(mountainTexture, 650, 300), 0, 200);
 
 
         bulletAtlas.regions.forEach { r -> println(r.name) }
@@ -64,9 +70,9 @@ class SomeGame : ApplicationAdapter() {
         println("REgion: " + bulletAtlas.findRegion("Bullet2_1"))
 
         //...
-        runningAnimation = Animation(0.033f, bulletAtlas.findRegions("Bullet2"), PlayMode.LOOP)
+        bulletAnimation = Animation(0.033f, bulletAtlas.findRegions("Bullet2"), PlayMode.LOOP)
 
-        println("Key Frames: " + runningAnimation.keyFrames.size)
+        println("Key Frames: " + bulletAnimation.keyFrames.size)
 
         Gdx.graphics.setWindowedMode(500, 500)
 
@@ -79,7 +85,7 @@ class SomeGame : ApplicationAdapter() {
 
         val curTime = System.nanoTime()
         if (mobs.size < 50 && curTime - lastSpawn > 1000000000) {
-            mobs = mobs.plus(SceneObject(ot, Random.nextInt(0, 450), Random.nextInt(0, 450)))
+            mobs = mobs.plus(SceneObject(yetiDrawable, Random.nextInt(0, 450), Random.nextInt(0, 450)))
             lastSpawn = curTime
         }
 
@@ -88,7 +94,8 @@ class SomeGame : ApplicationAdapter() {
         if (action == "fire") {
             println("done it")
 //            val bullet = SceneObject(ObjectType(bulletTexture, 20, 20), player.xc, player.yc)
-            val bullet = SceneObject(ObjectType(bulletTexture, 250, 250), 150, 150)
+//            val bullet = SceneObject(ObjectType(bulletTexture, 250, 250), 150, 150)
+            val bullet = SceneObject(TextureDrawable(bulletTexture, 250, 250), 150, 150)
 //            val bullet = SceneObject(ObjectType(yetiTexture, 50, 50), 50, 50)
             println(bullet)
             bullets = bullets.plus(bullet)
@@ -108,12 +115,12 @@ class SomeGame : ApplicationAdapter() {
 
         val drawer = ObjectDrawer()
         batch.begin()
-//        drawer.draw(batch, mountain)
-//        drawer.draw(batch, mobs)
-//        drawer.draw(batch, player)
-        drawer.draw(batch, bullets)
-        drawer.draw(batch, bulletSprite)
-        drawer.draw(batch, runningAnimation, stateTime)
+        drawer.draw(batch, stateTime, mountain)
+        drawer.draw(batch, stateTime, mobs)
+        drawer.draw(batch, stateTime, player)
+        drawer.draw(batch, stateTime, bullets)
+//        drawer.draw(batch, stateTime, bulletSprite)
+        drawer.draw(batch, stateTime, SceneObject(AnimationDrawable(bulletAnimation, 0.0f, 40, 40), 20, 20))
         batch.end()
     }
 

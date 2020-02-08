@@ -3,7 +3,8 @@ package com.mygdx.game
 import com.badlogic.gdx.graphics.Texture
 import com.brashmonkey.spriter.Timeline
 
-class SceneObject(val objectType: ObjectType, var xc: Int, var yc: Int) : HasBoundingBox {
+//class SceneObject(val objectType: ObjectType, var xc: Int, var yc: Int) : HasBoundingBox {
+class SceneObject(val drawable: Drawable, var xc: Int, var yc: Int) : HasBoundingBox {
     override fun getX(): Int {
         return xc
     }
@@ -13,10 +14,10 @@ class SceneObject(val objectType: ObjectType, var xc: Int, var yc: Int) : HasBou
     }
 
     override fun getWidth(): Int {
-        return objectType.width
+        return drawable.width
     }
 
     override fun getHeight(): Int {
-        return objectType.height
+        return drawable.height
     }
 }
