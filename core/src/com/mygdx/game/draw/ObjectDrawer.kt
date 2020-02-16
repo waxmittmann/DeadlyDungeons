@@ -1,7 +1,6 @@
 package com.mygdx.game.draw
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.mygdx.game.entities.SceneObject
 
 //class ObjectDrawer {
 //    fun draw(batch: SpriteBatch, delta: Float, sceneObject: SceneObject) {

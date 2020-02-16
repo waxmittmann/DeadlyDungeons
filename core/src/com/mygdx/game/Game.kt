@@ -30,7 +30,7 @@ class Game : ApplicationAdapter() {
         textures = Textures()
 
 //        class TerrainPrototype(val name: String, val drawable: Drawable)
-        val terrainProto = TerrainPrototype("terrain", textures.yetiDrawable)
+        val terrainProto = TerrainPrototype("terrain", textures.grassDrawable)
 
         var terrain = arrayOf<Array<Terrain>>()
         for (i in 0..100) {

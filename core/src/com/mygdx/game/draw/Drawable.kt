@@ -4,12 +4,14 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.mygdx.game.util.Dims2
 import com.mygdx.game.util.Point2
 
 
 
 //class DrawState(val delta: Float, val scaleMult: Float)
-class DrawState(val delta: Float, val scaleMult: Float)
+class DrawState(val delta: Float, val scaleMult: Float) {
+}
 
 //interface DrawState {
 //    val delta: Float
@@ -24,30 +26,36 @@ class DrawState(val delta: Float, val scaleMult: Float)
 interface Drawable {
 //    val width: Int
 //    val height: Int
-    val widthToHeight: Float
+//    val widthToHeight: Float
+    val dims: Dims2
 //    val widthRatio: Int
 //    val heightRatio: Int
 //    fun draw(sb: SpriteBatch, delta: Float, x: Int, y: Int)
 //    fun draw(sb: SpriteBatch, delta: Float, x: Int, y: Int, scaleMult: Float)
-    fun draw(sb: SpriteBatch, position: Point2, drawData: DrawState)
+    fun draw(sb: SpriteBatch, width: Float, height: Float, x: Float, y: Float, drawData: DrawState)
 }
 
 //class TextureDrawable(val texture: Texture, override val width: Int, override val height: Int) : Drawable {
-class TextureDrawable(val texture: Texture, override val widthToHeight: Float) : Drawable {
-    override fun draw(sb: SpriteBatch, position: Point2, drawData: DrawState) {
+class TextureDrawable(val texture: Texture, override val dims: Dims2) : Drawable {
+    override fun draw(sb: SpriteBatch, width: Float, height: Float, x: Float, y: Float, drawData: DrawState) {
 //        val mult = scaleMult *
-        println("Drawing at " + position)
-        println("Dimensions: " +  (drawData.scaleMult * widthToHeight) + ", " +  drawData.scaleMult * (1 / widthToHeight))
-        sb.draw(texture, position.x.toFloat(), position.y.toFloat(), drawData.scaleMult * widthToHeight, drawData.scaleMult * (1 / widthToHeight))
+
+//        val width = size.width
+//        val height = size.height
+//        println("Drawing at " + position)
+//        println("Dimensions: " +  (width * scale) + ", " +  widthToHeight))
+        sb.draw(texture, x.toFloat(), y.toFloat(), width, height)
     }
 }
 
 //class AnimationDrawable(val animation: Animation<TextureRegion>, var animTime: Float, override val width: Int, override val height: Int) : Drawable {
-class AnimationDrawable(val animation: Animation<TextureRegion>, var animTime: Float, override val widthToHeight: Float) : Drawable {
-    override fun draw(sb: SpriteBatch, position: Point2, drawData: DrawState) {
+class AnimationDrawable(val animation: Animation<TextureRegion>, var animTime: Float, override val dims: Dims2) : Drawable {
+    override fun draw(sb: SpriteBatch, width: Float, height: Float,  x: Float, y: Float, drawData: DrawState) {
         animTime += drawData.delta
         val frame = animation.getKeyFrame(animTime, true)
-        sb.draw(frame, position.x.toFloat(), position.y.toFloat(), drawData.scaleMult * widthToHeight, drawData.scaleMult * (1 / widthToHeight))
+//        val width = size.width
+//        val height = size.height
+        sb.draw(frame, x.toFloat(), y.toFloat(), width, height)
     }
 }
 

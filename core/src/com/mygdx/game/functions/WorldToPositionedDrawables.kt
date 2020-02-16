@@ -8,8 +8,8 @@ import com.mygdx.game.util.Rect2
 
 
 fun WorldPositionedDrawables(world: World, view: Rect2): List<PositionedDrawable> {
-//    return TerrainPositionedDrawables(world.terrain, world.tileSize, view) +
- return           SceneObjectPositionedDrawables(world.worldObjects, view)
+    return TerrainPositionedDrawables(world.terrain, world.tileSize, view) +
+SceneObjectPositionedDrawables(world.worldObjects, view)
 }
 
 fun SceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<PositionedDrawable> {
@@ -17,11 +17,13 @@ fun SceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<P
     return worldObjects.all().flatMap { wo: WorldObj ->
         if (wo.position.x >= view.lx && wo.position.x < view.ux() && wo.position.y >= view.ly && wo.position.y <= view.uy()) {
             val translatedPosition = wo.position.minus(view.lowerLeft())
-            listOf(PositionedDrawable(wo.prototype.drawable, translatedPosition, wo.drawState))
+            listOf(PositionedDrawable(wo.prototype.drawable,
+                    wo.prototype.width.toFloat(), wo.prototype.height.toFloat(),
+                    translatedPosition.x.toFloat(), translatedPosition.y.toFloat(), wo.drawState))
         } else {
             emptyList()
         }
-    } + PositionedDrawable(worldObjects.player.prototype.drawable, worldObjects.player.position.minus(view.lowerLeft()), worldObjects.player.drawState)
+    } //+ PositionedDrawable(worldObjects.player.prototype.drawable, worldObjects.player.position.minus(view.lowerLeft()), worldObjects.player.drawState)
 }
 
 fun TerrainPositionedDrawables(terrains: Array<Array<Terrain>>, tileSize: Int, view: Rect2): List<PositionedDrawable> {
@@ -29,7 +31,7 @@ fun TerrainPositionedDrawables(terrains: Array<Array<Terrain>>, tileSize: Int, v
         ((view.lx / tileSize)..(view.ux() / tileSize)).map { r ->
             val terrain = terrains[c][r]
             val p = Point2(r * tileSize - view.lx, c * tileSize - view.ly)
-            PositionedDrawable(terrain.prototype.drawable, p, terrain.drawState)
+            PositionedDrawable(terrain.prototype.drawable, tileSize.toFloat(), tileSize.toFloat(), p.x.toFloat(), p.y.toFloat(), terrain.drawState)
         }
     }
 }
