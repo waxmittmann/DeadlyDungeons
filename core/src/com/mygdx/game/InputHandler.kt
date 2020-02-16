@@ -2,6 +2,7 @@ package com.mygdx.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.mygdx.game.entities.SceneObject
 
 class InputHandler {
 

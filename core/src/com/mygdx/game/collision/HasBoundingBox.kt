@@ -1,10 +1,10 @@
-package com.mygdx.game
+package com.mygdx.game.collision
 
 interface HasBoundingBox {
     fun getX(): Int
     fun getY(): Int
-    fun getWidth(): Int
-    fun getHeight(): Int
+    fun getWidth(): Float
+    fun getHeight(): Float
 
     fun collision(other: HasBoundingBox): Boolean {
         if (getX() > other.getX() + other.getWidth())
