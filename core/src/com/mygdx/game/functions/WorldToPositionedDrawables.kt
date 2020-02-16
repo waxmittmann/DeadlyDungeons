@@ -5,6 +5,8 @@ import com.mygdx.game.draw.PositionedDrawable
 import com.mygdx.game.entities.*
 import com.mygdx.game.util.Point2
 import com.mygdx.game.util.Rect2
+import kotlin.math.max
+import kotlin.math.min
 
 
 fun WorldPositionedDrawables(world: World, view: Rect2): List<PositionedDrawable> {
@@ -27,8 +29,9 @@ fun SceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<P
 }
 
 fun TerrainPositionedDrawables(terrains: Array<Array<Terrain>>, tileSize: Int, view: Rect2): List<PositionedDrawable> {
-    return ((view.ly / tileSize)..(view.uy() / tileSize)).flatMap { c ->
-        ((view.lx / tileSize)..(view.ux() / tileSize)).map { r ->
+    println("Drawing to " + min((view.uy() / tileSize)+1, terrains.size-1) + ", " + min((view.ux() / tileSize)+1, terrains[0].size-1))
+    return (max((view.ly / tileSize)-1, 0)..min((view.uy() / tileSize)+1, terrains.size-1)).flatMap { c ->
+        (max((view.lx / tileSize)-1, 0)..min((view.ux() / tileSize)+1, terrains[0].size-1)).map { r ->
             val terrain = terrains[c][r]
             val p = Point2(r * tileSize - view.lx, c * tileSize - view.ly)
             PositionedDrawable(terrain.prototype.drawable, tileSize.toFloat(), tileSize.toFloat(), p.x.toFloat(), p.y.toFloat(), terrain.drawState)
