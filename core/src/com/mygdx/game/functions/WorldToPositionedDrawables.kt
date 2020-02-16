@@ -1,6 +1,5 @@
 package com.mygdx.game.functions
 
-import com.mygdx.game.draw.Drawable
 import com.mygdx.game.draw.PositionedDrawable
 import com.mygdx.game.entities.*
 import com.mygdx.game.util.Point2
@@ -9,12 +8,12 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-fun WorldPositionedDrawables(world: World, view: Rect2): List<PositionedDrawable> {
-    return TerrainPositionedDrawables(world.terrain, world.tileSize, view) +
-SceneObjectPositionedDrawables(world.worldObjects, view)
+fun worldPositionedDrawables(world: World, view: Rect2): List<PositionedDrawable> {
+    return terrainPositionedDrawables(world.terrain, world.tileSize, view) +
+sceneObjectPositionedDrawables(world.worldObjects, view)
 }
 
-fun SceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<PositionedDrawable> {
+fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<PositionedDrawable> {
     println("Rendering player at " +  worldObjects.player.position.minus(view.lowerLeft()))
     return worldObjects.all().flatMap { wo: WorldObj ->
         if (wo.position.x >= view.lx && wo.position.x < view.ux() && wo.position.y >= view.ly && wo.position.y <= view.uy()) {
@@ -28,7 +27,7 @@ fun SceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<P
     } //+ PositionedDrawable(worldObjects.player.prototype.drawable, worldObjects.player.position.minus(view.lowerLeft()), worldObjects.player.drawState)
 }
 
-fun TerrainPositionedDrawables(terrains: Array<Array<Terrain>>, tileSize: Int, view: Rect2): List<PositionedDrawable> {
+fun terrainPositionedDrawables(terrains: Array<Array<Terrain>>, tileSize: Int, view: Rect2): List<PositionedDrawable> {
     println("Drawing to " + min((view.uy() / tileSize)+1, terrains.size-1) + ", " + min((view.ux() / tileSize)+1, terrains[0].size-1))
     return (max((view.ly / tileSize)-1, 0)..min((view.uy() / tileSize)+1, terrains.size-1)).flatMap { c ->
         (max((view.lx / tileSize)-1, 0)..min((view.ux() / tileSize)+1, terrains[0].size-1)).map { r ->

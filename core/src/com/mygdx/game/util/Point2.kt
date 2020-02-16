@@ -8,4 +8,8 @@ class Point2(val x: Int, val y: Int) {
     override fun toString(): String {
         return "($x, $y)"
     }
+
+    fun plus(point: Point2): Point2 {
+        return Point2(x + point.x, y + point.y)
+    }
 }

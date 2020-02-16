@@ -5,18 +5,17 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.*
-import com.badlogic.gdx.graphics.g3d.Attribute
 import com.mygdx.game.collision.CollisionDetector
 import com.mygdx.game.draw.DrawState
-import com.mygdx.game.draw.Drawable
 import com.mygdx.game.draw.ObjectDrawer
 import com.mygdx.game.draw.Textures
 import com.mygdx.game.entities.*
-import com.mygdx.game.functions.WorldPositionedDrawables
+import com.mygdx.game.functions.processInput
+import com.mygdx.game.functions.readKey
+import com.mygdx.game.functions.worldPositionedDrawables
 import com.mygdx.game.util.Angle
 import com.mygdx.game.util.Point2
 import com.mygdx.game.util.Rect2
-import kotlin.random.Random
 
 // Run via KotlinLauncher.
 class Game : ApplicationAdapter() {
@@ -60,6 +59,8 @@ class Game : ApplicationAdapter() {
     override fun render() {
         stateTime += Gdx.graphics.deltaTime;
 
+       processInput(readKey(), world)
+
         Gdx.gl.glClearColor(1.0f, 1.0f, 1f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
@@ -67,7 +68,7 @@ class Game : ApplicationAdapter() {
         batch.projectionMatrix = cam.combined
         batch.enableBlending()
         batch.begin()
-        drawer.draw(batch, WorldPositionedDrawables(world, Rect2(0, 0, 500, 500)))
+        drawer.draw(batch, worldPositionedDrawables(world, Rect2(0, 0, 500, 500)))
 //        drawer.draw(batch, WorldPositionedDrawables(world, Rect2(0, 0, 900, 900)))
         batch.end()
     }
