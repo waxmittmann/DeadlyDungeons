@@ -7,11 +7,13 @@ import com.mygdx.game.draw.TextureDrawable
 import com.mygdx.game.util.Dims2
 
 class Textures {
+    val rockDrawable: Drawable = TextureDrawable(Texture("rock.png"), Dims2(1, 1))
+    val mudDrawable: Drawable = TextureDrawable(Texture("mud.png"), Dims2(1, 1))
     var avatarTexture: Texture = Texture("Avatar.png")
     var yetiTexture: Texture = Texture("PixelArt.png")
     var mountainTexture: Texture = Texture("Mountain.jpg")
-//    val grassTexture: Texture = Texture("grass.png")
-    val grassTexture: Texture = Texture("Tile.png")
+    val grassTexture: Texture = Texture("grass.png")
+//    val grassTexture: Texture = Texture("Tile.png")
     var yetiDrawable = TextureDrawable(yetiTexture, Dims2(1, 1))
     var playerDrawable = TextureDrawable(avatarTexture, Dims2(1, 1))
     var bulletAtlas = TextureAtlas("BulletSheet.txt");
