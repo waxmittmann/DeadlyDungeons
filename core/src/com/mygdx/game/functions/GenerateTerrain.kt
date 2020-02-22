@@ -14,7 +14,7 @@ class RandomAllocator(private val selection: List<TerrainPrototype>) {
 fun generateTerrain(rowsNr: Int, colsNr: Int, statelessAllocator: (Int, Int) -> TerrainPrototype): Array<Array<Terrain>> {
     return (0..colsNr).map { col ->
         (0..rowsNr).map { row ->
-            Terrain(statelessAllocator(row, col), DrawState(0f, 1.0f))
+            Terrain(statelessAllocator(row, col), DrawState(0f))
         }.toTypedArray()
     }.toTypedArray()
 }

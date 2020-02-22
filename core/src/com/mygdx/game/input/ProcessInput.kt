@@ -19,7 +19,6 @@ val readKey: (Unit) -> (Set<Key>) = {
         keys += PressedSpecial.LEFT
     if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         keys += PressedSpecial.RIGHT
-    println("Read keys: $keys")
     keys
 }
 
@@ -37,7 +36,6 @@ val processKeys: (Set<Key>) -> (Set<Action>) = { keys: Set<Key> ->
 }
 
 val processActions: (World) -> (Set<Action>) -> Unit = { world -> { actions ->
-    println("Actions are: $actions")
     for (action in actions) {
         when (action) {
             Action.MOVE_UP -> {

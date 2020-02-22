@@ -17,7 +17,6 @@ import com.mygdx.game.util.Angle
 import com.mygdx.game.util.Point2
 import com.mygdx.game.util.Rect2
 
-//import kotlin.concurrent.timer
 
 // Run via KotlinLauncher.
 class Game : ApplicationAdapter() {
@@ -26,11 +25,15 @@ class Game : ApplicationAdapter() {
     private lateinit var batch: SpriteBatch
     private lateinit var world: World
     private lateinit var cam: OrthographicCamera
+    private var spawnState: SpawnMobState = SpawnMobState(0)
+    private lateinit var mobSpawner: SpawnMobs
 
     override fun create() {
         batch = SpriteBatch()
 
         prototypes = Prototypes(DefaultTextures())
+
+        mobSpawner = SpawnMobs(prototypes)
 
         // Set up camera
         cam = OrthographicCamera(500f, 500f)
@@ -42,10 +45,10 @@ class Game : ApplicationAdapter() {
 
         // Set up World
         val randomTerrain = RandomAllocator(listOf(prototypes.grass, prototypes.mud, prototypes.rocks))
-        val terrain = generateTerrain(100, 100) { r: Int, c: Int -> randomTerrain.allocate(r, c) }
+        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> randomTerrain.allocate(r, c) }
         val player = WorldObj(prototypes.player,
                 Attributes(),
-                Point2(240, 240), DrawState(1f, 0f), Angle.create(0))
+                Point2(240, 240), DrawState(0f), Angle.create(0))
         world = World(50, WorldObjs(player, emptyList()), terrain, Rect2(0, 0, 500, 500))
     }
 
@@ -53,10 +56,8 @@ class Game : ApplicationAdapter() {
 
     override fun render() {
         stateTime += Gdx.graphics.deltaTime;
-//        processInput(readKey(), world)
-
-//        println("Pre")
         processInput(world)
+        spawnState = mobSpawner.spawnMobs(world)(spawnState)((stateTime * 1000).toLong())
 
         Gdx.gl.glClearColor(1.0f, 1.0f, 1f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
