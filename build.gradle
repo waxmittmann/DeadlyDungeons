@@ -69,6 +69,10 @@ project(":core") {
         api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
         api "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.4"
         compile 'org.danilopianini:java-quadtree:0.1.3'
+
+//        implementation("io.arrow-kt:arrow-core:0.10.4")
+        compile "io.arrow-kt:arrow-core:0.10.4"
+        compile "io.arrow-kt:arrow-syntax:0.10.4"
     }
 }
 repositories {

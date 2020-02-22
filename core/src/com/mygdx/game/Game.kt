@@ -11,6 +11,8 @@ import com.mygdx.game.draw.DrawState
 import com.mygdx.game.draw.ObjectDrawer
 import com.mygdx.game.entities.*
 import com.mygdx.game.functions.*
+import com.mygdx.game.input.processInput
+import com.mygdx.game.input.readKey
 import com.mygdx.game.util.Angle
 import com.mygdx.game.util.Point2
 import com.mygdx.game.util.Rect2
@@ -43,7 +45,7 @@ class Game : ApplicationAdapter() {
         val terrain = generateTerrain(100, 100) { r: Int, c: Int -> randomTerrain.allocate(r, c) }
         val player = WorldObj(prototypes.player,
                 Attributes(),
-                Point2(0, 0), DrawState(1f, 0f), Angle.create(0))
+                Point2(240, 240), DrawState(1f, 0f), Angle.create(0))
         world = World(50, WorldObjs(player, emptyList()), terrain, Rect2(0, 0, 500, 500))
     }
 
@@ -51,7 +53,10 @@ class Game : ApplicationAdapter() {
 
     override fun render() {
         stateTime += Gdx.graphics.deltaTime;
-        processInput(readKey(), world)
+//        processInput(readKey(), world)
+
+//        println("Pre")
+        processInput(world)
 
         Gdx.gl.glClearColor(1.0f, 1.0f, 1f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
