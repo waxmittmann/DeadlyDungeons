@@ -3,7 +3,15 @@ package com.mygdx.game.entities
 import com.mygdx.game.draw.Drawable
 
 
-class TerrainAttributes(val passable: Boolean = true)
+class TerrainAttributes(val passable: Boolean = true) {
+    override fun toString(): String {
+        return "Passable: $passable"
+    }
+}
 
-class TerrainPrototype(val name: String, val drawable: Drawable, attributes: TerrainAttributes = TerrainAttributes())
+class TerrainPrototype(val name: String, val drawable: Drawable, val attributes: TerrainAttributes = TerrainAttributes()) {
+    override fun toString(): String {
+        return "$name: $attributes"
+    }
+}
 

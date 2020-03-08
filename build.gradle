@@ -38,6 +38,7 @@ allprojects {
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -69,7 +70,9 @@ project(":core") {
         api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
         api "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.4"
         compile 'org.danilopianini:java-quadtree:0.1.3'
-
+        implementation "space.earlygrey:shapedrawer:2.2.0"
+//        compile "space.earlygrey:shapedrawer:2.2.0"
+//        implementation 'space.earlygrey:shapedrawer:Tag'
 //        implementation("io.arrow-kt:arrow-core:0.10.4")
         compile "io.arrow-kt:arrow-core:0.10.4"
         compile "io.arrow-kt:arrow-syntax:0.10.4"

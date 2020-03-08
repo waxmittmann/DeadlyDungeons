@@ -4,6 +4,7 @@ import com.mygdx.game.draw.PositionedDrawable
 import com.mygdx.game.entities.*
 import com.mygdx.game.util.Point2
 import com.mygdx.game.util.Rect2
+import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.max
 import kotlin.math.min
 
@@ -15,10 +16,13 @@ sceneObjectPositionedDrawables(world.worldObjects, world.view)
 }
 
 fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<PositionedDrawable> {
+
+//    val drawer = ShapeDrawer(batch, region);
+
 //    println("Rendering player at " +  worldObjects.player.position.minus(view.lowerLeft()))
     return worldObjects.all().flatMap { wo: WorldObj ->
         if (wo.position.x >= view.lx && wo.position.x < view.ux() && wo.position.y >= view.ly && wo.position.y <= view.uy()) {
-            val translatedPosition = wo.position.minus(view.lowerLeft())
+            val translatedPosition = wo.position.minus(view.lowerLeft().asVector())
             listOf(PositionedDrawable(wo.prototype.drawable,
                     wo.prototype.width.toFloat(), wo.prototype.height.toFloat(),
                     translatedPosition.x.toFloat(), translatedPosition.y.toFloat(), wo.drawState))
