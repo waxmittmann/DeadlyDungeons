@@ -32,7 +32,7 @@ fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<P
     } //+ PositionedDrawable(worldObjects.player.prototype.drawable, worldObjects.player.position.minus(view.lowerLeft()), worldObjects.player.drawState)
 }
 
-fun terrainPositionedDrawables(terrains: Array<Array<Terrain>>, tileSize: Int, view: Rect2): List<PositionedDrawable> {
+fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2): List<PositionedDrawable> {
 //    println("Drawing to " + min((view.uy() / tileSize)+1, terrains.size-1) + ", " + min((view.ux() / tileSize)+1, terrains[0].size-1))
     return (max((view.ly / tileSize)-1, 0)..min((view.uy() / tileSize)+1, terrains.size-1)).flatMap { c ->
         (max((view.lx / tileSize)-1, 0)..min((view.ux() / tileSize)+1, terrains[0].size-1)).map { r ->

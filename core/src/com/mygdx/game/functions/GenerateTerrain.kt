@@ -31,10 +31,10 @@ class WeightedAllocator(private val selection: List<Pair<Int, TerrainPrototype>>
     }
 }
 
-fun generateTerrain(rowsNr: Int, colsNr: Int, statelessAllocator: (Int, Int) -> TerrainPrototype): Array<Array<Terrain>> {
+fun generateTerrain(rowsNr: Int, colsNr: Int, statelessAllocator: (Int, Int) -> TerrainPrototype): MutableList<MutableList<Terrain>> {
     return (0..colsNr).map { col ->
         (0..rowsNr).map { row ->
             Terrain(statelessAllocator(row, col), DrawState(0f))
-        }.toTypedArray()
-    }.toTypedArray()
+        }.toMutableList()
+    }.toMutableList()
 }

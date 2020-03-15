@@ -52,8 +52,11 @@ class Game : ApplicationAdapter() {
 //        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> randomTerrain.allocate(r, c) }
 //        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> randomTerrain.allocate() }
         val terrain = generateTerrain(100, 100) { r: Int, c: Int -> randomTerrain.allocate() }
-//        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> prototypes.grass }
-        terrain[2][2] =  Terrain(prototypes.rocks, DrawState(0f))
+//        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> prototypes.grass }a
+//        terrain
+        terrain[2][2] = Terrain(prototypes.rocks, DrawState(0f))
+
+//        terrain[2].set(2, Terrain(prototypes.rocks, DrawState(0f)))
         val player = WorldObj(prototypes.player,
                 Attributes(),
                 Point2(240, 240), DrawState(0f), Angle.create(0))
