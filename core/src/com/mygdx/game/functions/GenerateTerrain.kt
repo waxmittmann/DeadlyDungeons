@@ -20,7 +20,7 @@ class RandomAllocator(private val selection: List<TerrainPrototype>) {
 class WeightedAllocator(private val selection: List<Pair<Int, TerrainPrototype>>) {
     private val selectionList: List<TerrainPrototype> = {
         selection.flatMap { p ->
-            (0..p.first).map { at ->
+            (0..p.first).map {
                 p.second
             }
         }
@@ -31,10 +31,23 @@ class WeightedAllocator(private val selection: List<Pair<Int, TerrainPrototype>>
     }
 }
 
-fun generateTerrain(rowsNr: Int, colsNr: Int, statelessAllocator: (Int, Int) -> TerrainPrototype): MutableList<MutableList<Terrain>> {
-    return (0..colsNr).map { col ->
+fun generateTerrain(rowsNr: Int, colsNr: Int, surroundWithWalls: TerrainPrototype?, statelessAllocator: (Int, Int) -> TerrainPrototype): MutableList<MutableList<Terrain>> {
+    val terrainMap = (0..colsNr).map { col ->
         (0..rowsNr).map { row ->
             Terrain(statelessAllocator(row, col), DrawState(0f))
         }.toMutableList()
     }.toMutableList()
+
+    surroundWithWalls?.let { terrain ->
+        (0..colsNr).map { col ->
+            terrainMap[col][0] = Terrain(terrain, DrawState(0f))
+            terrainMap[col][rowsNr-1] = Terrain(terrain, DrawState(0f))
+        }
+        (0..rowsNr).map { row ->
+            terrainMap[0][row] = Terrain(terrain, DrawState(0f))
+            terrainMap[colsNr-1][row] = Terrain(terrain, DrawState(0f))
+        }
+    }
+
+    return terrainMap
 }

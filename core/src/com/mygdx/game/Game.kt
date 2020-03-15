@@ -51,7 +51,7 @@ class Game : ApplicationAdapter() {
         val randomTerrain = WeightedAllocator(listOf(Pair(80, prototypes.grass), Pair(80, prototypes.mud), Pair(10, prototypes.rocks)))
 //        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> randomTerrain.allocate(r, c) }
 //        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> randomTerrain.allocate() }
-        val terrain = generateTerrain(100, 100) { r: Int, c: Int -> randomTerrain.allocate() }
+        val terrain = generateTerrain(100, 100, prototypes.rocks) { r: Int, c: Int -> randomTerrain.allocate() }
 //        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> prototypes.grass }a
 //        terrain
         terrain[2][2] = Terrain(prototypes.rocks, DrawState(0f))
@@ -59,7 +59,7 @@ class Game : ApplicationAdapter() {
 //        terrain[2].set(2, Terrain(prototypes.rocks, DrawState(0f)))
         val player = WorldObj(prototypes.player,
                 Attributes(),
-                Point2(240, 240), DrawState(0f), Angle.create(0))
+                Point2(250, 250), DrawState(0f), Angle.create(0))
 //        Point2(0 ,0), DrawState(0f), Angle.create(0))
         val view = Rect2(0, 0, cameraWidth, cameraHeight)
         world = World(50, WorldObjs(player, emptyList()), terrain, view)
