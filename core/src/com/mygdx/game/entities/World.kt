@@ -65,8 +65,10 @@ class World(val tileSize: Int, val worldObjects: WorldObjs, val terrain: Array<A
 
         return if (performMove) {
             movePlayerWithoutCheck(moveBy)
+            print("After move player at: " + worldObjects.player.rect())
             true
         } else {
+            print("After no move player at: " + worldObjects.player.rect())
             false
         }
     }
@@ -75,73 +77,44 @@ class World(val tileSize: Int, val worldObjects: WorldObjs, val terrain: Array<A
         when (cardinality) {
             Cardinality.UP -> {
                 var moveBy = Vec2(0, by)
-                var newRect: Rect2 = worldObjects.player.rect().plus(moveBy)
-
-                var performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
+                val newRect: Rect2 = worldObjects.player.rect().plus(moveBy)
+                val performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
                 if (performMove) {
                     println("Full move")
                     movePlayerWithoutCheck(moveBy)
                 } else {
-//                    moveBy = Vec2(0, ((by + worldObjects.player.rect().uy()) / tileSize) * tileSize)
-//                    moveBy = Vec2(0, ((by + worldObjects.player.rect().uy()) % tileSize))
-                    moveBy = Vec2(0, by - ((by + worldObjects.player.rect().uy()) % tileSize)).plus(0, -1)
-//                    moveBy = Vec2(0, by - ((by + worldObjects.player.rect().uy()) % tileSize))
-//                    moveBy = Vec2(0, tileSize - ((by + worldObjects.player.rect().uy()) % tileSize))
-                    newRect = worldObjects.player.rect().plus(moveBy).shrink(1, 1)
-//                    newRect = newRect.moduloY(tileSize).add(0, -1)
-//                    performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain ->
-//                        println("Checking $terrain")
-//                        soFar && terrain.prototype.attributes.passable
-//                    })
-//                    if (performMove) {
-                        println("Capped move: $moveBy, $by, ${worldObjects.player.rect().uy()} $tileSize")
-                        movePlayerWithoutCheck(moveBy)
-//                    } else {
-//                        println("No move: $moveBy, $by, ${worldObjects.player.rect().uy()} $tileSize")
-//                    }
+                    val cappedAmount = ((by + worldObjects.player.rect().uy()) / tileSize) * tileSize - worldObjects.player.rect().uy()
+                    moveBy = Vec2(0, cappedAmount).plus(0, -1)
+                    println("Capped move: $moveBy, $by, ${worldObjects.player.rect().uy()} $tileSize")
+                    movePlayerWithoutCheck(moveBy)
                 }
             }
 
             Cardinality.DOWN -> {
                 var moveBy = Vec2(0, -by)
-                var newRect: Rect2 = worldObjects.player.rect().plus(moveBy)
-
-                var performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
+                val newRect: Rect2 = worldObjects.player.rect().plus(moveBy)
+                val performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
                 if (performMove) {
                     println("Full move")
                     movePlayerWithoutCheck(moveBy)
                 } else {
-                    moveBy = Vec2(0, -by + ((by + worldObjects.player.rect().ly) % tileSize)).plus(0, 1)
-//                    newRect = worldObjects.player.rect().plus(moveBy).shrink(1, 1)
+                    val cappedAmount = (-(by + worldObjects.player.rect().ly) / tileSize) * tileSize + worldObjects.player.rect().ly
+                    moveBy = Vec2(0, cappedAmount).plus(0, 1)
                     println("Capped move: $moveBy, $by, ${worldObjects.player.rect().ly} $tileSize")
                     movePlayerWithoutCheck(moveBy)
                 }
-
-
-//                val moveBy = Vec2(0, -by)
-//                var newRect: Rect2 = worldObjects.player.rect().plus(moveBy)
-//
-//                val performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
-//                if (performMove) {
-//                    movePlayerWithoutCheck(moveBy)
-//                } else {
-//                    newRect = newRect.moduloY(tileSize)
-//                    val performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
-//
-//                }
             }
 
             Cardinality.LEFT -> {
                 var moveBy = Vec2( -by, 0)
-                var newRect: Rect2 = worldObjects.player.rect().plus(moveBy)
-
-                var performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
+                val newRect: Rect2 = worldObjects.player.rect().plus(moveBy)
+                val performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
                 if (performMove) {
                     println("Full move")
                     movePlayerWithoutCheck(moveBy)
                 } else {
-                    moveBy = Vec2( -by + ((by + worldObjects.player.rect().lx) % tileSize), 0).plus(1, 0)
-//                    newRect = worldObjects.player.rect().plus(moveBy).shrink(1, 1)
+                    val cappedAmount = (-(by + worldObjects.player.rect().lx) / tileSize) * tileSize + worldObjects.player.rect().lx
+                    moveBy = Vec2( cappedAmount, 0).plus(1, 0)
                     println("Capped move: $moveBy, $by, ${worldObjects.player.rect().uy()} $tileSize")
                     movePlayerWithoutCheck(moveBy)
                 }
@@ -149,16 +122,15 @@ class World(val tileSize: Int, val worldObjects: WorldObjs, val terrain: Array<A
             }
 
             Cardinality.RIGHT -> {
-                var moveBy = Vec2(by, 0)
-                var newRect: Rect2 = worldObjects.player.rect().plus(moveBy)
-
-                var performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
+                var moveBy = Vec2( by, 0)
+                val newRect: Rect2 = worldObjects.player.rect().plus(moveBy)
+                val performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
                 if (performMove) {
                     println("Full move")
                     movePlayerWithoutCheck(moveBy)
                 } else {
-                    moveBy = Vec2(by - ((by + worldObjects.player.rect().ux()) % tileSize), 0).plus(-1, 0)
-//                    newRect = worldObjects.player.rect().plus(moveBy).shrink(1, 1)
+                    val cappedAmount = ((by + worldObjects.player.rect().ux()) / tileSize) * tileSize + worldObjects.player.rect().ux()
+                    moveBy = Vec2(cappedAmount, 0).plus(-1, 0)
                     println("Capped move: $moveBy, $by, ${worldObjects.player.rect().uy()} $tileSize")
                     movePlayerWithoutCheck(moveBy)
                 }

@@ -76,6 +76,11 @@ project(":core") {
 //        implementation("io.arrow-kt:arrow-core:0.10.4")
         compile "io.arrow-kt:arrow-core:0.10.4"
         compile "io.arrow-kt:arrow-syntax:0.10.4"
+
+//        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+//        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+        implementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+        runtimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
     }
 }
 repositories {

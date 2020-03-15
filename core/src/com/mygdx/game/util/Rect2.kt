@@ -38,6 +38,10 @@ class Rect2(val lx: Int, val ly: Int, val width: Int, val height: Int) {
         return Rect2(lx+1, ly+1, width - 1, height -1 )
     }
 
+    fun upperRight(): Point2 {
+        return Point2(lx + width, ly + height)
+    }
+
     companion object Factory {
         fun fromUpperRight(ux: Int, uy: Int, width: Int, height: Int): Rect2 {
             return Rect2(ux - width, uy - height, width, height)

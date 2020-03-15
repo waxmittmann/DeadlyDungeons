@@ -9,8 +9,8 @@ import arrow.core.compose
 import com.mygdx.game.util.Cardinality
 import com.mygdx.game.util.Vec2
 
-const val moveAmount = 5
-//const val moveAmount = 1
+//const val moveAmount = 5
+const val moveAmount = 1
 
 val readKey: (Unit) -> (Set<Key>) = {
     val keys = emptySet<Key>().toMutableSet()
@@ -51,8 +51,8 @@ val processActions: (World) -> (Set<Action>) -> Unit = { world ->
         for (action in actions) {
             when (action) {
                 Action.MOVE_UP -> {
-//                    world.movePlayer(Vec2(0, moveAmount))
-                    world.movePlayer(moveAmount, Cardinality.UP)
+                    world.movePlayer(Vec2(0, moveAmount))
+//                    world.movePlayer(moveAmount, Cardinality.UP)
 //                    val newPos: Point2 = world.worldObjects.player.position.plus(moveVec)
 //                    if (isMoveCanPassTerrain()(world)(newPos)) {
 //                        world.movePlayer(moveVec)
@@ -61,22 +61,22 @@ val processActions: (World) -> (Set<Action>) -> Unit = { world ->
 //                    }
                 }
                 Action.MOVE_DOWN -> {
-//                    world.movePlayer(Vec2(0, -moveAmount))
-                    world.movePlayer(moveAmount, Cardinality.DOWN)
+                    world.movePlayer(Vec2(0, -moveAmount))
+//                    world.movePlayer(moveAmount, Cardinality.DOWN)
 //                    val newPos: Point2 = world.worldObjects.player.position.minus(Point2(0, moveAmount))
 //                    world.worldObjects.player.position = world.worldObjects.player.position.minus(newPos)
 //                    world.view = world.view.minus(0, moveAmount)
                 }
                 Action.MOVE_LEFT -> {
-//                    world.movePlayer(Vec2(-moveAmount, 0))
-                    world.movePlayer(moveAmount, Cardinality.LEFT)
+                    world.movePlayer(Vec2(-moveAmount, 0))
+//                    world.movePlayer(moveAmount, Cardinality.LEFT)
 //                    val newPos: Point2 = world.worldObjects.player.position.minus(Point2( moveAmount, 0))
 //                    world.worldObjects.player.position = world.worldObjects.player.position.minus(newPos)
 //                    world.updateView(-moveAmount, 0)
                 }
                 Action.MOVE_RIGHT -> {
-//                    world.movePlayer(Vec2(moveAmount, 0))
-                    world.movePlayer(moveAmount, Cardinality.RIGHT)
+                    world.movePlayer(Vec2(moveAmount, 0))
+//                    world.movePlayer(moveAmount, Cardinality.RIGHT)
 //                    val newPos: Point2 = world.worldObjects.player.position.plus(Point2(moveAmount, 0))
 //                    world.worldObjects.player.position = world.worldObjects.player.position.plus(newPos)
 //                    world.updateView(moveAmount, 0)

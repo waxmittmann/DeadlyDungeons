@@ -7,7 +7,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 class ObjectDrawer {
     class DebugRect(val x: Float, val y: Float, val width: Float, val height: Float)
 
-    val debug = true
+    val debug = false
     val shapeRenderer = {
         val sr = ShapeRenderer()
         sr.setAutoShapeType(true)
@@ -23,11 +23,12 @@ class ObjectDrawer {
         val shapeDrawer = ShapeDrawer(batch, singlePixel)
         var debugRects = emptyList<DebugRect>()
         drawables.forEach { drawable ->
-//            if (debug)
+            //            if (debug)
 //                debugRects += DebugRect(drawable.x, drawable.y, drawable.width, drawable.height)
 
             drawable.draw(batch)
-           shapeDrawer.rectangle(drawable.x, drawable.y, drawable.width, drawable.height)
+            if (debug)
+                shapeDrawer.rectangle(drawable.x, drawable.y, drawable.width, drawable.height)
         }
 
 //        shapeRenderer.begin()
