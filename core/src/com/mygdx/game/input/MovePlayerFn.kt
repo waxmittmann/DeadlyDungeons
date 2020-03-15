@@ -8,133 +8,29 @@ import com.mygdx.game.util.*
 import kotlin.math.abs
 import kotlin.math.min
 
-// 0-49, 50-99, 100-149
-
-
-
-//fun movePlayer(player: Rect2, terrain: Array<Array<Terrain>>, amount: Int, dir: Cardinality): Vec2 {
 fun <S> movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, accessFn: (S) -> (Boolean), amount: Int, dir: Cardinality): Vec2 {
     val utils = Utils(50)
     var curAmount = 0
 
     return when (dir) {
-        Cardinality.UP -> {
-
-//            fun <S>movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, accessFn: (S) -> (Boolean),
-//                              calcNewAmountFn: (Int, Rect2, Int) -> Pair<Rect2, Int>, amount: Int): Int {
-
+        Cardinality.UP ->
             Vec2(0, movePlayer(player, terrainSize, terrain, accessFn, upFn, amount))
 
-//            while (curAmount < amount) {
-//                println("At $curAmount")
-//                val newAmount = min(amount, curAmount + toNext(player.uy() + curAmount, terrainSize))
-//                val newPlayerRect = player.plus(Vec2(0, newAmount))
-//                val indices = utils.rectToIndex(newPlayerRect)
-//
-//                print("NewRect: $newPlayerRect\nNewAmount: $newAmount\nIndices: $indices\n")
-//
-//                if (indices.yr.last >= terrain.size) {
-//                    println("Outside range")
-//                    break
-//                }
-//
-//                val slicedTerrain = slice(indices, terrain)
-//                val accessible = slicedTerrain.flatten().all { s: S -> accessFn(s) }
-//
-//                println("Sliced:\n$slicedTerrain")
-//
-//                if (!accessible) {
-//                    println("Not accessible")
-//                    break
-//                } else {
-//                    println("Continuing")
-//                    curAmount = newAmount
-//                }
-//            }
-//            Vec2(0, curAmount)
-        }
-
-        Cardinality.DOWN -> {
+        Cardinality.DOWN ->
             Vec2(0, -movePlayer(player, terrainSize, terrain, accessFn, downFn, amount))
 
-//            while (curAmount < amount) {
-//                println("At $curAmount")
-//                val newAmount = min(amount, curAmount + toNext(player.uy() + curAmount, terrainSize))
-//                val newPlayerRect = player.plus(Vec2(0, newAmount))
-//                val indices = utils.rectToIndex(newPlayerRect)
-//
-//                print("NewRect: $newPlayerRect\nNewAmount: $newAmount\nIndices: $indices\n")
-//
-//                if (indices.yr.last >= terrain.size) {
-//                    println("Outside range")
-//                    break
-//                }
-//
-//                val slicedTerrain = slice(indices, terrain)
-//                val accessible = slicedTerrain.flatten().all { s: S -> accessFn(s) }
-//
-//                println("Sliced:\n$slicedTerrain")
-//
-//                if (!accessible) {
-//                    println("Not accessible")
-//                    break
-//                } else {
-//                    println("Continuing")
-//                    curAmount = newAmount
-//                }
-//            }
-//            Vec2(0, curAmount)
-        }
-        Cardinality.LEFT -> TODO()
-        Cardinality.RIGHT -> TODO()
+        Cardinality.LEFT ->
+            Vec2(-movePlayer(player, terrainSize, terrain, accessFn, leftFn, amount), 0)
+
+        Cardinality.RIGHT ->
+           Vec2(movePlayer(player, terrainSize, terrain, accessFn, rightFn, amount), 0)
     }
 }
-//    while (curAmount < amount) {
-//        println("At $curAmount")
-//        val newAmount = min(amount, curAmount + toNext(player.uy() + curAmount, terrainSize))
-//        val newPlayerRect = player.plus(Vec2(0, newAmount))
-//        val indices = utils.rectToIndex(newPlayerRect)
-//
-//        print("NewRect: $newPlayerRect\nNewAmount: $newAmount\nIndices: $indices\n")
-//
-//        if (indices.yr.last >= terrain.size) {
-//            println("Outside range")
-//            break
-//        }
-//
-//        val slicedTerrain = slice(indices, terrain)
-//        val accessible = slicedTerrain.flatten().all { s: S -> accessFn(s)}
-//
-//        println("Sliced:\n$slicedTerrain")
-//
-//        if (!accessible) {
-//            println("Not accessible")
-//            break
-//        } else {
-//            println("Continuing")
-//            curAmount = newAmount
-//        }
-//    }
-
-
-//
-//    val newRect: Rect2 = player.rect().plus(moveBy)
-//    val performMove = getTerrainAt(newRect).foldLeft(true, { soFar: Boolean, terrain: Terrain -> soFar && terrain.prototype.attributes.passable })
-//
-//    return if (performMove) {
-//        print("After move player at: " + worldObjects.player.rect())
-//        true
-//    } else {
-//        print("After no move player at: " + worldObjects.player.rect())
-//        false
-//    }
-//}
 
 fun toNext(cur: Int, tileSize: Int): Int {
     val amountFromStart = cur % tileSize // 25 % 50 = 25
     return tileSize - amountFromStart // 50 - 25 = 25
 }
-
 
 //fun <S>movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, accessFn: (S) -> (Boolean), amount: Int, dir: Cardinality): Vec2 {
 //    return when(dir) {
@@ -197,8 +93,26 @@ val downFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int> = { curAmount: Int, maxAm
     Pair(newPlayerRect, newAmount)
 }
 
-fun <S>movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, accessFn: (S) -> (Boolean),
-                  calcNewAmountFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int>, amount: Int): Int {
+val rightFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int> = { curAmount: Int, maxAmount: Int, player: Rect2, tileSize: Int ->
+    val amountFromStart = (player.ux() + curAmount) % tileSize
+    var newAmount = tileSize - amountFromStart
+    newAmount = min(maxAmount, curAmount + newAmount)
+    val newPlayerRect = player.plus(Vec2( newAmount, 0))
+    println("$amountFromStart, $newAmount")
+    Pair(newPlayerRect, newAmount)
+}
+
+val leftFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int> = { curAmount: Int, maxAmount: Int, player: Rect2, tileSize: Int ->
+    val amountFromStart = tileSize - (player.lx  - curAmount) % tileSize
+    println("(${player.lx} - $curAmount) % $tileSize")
+    val newAmount = min(maxAmount, curAmount + amountFromStart)
+    val newPlayerRect = player.minus(Vec2(newAmount, 0))
+    println("$amountFromStart, $newAmount")
+    Pair(newPlayerRect, newAmount)
+}
+
+fun <S> movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, accessFn: (S) -> (Boolean),
+                   calcNewAmountFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int>, amount: Int): Int {
     val utils = Utils(50)
     var curAmount = 0
     while (curAmount < amount) {
@@ -216,7 +130,7 @@ fun <S>movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, acces
         }
 
         val slicedTerrain = slice(indices, terrain)
-        val accessible = slicedTerrain.flatten().all { s: S -> accessFn(s)}
+        val accessible = slicedTerrain.flatten().all { s: S -> accessFn(s) }
 
         println("Sliced:\n$slicedTerrain")
 

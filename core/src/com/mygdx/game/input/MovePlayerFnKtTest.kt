@@ -61,9 +61,24 @@ internal class MovePlayerFnKtTest {
     }
 
     @Test
+    fun movePlayerMovesUntilBlockingTerrainWhenOneDistantHorizontallyFromZero() {
+        // Setup
+        val initialPos = Rect2(0, 0, 50, 50)
+        val terrain: List<List<Boolean>> = listOf(
+                listOf(true, true, false)
+        )
+
+        // Run
+        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100, Cardinality.RIGHT)
+
+        // Check
+        Assertions.assertEquals(Vec2(50, 0), result)
+    }
+
+    @Test
     fun movePlayerMovesUntilBlockingTerrainWhenOneDistantHorizontally() {
         // Setup
-        val initialPos = Rect2(0, 25, 50, 50)
+        val initialPos = Rect2(25, 0, 50, 50)
         val terrain: List<List<Boolean>> = listOf(
                 listOf(true, true, false)
         )
