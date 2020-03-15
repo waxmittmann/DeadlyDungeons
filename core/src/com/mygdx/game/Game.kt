@@ -47,20 +47,13 @@ class Game : ApplicationAdapter() {
         Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
 
         // Set up World.
-//        val randomTerrain = RandomAllocator(listOf(prototypes.grass, prototypes.mud, prototypes.rocks))
         val randomTerrain = WeightedAllocator(listOf(Pair(80, prototypes.grass), Pair(80, prototypes.mud), Pair(10, prototypes.rocks)))
-//        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> randomTerrain.allocate(r, c) }
-//        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> randomTerrain.allocate() }
         val terrain = generateTerrain(100, 100, prototypes.rocks) { r: Int, c: Int -> randomTerrain.allocate() }
-//        val terrain = generateTerrain(20, 20) { r: Int, c: Int -> prototypes.grass }a
-//        terrain
         terrain[2][2] = Terrain(prototypes.rocks, DrawState(0f))
 
-//        terrain[2].set(2, Terrain(prototypes.rocks, DrawState(0f)))
         val player = WorldObj(prototypes.player,
                 Attributes(),
                 Point2(250, 250), DrawState(0f), Angle.create(0))
-//        Point2(0 ,0), DrawState(0f), Angle.create(0))
         val view = Rect2(0, 0, cameraWidth, cameraHeight)
         world = World(50, WorldObjs(player, emptyList()), terrain, view)
     }
@@ -72,7 +65,7 @@ class Game : ApplicationAdapter() {
         spawnState = mobSpawner.spawnMobs(world)(spawnState)((stateTime * 1000).toLong())
 
         // Draw.
-        Gdx.gl.glClearColor(1.0f, 1.0f, 1f, 1f)
+        Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         val drawer = ObjectDrawer()
