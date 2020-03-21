@@ -2,8 +2,6 @@ package com.mygdx.game.util
 
 import kotlin.random.Random
 
-//class Vec2(_x: Int, _y: Int) : Single2(_x, _y)
-
 class Vec2(val x: Int, val y: Int) {
 
     companion object Factory {

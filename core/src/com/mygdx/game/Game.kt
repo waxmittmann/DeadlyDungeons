@@ -48,7 +48,7 @@ class Game : ApplicationAdapter() {
 
         // Set up World.
         val randomTerrain = WeightedAllocator(listOf(Pair(80, prototypes.grass), Pair(80, prototypes.mud), Pair(10, prototypes.rocks)))
-        val terrain = generateTerrain(100, 100, prototypes.rocks) { r: Int, c: Int -> randomTerrain.allocate() }
+        val terrain = generateTerrain(100, 100, prototypes.rocks) { _: Int, _: Int -> randomTerrain.allocate() }
         terrain[2][2] = Terrain(prototypes.rocks, DrawState(0f))
 
         val player = WorldObj(prototypes.player,
@@ -61,8 +61,9 @@ class Game : ApplicationAdapter() {
     override fun render() {
         // Update state.
         stateTime += Gdx.graphics.deltaTime
-        processInput(world)
         spawnState = mobSpawner.spawnMobs(world)(spawnState)((stateTime * 1000).toLong())
+        processInput(world)
+        processCollisions(world)
 
         // Draw.
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1f)

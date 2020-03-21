@@ -10,6 +10,5 @@ class Prototypes(val textures: Textures) {
 
     // GameObj prototypes.
     val player = WorldObjPrototype("player", textures.playerDrawable, 50, 50, Attributes())
-//    val player = WorldObjPrototype("player", textures.playerDrawable, 20, 20, Attributes())
     val yeti = WorldObjPrototype("yeti", textures.yetiDrawable, 50, 50, Attributes())
 }

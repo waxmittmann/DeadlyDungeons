@@ -9,14 +9,12 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-//fun worldPositionedDrawables(world: World, view: Rect2): List<PositionedDrawable> {
 fun worldPositionedDrawables(world: World): List<PositionedDrawable> {
     return terrainPositionedDrawables(world.terrain, world.tileSize, world.view) +
 sceneObjectPositionedDrawables(world.worldObjects, world.view)
 }
 
 fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<PositionedDrawable> {
-
 //    val drawer = ShapeDrawer(batch, region);
 
 //    println("Rendering player at " +  worldObjects.player.position.minus(view.lowerLeft()))
@@ -33,7 +31,6 @@ fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<P
 }
 
 fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2): List<PositionedDrawable> {
-//    println("Drawing to " + min((view.uy() / tileSize)+1, terrains.size-1) + ", " + min((view.ux() / tileSize)+1, terrains[0].size-1))
     return (max((view.ly / tileSize)-1, 0)..min((view.uy() / tileSize)+1, terrains.size-1)).flatMap { c ->
         (max((view.lx / tileSize)-1, 0)..min((view.ux() / tileSize)+1, terrains[0].size-1)).map { r ->
             val terrain = terrains[c][r]

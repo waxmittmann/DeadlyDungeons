@@ -35,11 +35,23 @@ class Rect2(val lx: Int, val ly: Int, val width: Int, val height: Int) {
     }
 
     fun shrink(xs: Int, ys: Int): Rect2 {
-        return Rect2(lx+1, ly+1, width - 1, height -1 )
+        return Rect2(lx + 1, ly + 1, width - 1, height - 1)
     }
 
     fun upperRight(): Point2 {
         return Point2(lx + width, ly + height)
+    }
+
+    fun overlaps(other: Rect2): Boolean {
+        if (lx > other.ux())
+            return false
+        if (other.lx > ux())
+            return false
+        if (ly > other.uy())
+            return false
+        if (other.uy() > uy())
+            return false
+        return true
     }
 
     companion object Factory {
