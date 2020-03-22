@@ -5,8 +5,6 @@ import com.badlogic.gdx.Input
 import com.mygdx.game.entities.World
 
 import arrow.core.compose
-import com.mygdx.game.entities.Terrain
-import com.mygdx.game.util.Direction
 
 val moveActions = MoveActions(amount = 5)
 
@@ -35,67 +33,11 @@ val processKeys: (Set<Key>) -> (Set<Action>) = { keys: Set<Key> ->
         actions.add(moveActions.LEFT)
     if (keys.contains(PressedSpecial.RIGHT))
         actions.add(moveActions.RIGHT)
-//    if (keys.contains(PressedSpecial.ATTACK))
-//        actions.add(Action.ATTACK)
     actions
 }
 
-//fun processAction(world: World, action: Action) {
-//        val cardinality = when (action) {
-//            Action.MOVE_UP -> Direction.UP
-//            Action.MOVE_DOWN -> Direction.DOWN
-//            Action.MOVE_LEFT -> Direction.LEFT
-//            Action.MOVE_RIGHT -> Direction.RIGHT
-////            ATTACK ->
-//        }
-//        val moveBy = movePlayer(world.worldObjects.player.rect(), 50, world.terrain,
-//                { t: Terrain -> t.prototype.attributes.passable }, moveAmount, cardinality)
-//        world.movePlayer(moveBy)
-//}
-
-//fun processAction(world: World, action: MoveAction) {
-//    val cardinality = when (action) {
-//        MoveAction.MOVE_UP -> Direction.UP
-//        MoveAction.MOVE_DOWN -> Direction.DOWN
-//        MoveAction.MOVE_LEFT -> Direction.LEFT
-//        MoveAction.MOVE_RIGHT -> Direction.RIGHT
-////            ATTACK ->
-//    }
-//    val moveBy = movePlayer(world.worldObjects.player.rect(), 50, world.terrain,
-//            { t: Terrain -> t.prototype.attributes.passable }, moveAmount, cardinality)
-//    world.movePlayer(moveBy)
-//}
-//
-//fun processAction(world: World, action: AttackAction) {
-//
-//}
-
-////interface ProcessAction {
-//    fun call(world: World, action: Action)
-//}
-
-/*
-    action(world)
-
-
-
-
-
- */
-
-
-
-val processActions: (World) -> (Set<Action>) -> Unit = { world ->
-    { actions ->
-        for (action in actions) {
-            action(world)
-            // action(world)
-//            processAction(world, action)
-        }
-    }
-}
+val processActions: (World) -> (Set<Action>) -> Unit = { world -> { it.forEach { it(world) } } }
 
 val processInput: (World) -> Unit = { world ->
     (processActions(world) compose (processKeys compose readKey))(Unit)
 }
-

@@ -4,19 +4,6 @@ import com.mygdx.game.entities.Terrain
 import com.mygdx.game.entities.World
 import com.mygdx.game.util.Direction
 
-//interface Action
-
-//interface MoveAction
-
-//enum class MoveAction: Action {
-//enum class MoveAction : Action {
-//enum class Action {
-//    MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT
-//}
-
-//object AttackAction : Action
-
-
 typealias Action = (World) -> Unit
 
 fun moveBy(amount: Int, cardinality: Direction): Action = { world ->
@@ -26,24 +13,13 @@ fun moveBy(amount: Int, cardinality: Direction): Action = { world ->
 }
 
 class MoveActions(val amount: Int) {
-
     val UP = moveBy(amount, Direction.UP)
     val DOWN = moveBy(amount, Direction.DOWN)
     val LEFT = moveBy(amount, Direction.LEFT)
     val RIGHT = moveBy(amount, Direction.RIGHT)
-
-//    enum class MoveAction(action: Action) {
-//        MOVE_UP(moveBy(amount, Direction.UP)) //, MOVE_DOWN(action), MOVE_LEFT, MOVE_RIGHT
-//    }
-
 }
 
 val AttackAction: Action = { world ->
 
 }
 
-//enum class Action {
-//    MOVE, ATTACK
-//}
-
-//object ATTACK : Action
