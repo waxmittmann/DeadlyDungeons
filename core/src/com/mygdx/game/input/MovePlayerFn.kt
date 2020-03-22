@@ -13,18 +13,18 @@ fun debugS(str: String) {
         print(str)
 }
 
-fun <S> movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, accessFn: (S) -> (Boolean), amount: Int, dir: Cardinality): Vec2 {
+fun <S> movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, accessFn: (S) -> (Boolean), amount: Int, dir: Direction): Vec2 {
     return when (dir) {
-        Cardinality.UP ->
+        Direction.UP ->
             Vec2(0, movePlayer(player, terrainSize, terrain, accessFn, upFn, amount))
 
-        Cardinality.DOWN ->
+        Direction.DOWN ->
             Vec2(0, -movePlayer(player, terrainSize, terrain, accessFn, downFn, amount))
 
-        Cardinality.LEFT ->
+        Direction.LEFT ->
             Vec2(-movePlayer(player, terrainSize, terrain, accessFn, leftFn, amount), 0)
 
-        Cardinality.RIGHT ->
+        Direction.RIGHT ->
            Vec2(movePlayer(player, terrainSize, terrain, accessFn, rightFn, amount), 0)
     }
 }

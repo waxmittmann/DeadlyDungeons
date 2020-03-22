@@ -1,6 +1,6 @@
 package com.mygdx.game.input
 
-import com.mygdx.game.util.Cardinality
+import com.mygdx.game.util.Direction
 import com.mygdx.game.util.Rect2
 import com.mygdx.game.util.Vec2
 import org.junit.jupiter.api.Assertions
@@ -20,7 +20,7 @@ internal class MovePlayerFnKtTest {
         )
 
         // Run
-        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 50, Cardinality.UP)
+        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 50, Direction.UP)
 
         // Check
         Assertions.assertEquals(Vec2(0, 50), result)
@@ -37,7 +37,7 @@ internal class MovePlayerFnKtTest {
         )
 
         // Run
-        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100, Cardinality.UP)
+        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100, Direction.UP)
 
         // Check
         Assertions.assertEquals(Vec2(0, 25), result)
@@ -54,7 +54,7 @@ internal class MovePlayerFnKtTest {
         )
 
         // Run
-        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100, Cardinality.DOWN)
+        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100, Direction.DOWN)
 
         // Check
         Assertions.assertEquals(Vec2(0, -75), result)
@@ -69,7 +69,7 @@ internal class MovePlayerFnKtTest {
         )
 
         // Run
-        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100, Cardinality.RIGHT)
+        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100, Direction.RIGHT)
 
         // Check
         Assertions.assertEquals(Vec2(50, 0), result)
@@ -84,7 +84,7 @@ internal class MovePlayerFnKtTest {
         )
 
         // Run
-        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100, Cardinality.RIGHT)
+        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100, Direction.RIGHT)
 
         // Check
         Assertions.assertEquals(Vec2(25, 0), result)
@@ -100,7 +100,7 @@ internal class MovePlayerFnKtTest {
         ).reversed()
 
         // Run
-        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 50, Cardinality.UP)
+        val result = movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 50, Direction.UP)
 
         // Check
         Assertions.assertEquals(Vec2(0, 0), result)

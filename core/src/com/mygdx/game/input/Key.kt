@@ -3,7 +3,7 @@ package com.mygdx.game.input
 interface Key
 
 enum class PressedSpecial : Key {
-    UP, DOWN, LEFT, RIGHT
+    UP, DOWN, LEFT, RIGHT, ATTACK
 }
 
 class CharKey(char: Char) : Key

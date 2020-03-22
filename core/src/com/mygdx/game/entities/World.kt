@@ -1,13 +1,5 @@
 package com.mygdx.game.entities
 
-import arrow.core.None
-import arrow.core.Option
-import arrow.core.Some
-import arrow.core.extensions.list.foldable.foldLeft
-import arrow.core.getOrElse
-import com.mygdx.game.input.moveAmount
-import com.mygdx.game.util.Cardinality
-import com.mygdx.game.util.Point2
 import com.mygdx.game.util.Rect2
 import com.mygdx.game.util.Vec2
 
