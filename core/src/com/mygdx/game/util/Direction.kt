@@ -4,6 +4,15 @@ enum class Direction {
     UP, DOWN, LEFT, RIGHT;
 }
 
+object FullDirectionFns {
+    private val values = FullDirection.values()
+
+    fun random(): FullDirection {
+        return values[globalRandom.nextInt(values.size)]
+    }
+
+}
+
 enum class FullDirection {
     SOUTH,
     SOUTH_WEST,

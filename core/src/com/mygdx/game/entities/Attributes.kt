@@ -1,4 +1,6 @@
 package com.mygdx.game.entities
 
-class Attributes() {
+import com.mygdx.game.util.FullDirection
+
+class Attributes(val orientation: FullDirection) {
 }
