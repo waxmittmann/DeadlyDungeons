@@ -20,7 +20,7 @@ class World(var timeNow: Long, val worldObjFactory: WorldObjFactory, val tileSiz
 
     fun addPlayerBullet() {
         worldObjects.addProjectile(worldObjFactory.createBullet(worldObjects.player.position, worldObjects.player.attributes.orientation))
-        print("Bullet added")
+        println("Bullet added for " + worldObjects.player.position + ", " + worldObjects.player.attributes.orientation)
     }
 
     fun setTime(time: Long) {

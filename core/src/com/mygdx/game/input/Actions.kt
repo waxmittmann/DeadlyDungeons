@@ -47,16 +47,17 @@ class MoveActions(val amount: Int) {
 
     val LEFT: (World) -> Unit  = { world ->
         moveBy(amount, Direction.LEFT)(world)
-        world.changePlayerOrientation(FullDirection.EAST)
+        world.changePlayerOrientation(FullDirection.WEST)
     }
 
     val RIGHT: (World) -> Unit = { world ->
         moveBy(amount, Direction.RIGHT)(world)
-        world.changePlayerOrientation(FullDirection.WEST)
+        world.changePlayerOrientation(FullDirection.EAST)
     }
 }
 
 val AttackAction: Action = { world ->
+    println("ATTACK!")
     if (world.worldObjects.player.attributes.lastShot + 1000 < world.timeNow) {
         world.worldObjects.player.attributes.lastShot = world.timeNow
         world.addPlayerBullet()

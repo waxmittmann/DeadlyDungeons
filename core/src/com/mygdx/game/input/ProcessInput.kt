@@ -10,16 +10,18 @@ val moveActions = MoveActions(amount = 5)
 
 val readKey: (Unit) -> (Set<Key>) = {
     val keys = emptySet<Key>().toMutableSet()
-    if (Gdx.input.isKeyPressed(Input.Keys.UP))
-        keys += PressedSpecial.UP
-    if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-        keys += PressedSpecial.DOWN
-    if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-        keys += PressedSpecial.LEFT
-    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-        keys += PressedSpecial.RIGHT
+
     if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
         keys += PressedSpecial.SPACE
+    if (Gdx.input.isKeyPressed(Input.Keys.S))
+        keys += PressedSpecial.DOWN
+    if (Gdx.input.isKeyPressed(Input.Keys.A))
+        keys += PressedSpecial.LEFT
+    if (Gdx.input.isKeyPressed(Input.Keys.D))
+        keys += PressedSpecial.RIGHT
+    if (Gdx.input.isKeyPressed(Input.Keys.W))
+        keys += PressedSpecial.UP
+
     keys
 }
 
@@ -46,7 +48,7 @@ val processKeys: (Set<Key>) -> (Set<Action>) = { keys: Set<Key> ->
 
     // Attack
     if (keys.contains(PressedSpecial.SPACE))
-       actions.add(AttackAction)
+        actions.add(AttackAction)
 
     actions
 }
