@@ -19,20 +19,35 @@ val readKey: (Unit) -> (Set<Key>) = {
     if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         keys += PressedSpecial.RIGHT
     if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
-        keys += PressedSpecial.ATTACK
+        keys += PressedSpecial.SPACE
     keys
 }
 
 val processKeys: (Set<Key>) -> (Set<Action>) = { keys: Set<Key> ->
     val actions = emptySet<Action>().toMutableSet()
-    if (keys.contains(PressedSpecial.UP))
+
+    // Movement
+    if (keys.contains(PressedSpecial.UP) && keys.contains(PressedSpecial.LEFT))
+        actions.add(moveActions.LEFT_UP)
+    else if (keys.contains(PressedSpecial.UP) && keys.contains(PressedSpecial.RIGHT))
+        actions.add(moveActions.RIGHT_UP)
+    else if (keys.contains(PressedSpecial.DOWN) && keys.contains(PressedSpecial.LEFT))
+        actions.add(moveActions.LEFT_DOWN)
+    else if (keys.contains(PressedSpecial.DOWN) && keys.contains(PressedSpecial.RIGHT))
+        actions.add(moveActions.RIGHT_DOWN)
+    else if (keys.contains(PressedSpecial.UP))
         actions.add(moveActions.UP)
-    if (keys.contains(PressedSpecial.DOWN))
+    else if (keys.contains(PressedSpecial.DOWN))
         actions.add(moveActions.DOWN)
-    if (keys.contains(PressedSpecial.LEFT))
+    else if (keys.contains(PressedSpecial.LEFT))
         actions.add(moveActions.LEFT)
-    if (keys.contains(PressedSpecial.RIGHT))
+    else if (keys.contains(PressedSpecial.RIGHT))
         actions.add(moveActions.RIGHT)
+
+    // Attack
+    if (keys.contains(PressedSpecial.SPACE))
+       actions.add(AttackAction)
+
     actions
 }
 

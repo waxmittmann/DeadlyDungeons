@@ -3,6 +3,7 @@ package com.mygdx.game.input
 import com.mygdx.game.entities.Terrain
 import com.mygdx.game.entities.World
 import com.mygdx.game.util.Direction
+import com.mygdx.game.util.FullDirection
 
 typealias Action = (World) -> Unit
 
@@ -13,13 +14,49 @@ fun moveBy(amount: Int, cardinality: Direction): Action = { world ->
 }
 
 class MoveActions(val amount: Int) {
-    val UP = moveBy(amount, Direction.UP)
-    val DOWN = moveBy(amount, Direction.DOWN)
-    val LEFT = moveBy(amount, Direction.LEFT)
-    val RIGHT = moveBy(amount, Direction.RIGHT)
+    val LEFT_UP: (World) -> Unit = { world ->
+        moveBy(amount, Direction.UP)(world)
+        moveBy(amount, Direction.LEFT)(world)
+        world.changePlayerOrientation(FullDirection.NORTH_WEST)
+    }
+    val RIGHT_UP: (World) -> Unit = { world ->
+        moveBy(amount, Direction.UP)(world)
+        moveBy(amount, Direction.RIGHT)(world)
+        world.changePlayerOrientation(FullDirection.NORTH_EAST)
+    }
+    val LEFT_DOWN: (World) -> Unit = { world ->
+        moveBy(amount, Direction.DOWN)(world)
+        moveBy(amount, Direction.LEFT)(world)
+        world.changePlayerOrientation(FullDirection.SOUTH_WEST)
+    }
+    val RIGHT_DOWN: (World) -> Unit = { world ->
+        moveBy(amount, Direction.DOWN)(world)
+        moveBy(amount, Direction.RIGHT)(world)
+        world.changePlayerOrientation(FullDirection.SOUTH_EAST)
+    }
+
+    val UP: (World) -> Unit  = { world ->
+        moveBy(amount, Direction.UP)(world)
+        world.changePlayerOrientation(FullDirection.NORTH)
+    }
+
+    val DOWN: (World) -> Unit  = { world ->
+        moveBy(amount, Direction.DOWN)(world)
+        world.changePlayerOrientation(FullDirection.SOUTH)
+    }
+
+    val LEFT: (World) -> Unit  = { world ->
+        moveBy(amount, Direction.LEFT)(world)
+        world.changePlayerOrientation(FullDirection.EAST)
+    }
+
+    val RIGHT: (World) -> Unit = { world ->
+        moveBy(amount, Direction.RIGHT)(world)
+        world.changePlayerOrientation(FullDirection.WEST)
+    }
 }
 
 val AttackAction: Action = { world ->
-
+    world.addPlayerBullet()
 }
 

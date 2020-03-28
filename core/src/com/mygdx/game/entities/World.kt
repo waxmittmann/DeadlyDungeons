@@ -1,5 +1,6 @@
 package com.mygdx.game.entities
 
+import com.mygdx.game.util.FullDirection
 import com.mygdx.game.util.Rect2
 import com.mygdx.game.util.Vec2
 
@@ -11,6 +12,19 @@ class World(val tileSize: Int, val worldObjects: WorldObjs, val terrain: List<Li
     fun movePlayer(moveBy: Vec2) {
         worldObjects.player.position = worldObjects.player.position.plus(moveBy)
         view = view.plus(moveBy)
+    }
+
+    fun changePlayerOrientation(direction: FullDirection) {
+        worldObjects.player.attributes.orientation = direction
+    }
+
+    fun addPlayerBullet() {
+
+        val bullet: WorldObj = WorldObj()
+
+        worldObjects.addProjectile()
+
+        TODO("Not yet implemented")
     }
 }
 
