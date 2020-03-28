@@ -66,6 +66,7 @@ class Game : ApplicationAdapter() {
         world.setTime((stateTime * 1000).toLong())
         spawnState = mobSpawner.spawnMobs(world)(spawnState)((stateTime * 1000).toLong())
         processInput(world)
+        moveProjectiles(world.worldObjects.projectiles)
         processCollisions(world)
 
         // Draw.
