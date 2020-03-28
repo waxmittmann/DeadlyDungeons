@@ -14,7 +14,17 @@ interface Drawable {
     fun draw(sb: SpriteBatch, width: Float, height: Float, x: Float, y: Float, drawData: DrawState)
 }
 
-class TextureDrawable(val texture: Texture, override val dims: Dims2) : Drawable {
+fun draw2(sb: SpriteBatch, texture: TextureRegion, x: Float, y: Float, width: Float, height: Float, originX: Float = 0.0f,
+         originY: Float = 0.0f, scaleX: Float = 1.0f, scaleY: Float = 1.0f, rotation: Float = 0.0f,
+         clockwise: Boolean = false) {
+    sb.draw(texture, x, y, originX, originY, width, height, scaleX, scaleY, rotation, clockwise)
+
+//    public void draw (TextureRegion region, float x, float y, float originX, float originY, float width, float height,
+//            float scaleX, float scaleY, float rotation, boolean clockwise) {
+}
+
+//class TextureDrawable(val texture: Texture, override val dims: Dims2) : Drawable {
+class TextureDrawable(val texture: TextureRegion, override val dims: Dims2) : Drawable {
     override fun draw(sb: SpriteBatch, width: Float, height: Float, x: Float, y: Float, drawData: DrawState) {
         sb.draw(texture, x, y, width, height)
     }

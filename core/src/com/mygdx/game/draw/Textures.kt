@@ -22,14 +22,14 @@ class DefaultTextures : Textures {
     private val bulletAnimation: Animation<TextureRegion> = Animation(0.033f, bulletAtlas.findRegions("Bullet2"), Animation.PlayMode.LOOP)
 
     // Textures
-    private val avatarTexture: Texture = Texture("Avatar.png")
-    private val yetiTexture: Texture = Texture("PixelArt.png")
-    private val mountainTexture: Texture = Texture("Mountain.jpg")
-    private val grassTexture: Texture = Texture("grass.png")
+    private val avatarTexture: TextureRegion = TextureRegion(Texture("Avatar.png"))
+    private val yetiTexture: TextureRegion = TextureRegion(Texture("PixelArt.png"))
+    private val mountainTexture: TextureRegion = TextureRegion(Texture("Mountain.jpg"))
+    private val grassTexture: TextureRegion = TextureRegion(Texture("grass.png"))
 
     // Drawables
-    override val rockDrawable: Drawable = TextureDrawable(Texture("rock.png"), Dims2(1, 1))
-    override val mudDrawable: Drawable = TextureDrawable(Texture("mud.png"), Dims2(1, 1))
+    override val rockDrawable: Drawable = TextureDrawable(TextureRegion(Texture("rock.png")), Dims2(1, 1))
+    override val mudDrawable: Drawable = TextureDrawable(TextureRegion(Texture("mud.png")), Dims2(1, 1))
     override val yetiDrawable: Drawable = TextureDrawable(yetiTexture, Dims2(1, 1))
     override val playerDrawable: Drawable = TextureDrawable(avatarTexture, Dims2(1, 1))
     override val mountainDrawable = TextureDrawable(mountainTexture, Dims2(65, 30))
