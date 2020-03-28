@@ -4,7 +4,7 @@ import com.mygdx.game.util.FullDirection
 import com.mygdx.game.util.Rect2
 import com.mygdx.game.util.Vec2
 
-class World(val tileSize: Int, val worldObjects: WorldObjs, val terrain: List<List<Terrain>> = listOf(), var view: Rect2) {
+class World(var timeNow: Long, val worldObjFactory: WorldObjFactory, val tileSize: Int, val worldObjects: WorldObjs, val terrain: List<List<Terrain>> = listOf(), var view: Rect2) {
     val width: Int = terrain[0].size * tileSize
     val height: Int = terrain.size * tileSize
 
@@ -19,12 +19,12 @@ class World(val tileSize: Int, val worldObjects: WorldObjs, val terrain: List<Li
     }
 
     fun addPlayerBullet() {
+        worldObjects.addProjectile(worldObjFactory.createBullet(worldObjects.player.position, worldObjects.player.attributes.orientation))
+        print("Bullet added")
+    }
 
-        val bullet: WorldObj = WorldObj()
-
-        worldObjects.addProjectile()
-
-        TODO("Not yet implemented")
+    fun setTime(time: Long) {
+        timeNow = time
     }
 }
 

@@ -12,7 +12,6 @@ import com.mygdx.game.draw.ObjectDrawer
 import com.mygdx.game.entities.*
 import com.mygdx.game.functions.*
 import com.mygdx.game.input.processInput
-import com.mygdx.game.util.Angle
 import com.mygdx.game.util.FullDirection
 import com.mygdx.game.util.Point2
 import com.mygdx.game.util.Rect2
@@ -21,6 +20,7 @@ import com.mygdx.game.util.Rect2
 // Run via KotlinLauncher.
 class Game : ApplicationAdapter() {
     private lateinit var prototypes: Prototypes
+    private lateinit var worldObjFactory: WorldObjFactory
     private val collisionDetector = CollisionDetector()
     private lateinit var batch: SpriteBatch
     private lateinit var world: World
@@ -37,6 +37,7 @@ class Game : ApplicationAdapter() {
     override fun create() {
         batch = SpriteBatch()
         prototypes = Prototypes(DefaultTextures())
+        worldObjFactory = WorldObjFactory(prototypes)
         mobSpawner = SpawnMobs(prototypes)
 
         // Set up camera.
@@ -53,15 +54,16 @@ class Game : ApplicationAdapter() {
         terrain[2][2] = Terrain(prototypes.rocks, DrawState(0f))
 
         val player = WorldObj(prototypes.player,
-                Attributes(FullDirection.NORTH),
+                PlayerAttributes(FullDirection.NORTH, -100),
                 Point2(250, 250), DrawState(0f))
         val view = Rect2(0, 0, cameraWidth, cameraHeight)
-        world = World(50, WorldObjs(player, emptyList()), terrain, view)
+        world = World(0, worldObjFactory, 50, WorldObjs(player, emptyList(), emptyList()), terrain, view)
     }
 
     override fun render() {
         // Update state.
         stateTime += Gdx.graphics.deltaTime
+        world.setTime((stateTime * 1000).toLong())
         spawnState = mobSpawner.spawnMobs(world)(spawnState)((stateTime * 1000).toLong())
         processInput(world)
         processCollisions(world)

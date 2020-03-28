@@ -1,16 +1,19 @@
 package com.mygdx.game.entities
 
-class WorldObjs(val player: WorldObj, var mobs: List<WorldObj>, var projectiles: List<WorldObj>) {
 
-    fun all(): List<WorldObj> {
-        return mobs + player
+
+
+class WorldObjs(val player: WorldObj<PlayerAttributes>, var mobs: List<WorldObj<MobAttributes>>, var projectiles: List<WorldObj<ProjectileAttributes>>) {
+
+    fun all(): List<WorldObj<out Any>> {
+        return (mobs + player) + projectiles
     }
 
-    fun addMob(mob: WorldObj) {
+    fun addMob(mob: WorldObj<MobAttributes>) {
         mobs += mob
     }
 
-    fun addProjectile(projectile: WorldObj) {
+    fun addProjectile(projectile: WorldObj<ProjectileAttributes>) {
         projectiles += projectile
     }
 }

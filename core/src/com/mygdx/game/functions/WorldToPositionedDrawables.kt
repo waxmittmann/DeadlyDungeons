@@ -18,7 +18,7 @@ fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<P
 //    val drawer = ShapeDrawer(batch, region);
 
 //    println("Rendering player at " +  worldObjects.player.position.minus(view.lowerLeft()))
-    return worldObjects.all().flatMap { wo: WorldObj ->
+    return worldObjects.all().flatMap { wo: WorldObj<out Any> ->
         if (wo.position.x >= view.lx && wo.position.x < view.ux() && wo.position.y >= view.ly && wo.position.y <= view.uy()) {
             val translatedPosition = wo.position.minus(view.lowerLeft().asVector())
             listOf(PositionedDrawable(wo.prototype.drawable,
