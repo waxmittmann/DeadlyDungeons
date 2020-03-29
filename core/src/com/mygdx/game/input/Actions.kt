@@ -2,6 +2,7 @@ package com.mygdx.game.input
 
 import com.mygdx.game.entities.Terrain
 import com.mygdx.game.entities.World
+import com.mygdx.game.util.Angle
 import com.mygdx.game.util.Direction
 import com.mygdx.game.util.FullDirection
 
@@ -57,10 +58,15 @@ class MoveActions(val amount: Int) {
 }
 
 val AttackAction: Action = { world ->
-    println("ATTACK!")
+//    println("ATTACK!")
     if (world.worldObjects.player.attributes.lastShot + 1000 < world.timeNow) {
         world.worldObjects.player.attributes.lastShot = world.timeNow
         world.addPlayerBullet()
     }
+}
+
+fun ChangeOrientation(angle: Angle): Action = { world ->
+//    println("Setting angle to : " + angle)
+    world.worldObjects.player.rotation = angle
 }
 

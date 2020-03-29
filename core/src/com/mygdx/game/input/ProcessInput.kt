@@ -5,11 +5,18 @@ import com.badlogic.gdx.Input
 import com.mygdx.game.entities.World
 
 import arrow.core.compose
+import com.mygdx.game.util.Angle
+import com.mygdx.game.util.Point2
+import com.mygdx.game.util.Vec2
 
 val moveActions = MoveActions(amount = 5)
 
-val readKey: (Unit) -> (Set<Key>) = {
+class InputData(val keys: Set<Key>, val mouseX: Int, val mouseY: Int)
+
+val readKey: (Unit) -> InputData = {
     val keys = emptySet<Key>().toMutableSet()
+
+//    println("""${Gdx.input.x}, ${Gdx.input.y}""")
 
     if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
         keys += PressedSpecial.SPACE
@@ -22,10 +29,14 @@ val readKey: (Unit) -> (Set<Key>) = {
     if (Gdx.input.isKeyPressed(Input.Keys.W))
         keys += PressedSpecial.UP
 
-    keys
+    InputData(keys, Gdx.input.x, Gdx.input.y)
 }
 
-val processKeys: (Set<Key>) -> (Set<Action>) = { keys: Set<Key> ->
+val processKeys: (InputData) -> (Set<Action>) = {
+
+    val keys: Set<Key> = it.keys
+    val mouseX = it.mouseX
+    val mouseY = it.mouseY
     val actions = emptySet<Action>().toMutableSet()
 
     // Movement
@@ -49,6 +60,18 @@ val processKeys: (Set<Key>) -> (Set<Action>) = { keys: Set<Key> ->
     // Attack
     if (keys.contains(PressedSpecial.SPACE))
         actions.add(AttackAction)
+
+//    println( Vec2(it.mouseX - 600, it.mouseY - 400))
+
+//    actions.add(ChangeOrientation(Angle.create(Point2(600, 400), Point2(700, 400), Point2(it.mouseX - 600, it.mouseY - 400))))
+//    actions.add(ChangeOrientation(Angle.create(Point2(it.mouseX - 600, it.mouseY - 400))))
+
+//    actions.add(ChangeOrientation(Angle.create(Point2(it.mouseX - 550, it.mouseY - 350))))
+//    actions.add(ChangeOrientation(Angle.create(Point2(it.mouseX - 550, it.mouseY - 350))))
+//    val vec = Angle.create(Point2(it.mouseX - 600, it.mouseY - 400))
+    val vec = Angle.create(Point2(it.mouseX - 600, 400 - it.mouseY ))
+    println("Angle: " + vec)
+    actions.add(ChangeOrientation(vec))
 
     actions
 }

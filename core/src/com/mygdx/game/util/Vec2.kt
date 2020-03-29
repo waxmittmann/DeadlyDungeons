@@ -1,5 +1,9 @@
 package com.mygdx.game.util
 
+import com.badlogic.gdx.math.Vector2
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D
+import kotlin.math.cos
+import kotlin.math.sin
 import kotlin.random.Random
 
 class Vec2(val x: Int, val y: Int) {
@@ -25,6 +29,15 @@ class Vec2(val x: Int, val y: Int) {
         return Vec2(x + _x, y + _y)
     }
 
+    fun rotate(angle: Angle, clockwise: Boolean = true): Vec2 {
+        val degrees = if (clockwise) Math.toRadians(360 - angle.degrees.toDouble()) else Math.toRadians(angle.degrees.toDouble())
+
+        val _x = cos(degrees) * x - sin(degrees) * y
+        val _y = sin(degrees) * x + cos(degrees) * y
+
+        return Vec2(_x.toInt(), _y.toInt())
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -41,5 +54,9 @@ class Vec2(val x: Int, val y: Int) {
         var result = x
         result = 31 * result + y
         return result
+    }
+
+    fun toVector2D(): Vector2D {
+        return Vector2D(x.toDouble(), y.toDouble())
     }
 }

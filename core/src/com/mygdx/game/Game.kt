@@ -12,6 +12,7 @@ import com.mygdx.game.draw.ObjectDrawer
 import com.mygdx.game.entities.*
 import com.mygdx.game.functions.*
 import com.mygdx.game.input.processInput
+import com.mygdx.game.util.Angle
 import com.mygdx.game.util.FullDirection
 import com.mygdx.game.util.Point2
 import com.mygdx.game.util.Rect2
@@ -55,7 +56,8 @@ class Game : ApplicationAdapter() {
 
         val player = WorldObj(prototypes.player,
                 PlayerAttributes(FullDirection.NORTH, -100),
-                Point2(250, 250), DrawState(0f))
+//                Point2(cameraWidth/2 + prototypes.player.width/2, cameraHeight/2 + prototypes.player.height/2), Angle(0), DrawState(0f))
+                Point2(cameraWidth/2 - prototypes.player.width/2, cameraHeight/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
         val view = Rect2(0, 0, cameraWidth, cameraHeight)
         world = World(0, worldObjFactory, 50, WorldObjs(player, emptyList(), emptyList()), terrain, view)
     }

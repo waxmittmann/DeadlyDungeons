@@ -23,7 +23,7 @@ fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<P
             val translatedPosition = wo.position.minus(view.lowerLeft().asVector())
             listOf(PositionedDrawable(wo.prototype.drawable,
                     wo.prototype.width.toFloat(), wo.prototype.height.toFloat(),
-                    translatedPosition.x.toFloat(), translatedPosition.y.toFloat(), wo.drawState))
+                    translatedPosition.x.toFloat(), translatedPosition.y.toFloat(), wo.rotation.degrees.toFloat(), wo.drawState))
         } else {
             emptyList()
         }
@@ -35,7 +35,7 @@ fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, vie
         (max((view.lx / tileSize)-1, 0)..min((view.ux() / tileSize)+1, terrains[0].size-1)).map { r ->
             val terrain = terrains[c][r]
             val p = Point2(r * tileSize - view.lx, c * tileSize - view.ly)
-            PositionedDrawable(terrain.prototype.drawable, tileSize.toFloat(), tileSize.toFloat(), p.x.toFloat(), p.y.toFloat(), terrain.drawState)
+            PositionedDrawable(terrain.prototype.drawable, tileSize.toFloat(), tileSize.toFloat(), p.x.toFloat(), p.y.toFloat(), 0.0f, terrain.drawState)
         }
     }
 }
