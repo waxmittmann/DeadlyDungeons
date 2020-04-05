@@ -1,6 +1,5 @@
-package com.mygdx.game.util
+package com.mygdx.game.util.geometry
 
-import com.badlogic.gdx.math.Vector2
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D
 import kotlin.math.cos
 import kotlin.math.sin

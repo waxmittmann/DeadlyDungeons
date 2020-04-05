@@ -5,9 +5,8 @@ import com.badlogic.gdx.Input
 import com.mygdx.game.entities.World
 
 import arrow.core.compose
-import com.mygdx.game.util.Angle
-import com.mygdx.game.util.Point2
-import com.mygdx.game.util.Vec2
+import com.mygdx.game.util.geometry.Angle
+import com.mygdx.game.util.geometry.Point2
 
 val moveActions = MoveActions(amount = 5)
 
@@ -69,7 +68,7 @@ val processKeys: (InputData) -> (Set<Action>) = {
 //    actions.add(ChangeOrientation(Angle.create(Point2(it.mouseX - 550, it.mouseY - 350))))
 //    actions.add(ChangeOrientation(Angle.create(Point2(it.mouseX - 550, it.mouseY - 350))))
 //    val vec = Angle.create(Point2(it.mouseX - 600, it.mouseY - 400))
-    val vec = Angle.create(Point2(it.mouseX.toDouble() - 600, 400.toDouble() - it.mouseY ))
+    val vec = Angle.create(Point2(it.mouseX.toDouble() - 600, 400.toDouble() - it.mouseY))
 //    println("Angle: " + vec)
     actions.add(ChangeOrientation(vec))
 

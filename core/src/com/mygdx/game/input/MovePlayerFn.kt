@@ -1,6 +1,8 @@
 package com.mygdx.game.input
 
 import com.mygdx.game.util.*
+import com.mygdx.game.util.geometry.Rect2
+import com.mygdx.game.util.geometry.Vec2
 import kotlin.math.min
 
 val debug = false
@@ -25,7 +27,7 @@ fun <S> movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, acce
             Vec2(-movePlayer(player, terrainSize.toDouble(), terrain, accessFn, leftFn, amount), 0.0)
 
         Direction.RIGHT ->
-           Vec2(movePlayer(player, terrainSize.toDouble(), terrain, accessFn, rightFn, amount), 0.0)
+            Vec2(movePlayer(player, terrainSize.toDouble(), terrain, accessFn, rightFn, amount), 0.0)
     }
 }
 
@@ -84,7 +86,7 @@ val rightFn: (Double, Double, Rect2, Double) -> Pair<Rect2, Double> = { curAmoun
     val amountFromStart = (player.ux() + curAmount) % tileSize
     var newAmount = tileSize - amountFromStart
     newAmount = min(maxAmount.toDouble(), curAmount + newAmount)
-    val newPlayerRect = player.plus(Vec2( newAmount, 0.0))
+    val newPlayerRect = player.plus(Vec2(newAmount, 0.0))
     debugln("$amountFromStart, $newAmount")
     Pair(newPlayerRect, newAmount)
 }

@@ -1,6 +1,4 @@
-package com.mygdx.game.util
-
-import kotlin.random.Random
+package com.mygdx.game.util.geometry
 
 class Rect2(val lx: Double, val ly: Double, val width: Double, val height: Double) {
     fun ux(): Double = lx + width
@@ -61,14 +59,14 @@ class Rect2(val lx: Double, val ly: Double, val width: Double, val height: Doubl
     companion object Factory {
         fun create(lx: Int, ly: Int, width: Int, height: Int): Rect2 = Rect2(lx.toDouble(), ly.toDouble(), width.toDouble(), height.toDouble())
         fun fromUpperRight(ux: Int, uy: Int, width: Int, height: Int): Rect2 {
-            return Rect2.create(ux - width, uy - height, width, height)
+            return create(ux - width, uy - height, width, height)
         }
 
         fun fromLowerUpper(lx: Int, ly: Int, ux: Int, uy: Int): Rect2? {
             return if (lx >= ux || ly >= uy)
                 null
             else
-                Rect2.create(lx, ly, ux - lx, uy - ly)
+                create(lx, ly, ux - lx, uy - ly)
         }
 
         fun fromPoints(ll: Point2, ur: Point2) {

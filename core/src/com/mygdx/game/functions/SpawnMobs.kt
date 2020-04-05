@@ -3,6 +3,9 @@ package com.mygdx.game.functions
 import com.mygdx.game.draw.DrawState
 import com.mygdx.game.entities.*
 import com.mygdx.game.util.*
+import com.mygdx.game.util.geometry.Angle
+import com.mygdx.game.util.geometry.Point2
+import com.mygdx.game.util.geometry.Vec2
 
 const val maxMobs = 20
 

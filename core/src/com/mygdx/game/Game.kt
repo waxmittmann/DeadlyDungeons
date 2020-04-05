@@ -12,10 +12,10 @@ import com.mygdx.game.draw.ObjectDrawer
 import com.mygdx.game.entities.*
 import com.mygdx.game.functions.*
 import com.mygdx.game.input.processInput
-import com.mygdx.game.util.Angle
+import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.FullDirection
-import com.mygdx.game.util.Point2
-import com.mygdx.game.util.Rect2
+import com.mygdx.game.util.geometry.Point2
+import com.mygdx.game.util.geometry.Rect2
 
 
 // Run via KotlinLauncher.

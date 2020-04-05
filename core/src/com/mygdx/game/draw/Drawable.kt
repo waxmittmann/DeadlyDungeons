@@ -1,10 +1,9 @@
 package com.mygdx.game.draw
 
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.mygdx.game.util.Dims2
+import com.mygdx.game.util.geometry.Dims2
 
 
 class DrawState(val delta: Float)

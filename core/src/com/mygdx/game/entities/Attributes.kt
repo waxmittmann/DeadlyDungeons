@@ -1,7 +1,7 @@
 package com.mygdx.game.entities
 
 import com.mygdx.game.util.FullDirection
-import com.mygdx.game.util.Vec2
+import com.mygdx.game.util.geometry.Vec2
 
 interface Attributes
 interface HasOrientation { var orientation: FullDirection }

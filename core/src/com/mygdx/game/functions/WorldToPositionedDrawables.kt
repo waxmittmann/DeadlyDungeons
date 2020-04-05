@@ -2,11 +2,9 @@ package com.mygdx.game.functions
 
 import com.mygdx.game.draw.PositionedDrawable
 import com.mygdx.game.entities.*
-import com.mygdx.game.util.Point2
-import com.mygdx.game.util.Rect2
-import com.mygdx.game.util.ceil
+import com.mygdx.game.util.geometry.Point2
+import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.floor
-import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.max
 import kotlin.math.min
 

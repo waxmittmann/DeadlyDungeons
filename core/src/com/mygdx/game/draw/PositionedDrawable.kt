@@ -3,9 +3,6 @@ package com.mygdx.game.draw
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.mygdx.game.util.Dims2
-import com.mygdx.game.util.Point2
-import space.earlygrey.shapedrawer.ShapeDrawer
 
 
 val singlePixel: TextureRegion = TextureRegion(Texture("singlepixel.png"))

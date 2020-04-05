@@ -1,6 +1,6 @@
 package com.mygdx.game.collision
 
-import com.mygdx.game.entities.AsRect
+import com.mygdx.game.util.geometry.AsRect
 import com.mygdx.game.entities.WorldObj
 
 class CollisionDetector {

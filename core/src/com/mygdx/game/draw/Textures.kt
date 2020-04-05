@@ -2,9 +2,7 @@ package com.mygdx.game.draw
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.*
-import com.mygdx.game.draw.AnimationDrawable
-import com.mygdx.game.draw.TextureDrawable
-import com.mygdx.game.util.Dims2
+import com.mygdx.game.util.geometry.Dims2
 
 interface Textures {
     val rockDrawable: Drawable

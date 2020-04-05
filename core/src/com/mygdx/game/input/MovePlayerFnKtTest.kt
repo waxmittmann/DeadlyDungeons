@@ -1,8 +1,8 @@
 package com.mygdx.game.input
 
 import com.mygdx.game.util.Direction
-import com.mygdx.game.util.Rect2
-import com.mygdx.game.util.Vec2
+import com.mygdx.game.util.geometry.Rect2
+import com.mygdx.game.util.geometry.Vec2
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

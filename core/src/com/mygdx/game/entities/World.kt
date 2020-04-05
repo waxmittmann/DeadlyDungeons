@@ -1,8 +1,8 @@
 package com.mygdx.game.entities
 
 import com.mygdx.game.util.FullDirection
-import com.mygdx.game.util.Rect2
-import com.mygdx.game.util.Vec2
+import com.mygdx.game.util.geometry.Rect2
+import com.mygdx.game.util.geometry.Vec2
 
 class World(var timeNow: Long, val worldObjFactory: WorldObjFactory, val tileSize: Int, val worldObjects: WorldObjs, val terrain: List<List<Terrain>> = listOf(), var view: Rect2) {
     val width: Int = terrain[0].size * tileSize

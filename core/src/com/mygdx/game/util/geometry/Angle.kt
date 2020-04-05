@@ -1,4 +1,4 @@
-package com.mygdx.game.util
+package com.mygdx.game.util.geometry
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D
 import java.lang.Math.*
@@ -49,7 +49,7 @@ class Angle internal constructor(val degrees: Int) {
 //            println("Ac " + cos(a))
             val acos = acos(abBar.toDouble() / abMag)
 
-            return create((acos / Math.PI * 180.0f).toInt())
+            return create((acos / PI * 180.0f).toInt())
         }
 
 //        fun create(center: Point2, right: Point2, dir: Point2): Angle {

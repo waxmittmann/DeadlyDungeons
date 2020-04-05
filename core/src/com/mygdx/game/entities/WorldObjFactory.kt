@@ -1,14 +1,10 @@
 package com.mygdx.game.entities
 
 import com.mygdx.game.draw.DrawState
-import com.mygdx.game.util.Angle
+import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.FullDirection
-import com.mygdx.game.util.Point2
-import com.mygdx.game.util.Vec2
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D
-import java.lang.Math.toRadians
-import kotlin.math.cos
-import kotlin.math.sin
+import com.mygdx.game.util.geometry.Point2
+import com.mygdx.game.util.geometry.Vec2
 
 class WorldObjFactory(private val prototype: Prototypes) {
 
@@ -47,7 +43,7 @@ class WorldObjFactory(private val prototype: Prototypes) {
 
 //        val pos = position.plus(Vec2(prototype.bullet.width/ 2.0, prototype.bullet.height/ 2.0))
 //        val pos = position.minus(Vec2(prototype.bullet.width/ 2.0, prototype.bullet.height/ 2.0))
-        val pos = position.minus(Vec2(-prototype.bullet.width/ 2.0, prototype.bullet.height/ 2.0))
+        val pos = position.minus(Vec2(-prototype.bullet.width / 2.0, prototype.bullet.height / 2.0))
 
         println("Adjusted pos: " + pos)
 //        val pos = position //.plus(Vec2(prototype.bullet.width/ 2.0, prototype.bullet.height/ 2.0))

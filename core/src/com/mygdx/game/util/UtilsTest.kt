@@ -1,5 +1,7 @@
 package com.mygdx.game.util
 
+import com.mygdx.game.util.geometry.Point2
+import com.mygdx.game.util.geometry.Rect2
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

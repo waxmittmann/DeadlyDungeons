@@ -1,5 +1,6 @@
-package com.mygdx.game.util
+package com.mygdx.game.util.geometry
 
+import com.mygdx.game.util.geometry.Point2
 import kotlin.random.Random
 
 open class Single2(val x: Int, val y: Int) {
