@@ -9,28 +9,28 @@ internal class UtilsTest {
     @Test
     fun singlePoint() {
         val utils = Utils(10)
-        val result = utils.pointToIndex(Point2(0, 0))
+        val result = utils.pointToIndex(Point2.create(0, 0), floor = true)
         assertEquals(Pair(0, 0), result)
     }
 
     @Test
     fun singlePointAtEdge() {
         val utils = Utils(10)
-        val result = utils.pointToIndex(Point2(9, 9))
+        val result = utils.pointToIndex(Point2.create(9, 9), floor = true)
         assertEquals(Pair(0, 0), result)
     }
 
     @Test
     fun singlePointNextSquare() {
         val utils = Utils(10)
-        val result = utils.pointToIndex(Point2(10, 10))
+        val result = utils.pointToIndex(Point2.create(10, 10), floor = true)
         assertEquals(Pair(1, 1), result)
     }
 
     @Test
     fun singlePointNextSquareAtEdge() {
         val utils = Utils(10)
-        val result = utils.pointToIndex(Point2(19, 19))
+        val result = utils.pointToIndex(Point2.create(19, 19), floor = true)
         assertEquals(Pair(1, 1), result)
     }
 

@@ -2,10 +2,12 @@ package com.mygdx.game.util
 
 import kotlin.random.Random
 
-class Point2(val x: Int, val y: Int) {
+class Point2(val x: Double, val y: Double) {
     companion object Factory {
+        fun create(x: Int, y: Int): Point2 = Point2(x.toDouble(), y.toDouble())
+
         fun random(ux: Int, uy: Int): Point2 =
-                Point2(Random.nextInt(0, ux), Random.nextInt(0, uy))
+                Point2.create(Random.nextInt(0, ux), Random.nextInt(0, uy))
     }
 
     fun minus(point: Vec2): Point2 {

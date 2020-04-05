@@ -57,8 +57,8 @@ class Game : ApplicationAdapter() {
         val player = WorldObj(prototypes.player,
                 PlayerAttributes(FullDirection.NORTH, -100),
 //                Point2(cameraWidth/2 + prototypes.player.width/2, cameraHeight/2 + prototypes.player.height/2), Angle(0), DrawState(0f))
-                Point2(cameraWidth/2 - prototypes.player.width/2, cameraHeight/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
-        val view = Rect2(0, 0, cameraWidth, cameraHeight)
+                Point2.create(cameraWidth/2 - prototypes.player.width/2, cameraHeight/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
+        val view = Rect2.create(0, 0, cameraWidth, cameraHeight)
         world = World(0, worldObjFactory, 50, WorldObjs(player, emptyList(), emptyList()), terrain, view)
     }
 

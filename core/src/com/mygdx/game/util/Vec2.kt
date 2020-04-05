@@ -6,11 +6,13 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random
 
-class Vec2(val x: Int, val y: Int) {
+class Vec2(val x: Double, val y: Double) {
 
     companion object Factory {
         fun random(ux: Int, uy: Int): Vec2 =
-                Vec2(Random.nextInt(0, ux), Random.nextInt(0, uy))
+                create(Random.nextInt(0, ux), Random.nextInt(0, uy))
+
+        fun create(x: Int, y: Int): Vec2 = Vec2(x.toDouble(), y.toDouble())
     }
 
     fun minus(point: Point2): Vec2 {
@@ -35,7 +37,7 @@ class Vec2(val x: Int, val y: Int) {
         val _x = cos(degrees) * x - sin(degrees) * y
         val _y = sin(degrees) * x + cos(degrees) * y
 
-        return Vec2(_x.toInt(), _y.toInt())
+        return Vec2(_x, _y)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -48,12 +50,6 @@ class Vec2(val x: Int, val y: Int) {
         if (y != other.y) return false
 
         return true
-    }
-
-    override fun hashCode(): Int {
-        var result = x
-        result = 31 * result + y
-        return result
     }
 
     fun toVector2D(): Vector2D {

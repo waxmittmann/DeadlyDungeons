@@ -14,7 +14,7 @@ class Angle internal constructor(val degrees: Int) {
         fun create(p: Point2): Angle {
 //            val up = Vec2(0, 1)
 
-            if (p.x == 0) {
+            if (p.x == 0.0) {
                 if (p.y >= 0) {
                     return create(0)
                 } else {

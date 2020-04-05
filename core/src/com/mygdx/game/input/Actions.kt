@@ -59,7 +59,7 @@ class MoveActions(val amount: Int) {
 
 val AttackAction: Action = { world ->
 //    println("ATTACK!")
-    if (world.worldObjects.player.attributes.lastShot + 1000 < world.timeNow) {
+    if (world.worldObjects.player.attributes.lastShot + 200 < world.timeNow) {
         world.worldObjects.player.attributes.lastShot = world.timeNow
         world.addPlayerBullet()
     }

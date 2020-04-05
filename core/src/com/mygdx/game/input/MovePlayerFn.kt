@@ -16,62 +16,26 @@ fun debugS(str: String) {
 fun <S> movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, accessFn: (S) -> (Boolean), amount: Int, dir: Direction): Vec2 {
     return when (dir) {
         Direction.UP ->
-            Vec2(0, movePlayer(player, terrainSize, terrain, accessFn, upFn, amount))
+            Vec2(0.0, movePlayer(player, terrainSize.toDouble(), terrain, accessFn, upFn, amount))
 
         Direction.DOWN ->
-            Vec2(0, -movePlayer(player, terrainSize, terrain, accessFn, downFn, amount))
+            Vec2(0.0, -movePlayer(player, terrainSize.toDouble(), terrain, accessFn, downFn, amount))
 
         Direction.LEFT ->
-            Vec2(-movePlayer(player, terrainSize, terrain, accessFn, leftFn, amount), 0)
+            Vec2(-movePlayer(player, terrainSize.toDouble(), terrain, accessFn, leftFn, amount), 0.0)
 
         Direction.RIGHT ->
-           Vec2(movePlayer(player, terrainSize, terrain, accessFn, rightFn, amount), 0)
+           Vec2(movePlayer(player, terrainSize.toDouble(), terrain, accessFn, rightFn, amount), 0.0)
     }
 }
 
-val upFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int> = { curAmount: Int, maxAmount: Int, player: Rect2, tileSize: Int ->
-    val amountFromStart = (player.uy() + curAmount) % tileSize
-    var newAmount = tileSize - amountFromStart
-    newAmount = min(maxAmount, curAmount + newAmount)
-    val newPlayerRect = player.plus(Vec2(0, newAmount))
-    debugln("$amountFromStart, $newAmount")
-    Pair(newPlayerRect, newAmount)
-}
-
-val downFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int> = { curAmount: Int, maxAmount: Int, player: Rect2, tileSize: Int ->
-    val amountFromStart = tileSize - (player.ly - curAmount) % tileSize
-    debugln("(${player.ly} - $curAmount) % $tileSize")
-    val newAmount = min(maxAmount, curAmount + amountFromStart)
-    val newPlayerRect = player.minus(Vec2(0, newAmount))
-    debugln("$amountFromStart, $newAmount")
-    Pair(newPlayerRect, newAmount)
-}
-
-val rightFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int> = { curAmount: Int, maxAmount: Int, player: Rect2, tileSize: Int ->
-    val amountFromStart = (player.ux() + curAmount) % tileSize
-    var newAmount = tileSize - amountFromStart
-    newAmount = min(maxAmount, curAmount + newAmount)
-    val newPlayerRect = player.plus(Vec2( newAmount, 0))
-    debugln("$amountFromStart, $newAmount")
-    Pair(newPlayerRect, newAmount)
-}
-
-val leftFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int> = { curAmount: Int, maxAmount: Int, player: Rect2, tileSize: Int ->
-    val amountFromStart = tileSize - (player.lx  - curAmount) % tileSize
-    debugln("(${player.lx} - $curAmount) % $tileSize")
-    val newAmount = min(maxAmount, curAmount + amountFromStart)
-    val newPlayerRect = player.minus(Vec2(newAmount, 0))
-    debugln("$amountFromStart, $newAmount")
-    Pair(newPlayerRect, newAmount)
-}
-
-fun <S> movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, accessFn: (S) -> (Boolean),
-                   calcNewAmountFn: (Int, Int, Rect2, Int) -> Pair<Rect2, Int>, amount: Int): Int {
+fun <S> movePlayer(player: Rect2, terrainSize: Double, terrain: List<List<S>>, accessFn: (S) -> (Boolean),
+                   calcNewAmountFn: (Double, Double, Rect2, Double) -> Pair<Rect2, Double>, amount: Int): Double {
     val utils = Utils(50)
-    var curAmount = 0
+    var curAmount = 0.0
     while (curAmount < amount) {
         debugln("At $curAmount")
-        val (newPlayerRect, newAmount) = calcNewAmountFn(curAmount, amount, player, terrainSize)
+        val (newPlayerRect, newAmount) = calcNewAmountFn(curAmount, amount.toDouble(), player, terrainSize)
         val indices = utils.rectToIndex(newPlayerRect)
 
         debugS("NewRect: $newPlayerRect\nNewAmount: $newAmount\nIndices: $indices\n")
@@ -97,3 +61,40 @@ fun <S> movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>, acce
 
     return curAmount
 }
+
+val upFn: (Double, Double, Rect2, Double) -> Pair<Rect2, Double> = { curAmount: Double, maxAmount: Double, player: Rect2, tileSize: Double->
+    val amountFromStart = (player.uy() + curAmount) % tileSize
+    var newAmount = tileSize - amountFromStart
+    newAmount = min(maxAmount.toDouble(), curAmount + newAmount)
+    val newPlayerRect = player.plus(Vec2(0.0, newAmount))
+    debugln("$amountFromStart, $newAmount")
+    Pair(newPlayerRect, newAmount)
+}
+
+val downFn: (Double, Double, Rect2, Double) -> Pair<Rect2, Double> = { curAmount: Double, maxAmount: Double, player: Rect2, tileSize: Double ->
+    val amountFromStart = tileSize - (player.ly - curAmount) % tileSize
+    debugln("(${player.ly} - $curAmount) % $tileSize")
+    val newAmount = min(maxAmount.toDouble(), curAmount + amountFromStart)
+    val newPlayerRect = player.minus(Vec2(0.0, newAmount))
+    debugln("$amountFromStart, $newAmount")
+    Pair(newPlayerRect, newAmount)
+}
+
+val rightFn: (Double, Double, Rect2, Double) -> Pair<Rect2, Double> = { curAmount: Double, maxAmount: Double, player: Rect2, tileSize: Double ->
+    val amountFromStart = (player.ux() + curAmount) % tileSize
+    var newAmount = tileSize - amountFromStart
+    newAmount = min(maxAmount.toDouble(), curAmount + newAmount)
+    val newPlayerRect = player.plus(Vec2( newAmount, 0.0))
+    debugln("$amountFromStart, $newAmount")
+    Pair(newPlayerRect, newAmount)
+}
+
+val leftFn: (Double, Double, Rect2, Double) -> Pair<Rect2, Double> = { curAmount: Double, maxAmount: Double, player: Rect2, tileSize: Double ->
+    val amountFromStart = tileSize - (player.lx  - curAmount) % tileSize
+    debugln("(${player.lx} - $curAmount) % $tileSize")
+    val newAmount = min(maxAmount.toDouble(), curAmount + amountFromStart)
+    val newPlayerRect = player.minus(Vec2(newAmount, 0.0))
+    debugln("$amountFromStart, $newAmount")
+    Pair(newPlayerRect, newAmount)
+}
+

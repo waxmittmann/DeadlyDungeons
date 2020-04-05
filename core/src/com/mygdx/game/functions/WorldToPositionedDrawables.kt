@@ -4,6 +4,8 @@ import com.mygdx.game.draw.PositionedDrawable
 import com.mygdx.game.entities.*
 import com.mygdx.game.util.Point2
 import com.mygdx.game.util.Rect2
+import com.mygdx.game.util.ceil
+import com.mygdx.game.util.floor
 import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.max
 import kotlin.math.min
@@ -11,7 +13,7 @@ import kotlin.math.min
 
 fun worldPositionedDrawables(world: World): List<PositionedDrawable> {
     return terrainPositionedDrawables(world.terrain, world.tileSize, world.view) +
-sceneObjectPositionedDrawables(world.worldObjects, world.view)
+            sceneObjectPositionedDrawables(world.worldObjects, world.view)
 }
 
 fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<PositionedDrawable> {
@@ -31,8 +33,11 @@ fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<P
 }
 
 fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2): List<PositionedDrawable> {
-    return (max((view.ly / tileSize)-1, 0)..min((view.uy() / tileSize)+1, terrains.size-1)).flatMap { c ->
-        (max((view.lx / tileSize)-1, 0)..min((view.ux() / tileSize)+1, terrains[0].size-1)).map { r ->
+//    return (max((floor(view.ly + 0.005) / tileSize)-1, 0)..min((ceil(view.uy() - 0.005) / tileSize)+1, terrains.size-1)).flatMap { c ->
+//        (max((floor(view.lx + 0.005) / tileSize)-1, 0)..min((ceil(view.ux() - 0.005) / tileSize)+1, terrains[0].size-1)).map { r ->
+    return (max(floor(view.ly / tileSize) - 1, 0)..min(floor(view.uy() / tileSize) + 1, terrains.size - 1)).flatMap { c ->
+        (max(floor(view.lx / tileSize) - 1, 0)..min(floor(view.ux() / tileSize) + 1, terrains[0].size - 1)).map { r ->
+
             val terrain = terrains[c][r]
             val p = Point2(r * tileSize - view.lx, c * tileSize - view.ly)
             PositionedDrawable(terrain.prototype.drawable, tileSize.toFloat(), tileSize.toFloat(), p.x.toFloat(), p.y.toFloat(), 0.0f, terrain.drawState)

@@ -1,8 +1,10 @@
 package com.mygdx.game.util
 
-class Rect2(val lx: Int, val ly: Int, val width: Int, val height: Int) {
-    fun ux(): Int = lx + width
-    fun uy(): Int = ly + height
+import kotlin.random.Random
+
+class Rect2(val lx: Double, val ly: Double, val width: Double, val height: Double) {
+    fun ux(): Double = lx + width
+    fun uy(): Double = ly + height
 
     fun lowerLeft(): Point2 {
         return Point2(lx, ly)
@@ -54,16 +56,19 @@ class Rect2(val lx: Int, val ly: Int, val width: Int, val height: Int) {
         return true
     }
 
+    fun midpoint(): Point2 = Point2(lx + width / 2, ly + height / 2)
+
     companion object Factory {
+        fun create(lx: Int, ly: Int, width: Int, height: Int): Rect2 = Rect2(lx.toDouble(), ly.toDouble(), width.toDouble(), height.toDouble())
         fun fromUpperRight(ux: Int, uy: Int, width: Int, height: Int): Rect2 {
-            return Rect2(ux - width, uy - height, width, height)
+            return Rect2.create(ux - width, uy - height, width, height)
         }
 
         fun fromLowerUpper(lx: Int, ly: Int, ux: Int, uy: Int): Rect2? {
             return if (lx >= ux || ly >= uy)
                 null
             else
-                Rect2(lx, ly, ux - lx, uy - ly)
+                Rect2.create(lx, ly, ux - lx, uy - ly)
         }
 
         fun fromPoints(ll: Point2, ur: Point2) {
