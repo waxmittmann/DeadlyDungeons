@@ -32,8 +32,11 @@ class TextureDrawable(val texture: TextureRegion, override val dims: Dims2) : Dr
 class AnimationDrawable(val animation: Animation<TextureRegion>, var animTime: Float, override val dims: Dims2) : Drawable {
     override fun draw(sb: SpriteBatch, width: Float, height: Float,  x: Float, y: Float, rotation: Float, drawData: DrawState) {
         animTime += drawData.delta
+        animTime += 0.0025f
+//        animTime
+//        println(animTime)
         val frame = animation.getKeyFrame(animTime, true)
-        draw(sb, frame, x, y, width, height, rotation = rotation)
+        draw(sb, frame, x, y, width, height, rotation = rotation, originX = width/2, originY =  height/2)
     }
 }
 

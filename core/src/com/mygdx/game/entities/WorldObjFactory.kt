@@ -39,13 +39,13 @@ class WorldObjFactory(private val prototype: Prototypes) {
 
 //        println("Vec: " + vec)
 
-        println("Pos: " + position)
+//        println("Pos: " + position)
 
 //        val pos = position.plus(Vec2(prototype.bullet.width/ 2.0, prototype.bullet.height/ 2.0))
 //        val pos = position.minus(Vec2(prototype.bullet.width/ 2.0, prototype.bullet.height/ 2.0))
         val pos = position.minus(Vec2(-prototype.bullet.width / 2.0, prototype.bullet.height / 2.0))
 
-        println("Adjusted pos: " + pos)
+//        println("Adjusted pos: " + pos)
 //        val pos = position //.plus(Vec2(prototype.bullet.width/ 2.0, prototype.bullet.height/ 2.0))
 
 //        return WorldObj(prototype.bullet, ProjectileAttributes(FullDirection.WEST, Vec2(x.toInt(), y.toInt())), position, Angle(0), DrawState(0.0f))

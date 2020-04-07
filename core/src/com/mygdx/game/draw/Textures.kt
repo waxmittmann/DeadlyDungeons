@@ -20,6 +20,9 @@ class DefaultTextures : Textures {
     private val bulletAtlas = TextureAtlas("BulletSheet.txt");
     private val bulletAnimation: Animation<TextureRegion> = Animation(0.033f, bulletAtlas.findRegions("Bullet2"), Animation.PlayMode.LOOP)
 
+    private val knightAtlas = TextureAtlas("KnightAnim.txt");
+    private val knightAnimation: Animation<TextureRegion> = Animation(0.033f, knightAtlas.findRegions("Knight"), Animation.PlayMode.LOOP)
+
     // Textures
     private val avatarTexture: TextureRegion = TextureRegion(Texture("Avatar.png"))
     private val yetiTexture: TextureRegion = TextureRegion(Texture("PixelArt.png"))
@@ -34,7 +37,8 @@ class DefaultTextures : Textures {
     override val yetiDrawable: Drawable = TextureDrawable(yetiTexture, Dims2(1, 1))
 //    override val playerDrawable: Drawable = TextureDrawable(avatarTexture, Dims2(1, 1))
 //    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(1, 1))
-    override val playerDrawable = TextureDrawable(boxedKnightTexture, Dims2(1, 1))
+//    override val playerDrawable = TextureDrawable(boxedKnightTexture, Dims2(1, 1))
+    override val playerDrawable = AnimationDrawable(knightAnimation, 0.0f, Dims2(1, 1))
     override val mountainDrawable = TextureDrawable(mountainTexture, Dims2(65, 30))
     override val bulletDrawable: Drawable = AnimationDrawable(bulletAnimation, 0.0f, Dims2(1, 1))
     override val grassDrawable = TextureDrawable(grassTexture, Dims2(1, 1))
