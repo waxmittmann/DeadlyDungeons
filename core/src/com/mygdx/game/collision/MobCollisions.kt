@@ -1,7 +1,6 @@
-package com.mygdx.game.functions
+package com.mygdx.game.collision
 
 import arrow.core.extensions.list.foldable.nonEmpty
-import com.mygdx.game.collision.CollisionDetector
 import com.mygdx.game.entities.MobAttributes
 import com.mygdx.game.entities.World
 import com.mygdx.game.entities.WorldObj

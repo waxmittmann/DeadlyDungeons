@@ -1,7 +1,4 @@
-package com.mygdx.game.functions
-
-import com.mygdx.game.entities.ProjectileAttributes
-import com.mygdx.game.entities.WorldObj
+package com.mygdx.game.entities
 
 fun moveProjectiles(projectiles: List<WorldObj<ProjectileAttributes>>) {
     projectiles.forEach { projectile ->

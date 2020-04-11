@@ -1,8 +1,6 @@
-package com.mygdx.game.functions
+package com.mygdx.game.entities.terrain
 
 import com.mygdx.game.draw.DrawState
-import com.mygdx.game.entities.Terrain
-import com.mygdx.game.entities.TerrainPrototype
 
 
 class ModulusAllocator(private val selection: List<TerrainPrototype>) {

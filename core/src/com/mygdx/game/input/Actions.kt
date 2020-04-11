@@ -1,6 +1,6 @@
 package com.mygdx.game.input
 
-import com.mygdx.game.entities.Terrain
+import com.mygdx.game.entities.terrain.Terrain
 import com.mygdx.game.entities.World
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.Direction

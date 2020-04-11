@@ -1,4 +1,4 @@
-package com.mygdx.game.entities
+package com.mygdx.game.entities.terrain
 
 import com.mygdx.game.draw.DrawState
 

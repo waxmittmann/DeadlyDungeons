@@ -6,11 +6,15 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.*
 import com.mygdx.game.collision.CollisionDetector
+import com.mygdx.game.collision.processCollisions
 import com.mygdx.game.draw.DefaultTextures
 import com.mygdx.game.draw.DrawState
 import com.mygdx.game.draw.ObjectDrawer
+import com.mygdx.game.draw.worldPositionedDrawables
 import com.mygdx.game.entities.*
-import com.mygdx.game.functions.*
+import com.mygdx.game.entities.terrain.Terrain
+import com.mygdx.game.entities.terrain.WeightedAllocator
+import com.mygdx.game.entities.terrain.generateTerrain
 import com.mygdx.game.input.processInput
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.FullDirection
@@ -44,8 +48,8 @@ class Game : ApplicationAdapter() {
         mobSpawner = SpawnMobs(prototypes)
 
         // Set up camera.
-//        cam = OrthographicCamera(cameraWidth.toFloat(), cameraHeight.toFloat())
-        cam = OrthographicCamera(600f, 400f)
+        cam = OrthographicCamera(cameraWidth.toFloat(), cameraHeight.toFloat())
+//        cam = OrthographicCamera(600f, 400f)
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0f)
         cam.update()
 
@@ -60,8 +64,8 @@ class Game : ApplicationAdapter() {
         val player = WorldObj(prototypes.player,
                 PlayerAttributes(FullDirection.NORTH, -100),
 //                Point2(cameraWidth/2 + prototypes.player.width/2, cameraHeight/2 + prototypes.player.height/2), Angle(0), DrawState(0f))
-//                Point2.create(cameraWidth/2 - prototypes.player.width/2, cameraHeight/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
-        Point2.create(600/2 - prototypes.player.width/2, 400/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
+                Point2.create(cameraWidth/2 - prototypes.player.width/2, cameraHeight/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
+//        Point2.create(600/2 - prototypes.player.width/2, 400/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
         val view = Rect2.create(0, 0, cameraWidth, cameraHeight)
         world = World(0, worldObjFactory, 50, WorldObjs(player, emptyList(), emptyList()), terrain, view)
     }

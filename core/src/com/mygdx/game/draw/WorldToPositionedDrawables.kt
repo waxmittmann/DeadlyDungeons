@@ -1,7 +1,7 @@
-package com.mygdx.game.functions
+package com.mygdx.game.draw
 
-import com.mygdx.game.draw.PositionedDrawable
 import com.mygdx.game.entities.*
+import com.mygdx.game.entities.terrain.Terrain
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.floor

@@ -1,5 +1,6 @@
 package com.mygdx.game.entities
 
+import com.mygdx.game.entities.terrain.Terrain
 import com.mygdx.game.util.FullDirection
 import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.geometry.Vec2
@@ -19,11 +20,6 @@ class World(var timeNow: Long, val worldObjFactory: WorldObjFactory, val tileSiz
     }
 
     fun addPlayerBullet() {
-//        worldObjects.addProjectile(worldObjFactory.createBullet(worldObjects.player.position, worldObjects.player.attributes.orientation))
-
-
-//        val pos = worldObjects.player.rect().midpoint().minus()
-
         worldObjects.addProjectile(worldObjFactory.createBullet(worldObjects.player.rect().midpoint(), worldObjects.player.rotation))
         println("Bullet added for " + worldObjects.player.position + ", " + worldObjects.player.attributes.orientation)
     }
