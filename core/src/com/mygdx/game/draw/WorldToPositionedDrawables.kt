@@ -12,8 +12,8 @@ import kotlin.math.min
 
 
 fun worldPositionedDrawables(world: World): List<PositionedDrawable> {
-    return terrainPositionedDrawables(world.terrain, world.tileSize, world.view) +
-            sceneObjectPositionedDrawables(world.worldObjects, world.view)
+    return terrainPositionedDrawables(world.terrain, world.tileSize, world.view.getViewRect()) +
+            sceneObjectPositionedDrawables(world.worldObjects, world.view.getViewRect())
 }
 
 fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<PositionedDrawable> {

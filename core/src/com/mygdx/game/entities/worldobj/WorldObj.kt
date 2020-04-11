@@ -8,5 +8,9 @@ import com.mygdx.game.util.geometry.Rect2
 
 class WorldObj<S>(val prototype: WorldObjPrototype, val attributes: S, var position: Point2, var rotation: Angle, val drawState: DrawState) : AsRect {
     override fun rect(): Rect2 = Rect2(position.x, position.y, prototype.width.toDouble(), prototype.height.toDouble())
+
+    override fun toString(): String {
+        return "Position: $position, Dims: (${prototype.width}, ${prototype.height}), Rotation: $rotation"
+    }
 }
 

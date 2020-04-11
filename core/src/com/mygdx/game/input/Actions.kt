@@ -5,6 +5,7 @@ import com.mygdx.game.entities.World
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.Direction
 import com.mygdx.game.util.FullDirection
+import com.mygdx.game.util.geometry.Point2
 
 typealias Action = (World) -> Unit
 
@@ -65,8 +66,14 @@ val AttackAction: Action = { world ->
     }
 }
 
-fun ChangeOrientation(angle: Angle): Action = { world ->
+
+//fun ChangeOrientation(angle: Angle): Action = { world ->
+////    println("Setting angle to : " + angle)
+//    world.worldObjects.player.rotation = angle
+//}
+
+fun ChangeOrientation(mouseClick: Point2): Action = { world ->
+    val angle = Angle.create(Point2(mouseClick.x - world.windowDims.width / 2.0, world.windowDims.height / 2.0 - mouseClick.y))
 //    println("Setting angle to : " + angle)
     world.worldObjects.player.rotation = angle
 }
-

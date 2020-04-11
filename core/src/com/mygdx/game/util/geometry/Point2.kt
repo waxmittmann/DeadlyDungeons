@@ -25,4 +25,6 @@ class Point2(val x: Double, val y: Double) {
     override fun toString(): String {
         return "($x, $y)"
     }
+
+    fun div(d: Double): Point2 = Point2(x / d, y / d)
 }

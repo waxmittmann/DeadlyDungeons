@@ -74,5 +74,9 @@ class Rect2(val lx: Double, val ly: Double, val width: Double, val height: Doubl
             assert(ll.y <= ur.y)
             Rect2(ll.x, ll.y, ur.x, ur.y)
         }
+
+        fun create(lowerLeft: Point2, dims: Dims2): Rect2 {
+            return Rect2(lowerLeft.x, lowerLeft.y, dims.width.toDouble(), dims.height.toDouble())
+        }
     }
 }
