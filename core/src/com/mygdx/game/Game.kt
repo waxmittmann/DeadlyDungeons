@@ -31,7 +31,9 @@ class Game : ApplicationAdapter() {
     private var stateTime: Float = 0.0f
 
     private val cameraWidth = 1200
+//    private val cameraWidth = 600
     private val cameraHeight = 800
+//    private val cameraHeight = 400
     private val windowWidth = cameraWidth
     private val windowHeight = cameraHeight
 
@@ -42,7 +44,8 @@ class Game : ApplicationAdapter() {
         mobSpawner = SpawnMobs(prototypes)
 
         // Set up camera.
-        cam = OrthographicCamera(cameraWidth.toFloat(), cameraHeight.toFloat())
+//        cam = OrthographicCamera(cameraWidth.toFloat(), cameraHeight.toFloat())
+        cam = OrthographicCamera(600f, 400f)
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0f)
         cam.update()
 
@@ -57,7 +60,8 @@ class Game : ApplicationAdapter() {
         val player = WorldObj(prototypes.player,
                 PlayerAttributes(FullDirection.NORTH, -100),
 //                Point2(cameraWidth/2 + prototypes.player.width/2, cameraHeight/2 + prototypes.player.height/2), Angle(0), DrawState(0f))
-                Point2.create(cameraWidth/2 - prototypes.player.width/2, cameraHeight/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
+//                Point2.create(cameraWidth/2 - prototypes.player.width/2, cameraHeight/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
+        Point2.create(600/2 - prototypes.player.width/2, 400/2 - prototypes.player.height/2), Angle(0), DrawState(0f))
         val view = Rect2.create(0, 0, cameraWidth, cameraHeight)
         world = World(0, worldObjFactory, 50, WorldObjs(player, emptyList(), emptyList()), terrain, view)
     }
