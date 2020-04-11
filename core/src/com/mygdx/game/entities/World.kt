@@ -17,39 +17,12 @@ class World(var playerPos: Point2, viewDims: Dims2, mobs: List<WorldObj<MobAttri
     val worldObjects: WorldObjs
 
     init {
-//        playerPos = playerPos.plus(Vec2(10.0, -10.0))
         val player: WorldObj<PlayerAttributes> = worldObjFactory.player(playerPos)
-//        val viewPos: Point2 = playerPos.plus(Vec2(player.prototype.width / 2.0, -player.prototype.width/2.0))
-//        val viewPos: Point2 = playerPos.plus(Vec2(player.prototype.width.toDouble() + 10, -player.prototype.width/2.0 - 10))
-//        val viewPos: Point2 = playerPos.plus(Vec2(player.prototype.width.toDouble() + 13, -player.prototype.width/2.0 - 13))
-
-//        val viewPos: Point2 = playerPos.plus(Vec2(player.prototype.width.toDouble() + 13, -player.prototype.height/2.0 - 13))
-//        val viewPos: Point2 = playerPos.plus(Vec2(player.prototype.width.toDouble(), -player.prototype.height/2.0))
-//        val viewPos: Point2 = playerPos.plus(Vec2(player.prototype.width.toDouble(), -player.prototype.height.toDouble()))
-//        val viewPos: Point2 = playerPos.plus(Vec2(player.prototype.width.toDouble()/2.0, player.prototype.height/2.0))
-
-        println(player.prototype.width)
-
-//        val viewPos: Point2 = playerPos.minus(Vec2(player.prototype.width/2.0, player.prototype.height/2.0))
-//        val viewPos: Point2 = playerPos.plus(Vec2(50.0, -50.0))
-//        val viewPos: Point2 = playerPos.plus(Vec2(62.5, -37.5))
-        val viewPos: Point2 = playerPos //.plus(Vec2(62.5, -37.5))
-        // (1.25 * width, -0.75 * height)
-
-//        val viewPos: Point2 = playerPos.plus(Vec2(player.prototype.width.toDouble() + 25, -player.prototype.width/2.0 - 25))
-//        val viewPos: Point2 = playerPos.plus(Vec2(0.0, -player.prototype.width/2.0))
-
         val viewCenter = Point2(windowDims.width / 2.0, windowDims.height / 2.0)
                 .plus(Vec2(player.prototype.width/2.0, player.prototype.height/2.0))
-
-//        view = View(viewPos, viewDims)
-        view = View(viewPos, viewCenter, viewDims)
-
-
+        view = View(playerPos, viewCenter, viewDims)
 
         worldObjects = WorldObjs(player, mobs, emptyList())
-        println(view)
-        println(worldObjects.player)
     }
 
     val width: Int = terrain[0].size * tileSize
@@ -68,13 +41,7 @@ class World(var playerPos: Point2, viewDims: Dims2, mobs: List<WorldObj<MobAttri
 
     fun addPlayerBullet() {
         val midpoint = worldObjects.player.rect().midpoint()
-//        val midpoint = worldObjects.player.position
-
-//        worldObjects.addProjectile(worldObjFactory.createBullet(worldObjects.player.rect().midpoint(),
-        worldObjects.addProjectile(worldObjFactory.createBullet(midpoint,
-                worldObjects.player.rotation))
-//        println("Bullet added for " + worldObjects.player.position + ", " + worldObjects.player.attributes.orientation)
-        println("Bullet added for " + worldObjects.player.position + ", " + worldObjects.player.rotation)
+        worldObjects.addProjectile(worldObjFactory.createBullet(midpoint, worldObjects.player.rotation))
     }
 
     fun setTime(time: Long) {
