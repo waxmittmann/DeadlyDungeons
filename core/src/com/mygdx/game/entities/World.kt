@@ -1,6 +1,8 @@
 package com.mygdx.game.entities
 
 import com.mygdx.game.entities.terrain.Terrain
+import com.mygdx.game.entities.worldobj.WorldObjFactory
+import com.mygdx.game.entities.worldobj.WorldObjs
 import com.mygdx.game.util.FullDirection
 import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.geometry.Vec2

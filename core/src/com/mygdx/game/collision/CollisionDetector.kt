@@ -1,7 +1,7 @@
 package com.mygdx.game.collision
 
 import com.mygdx.game.util.geometry.AsRect
-import com.mygdx.game.entities.WorldObj
+import com.mygdx.game.entities.worldobj.WorldObj
 
 class CollisionDetector {
     fun <S : AsRect> check(lhs: S, rhs: Collection<S>): List<S> {

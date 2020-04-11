@@ -1,4 +1,4 @@
-package com.mygdx.game.entities
+package com.mygdx.game.entities.worldobj
 
 import com.mygdx.game.draw.DrawState
 import com.mygdx.game.util.geometry.Angle

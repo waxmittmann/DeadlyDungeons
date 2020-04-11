@@ -1,6 +1,8 @@
-package com.mygdx.game.entities
+package com.mygdx.game.entities.worldobj
 
 import com.mygdx.game.draw.DrawState
+import com.mygdx.game.entities.ProjectileAttributes
+import com.mygdx.game.entities.Prototypes
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.FullDirection
 import com.mygdx.game.util.geometry.Point2

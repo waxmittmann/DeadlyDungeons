@@ -3,6 +3,7 @@ package com.mygdx.game.entities
 import com.mygdx.game.draw.Textures
 import com.mygdx.game.entities.terrain.TerrainAttributes
 import com.mygdx.game.entities.terrain.TerrainPrototype
+import com.mygdx.game.entities.worldobj.WorldObjPrototype
 
 class Prototypes(val textures: Textures) {
     // Terrain prototypes.
