@@ -1,7 +1,7 @@
 package com.mygdx.game
 
-import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -27,10 +27,9 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.min
 
 // Run via KotlinLauncher.
-class UiEnabledGame : ApplicationAdapter() {
+class GameScreen(val batch: Batch) : Screen {
     private lateinit var prototypes: Prototypes
     private lateinit var worldObjFactory: WorldObjFactory
-//    private lateinit var batch: Batch
     private lateinit var world: World
     private var spawnState: SpawnMobState = SpawnMobState(0)
     private lateinit var mobSpawner: SpawnMobs
@@ -44,10 +43,7 @@ class UiEnabledGame : ApplicationAdapter() {
 
     private var stage: Stage? = null
 
-    override fun create() {
-        // Set up window.
-        Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
-
+    init {
         prototypes = Prototypes(DefaultTextures())
         worldObjFactory = WorldObjFactory(prototypes)
         mobSpawner = SpawnMobs(prototypes)
@@ -73,7 +69,7 @@ class UiEnabledGame : ApplicationAdapter() {
     private fun configUi() {
         // Set up UI.
         VisUI.load(VisUI.SkinScale.X1)
-        stage = Stage(ScreenViewport())
+        stage = Stage(ScreenViewport(), batch)
         val root = VisTable()
         root.setFillParent(true)
         stage!!.addActor(root)
@@ -93,8 +89,9 @@ class UiEnabledGame : ApplicationAdapter() {
         Gdx.input.inputProcessor = stage
     }
 
-    override fun render() {
-        stateTime += Gdx.graphics.deltaTime
+
+    override fun render(delta: Float) {
+        stateTime += delta
 
         updateState()
 
@@ -103,7 +100,6 @@ class UiEnabledGame : ApplicationAdapter() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         drawScene(stage!!.batch)
-
         drawUi()
     }
 
@@ -136,6 +132,26 @@ class UiEnabledGame : ApplicationAdapter() {
     private fun drawUi() {
         stage!!.act(min(Gdx.graphics.deltaTime, 1 / 30f))
         stage!!.draw()
+    }
+
+    override fun hide() {
+//        TODO("Not yet implemented")
+    }
+
+    override fun show() {
+//        TODO("Not yet implemented")
+    }
+
+    override fun pause() {
+//        TODO("Not yet implemented")
+    }
+
+    override fun resume() {
+//        TODO("Not yet implemented")
+    }
+
+    override fun resize(width: Int, height: Int) {
+//        TODO("Not yet implemented")
     }
 
     override fun dispose() {

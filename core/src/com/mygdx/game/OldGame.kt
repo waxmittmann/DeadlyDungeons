@@ -19,7 +19,7 @@ import com.mygdx.game.util.geometry.Point2
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 // Run via KotlinLauncher.
-class Game : ApplicationAdapter() {
+class OldGame : ApplicationAdapter() {
     private lateinit var prototypes: Prototypes
     private lateinit var worldObjFactory: WorldObjFactory
     private lateinit var batch: SpriteBatch
