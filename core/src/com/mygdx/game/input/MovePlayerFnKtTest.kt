@@ -1,6 +1,6 @@
 package com.mygdx.game.input
 
-import com.mygdx.game.util.Direction
+import com.mygdx.game.util.FourDirection
 import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.geometry.Vec2
 import org.junit.jupiter.api.Assertions
@@ -17,7 +17,7 @@ internal class MovePlayerFnKtTest {
         // Run
         val result =
                 movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 50,
-                        Direction.UP)
+                        FourDirection.UP)
 
         // Check
         Assertions.assertEquals(Vec2.create(0, 50), result)
@@ -33,7 +33,7 @@ internal class MovePlayerFnKtTest {
         // Run
         val result =
                 movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100,
-                        Direction.UP)
+                        FourDirection.UP)
 
         // Check
         Assertions.assertEquals(Vec2.create(0, 25), result)
@@ -49,7 +49,7 @@ internal class MovePlayerFnKtTest {
         // Run
         val result =
                 movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100,
-                        Direction.DOWN)
+                        FourDirection.DOWN)
 
         // Check
         Assertions.assertEquals(Vec2.create(0, -75), result)
@@ -64,7 +64,7 @@ internal class MovePlayerFnKtTest {
         // Run
         val result =
                 movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100,
-                        Direction.RIGHT)
+                        FourDirection.RIGHT)
 
         // Check
         Assertions.assertEquals(Vec2.create(50, 0), result)
@@ -79,7 +79,7 @@ internal class MovePlayerFnKtTest {
         // Run
         val result =
                 movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 100,
-                        Direction.RIGHT)
+                        FourDirection.RIGHT)
 
         // Check
         Assertions.assertEquals(Vec2.create(25, 0), result)
@@ -95,7 +95,7 @@ internal class MovePlayerFnKtTest {
         // Run
         val result =
                 movePlayer(initialPos, 50, terrain, { b: Boolean -> b }, 50,
-                        Direction.UP)
+                        FourDirection.UP)
 
         // Check
         Assertions.assertEquals(Vec2.create(0, 0), result)

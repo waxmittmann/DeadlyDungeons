@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.kotcrab.vis.ui.VisUI
-import com.mygdx.game.screens.GameScreen
-import com.mygdx.game.screens.GameScreenParams
+import com.mygdx.game.screens.game.GameScreen
+import com.mygdx.game.screens.game.GameScreenParams
 import com.mygdx.game.screens.TitleScreen
 import com.mygdx.game.screens.TitleScreenParams
 import com.mygdx.game.util.geometry.Dims2
@@ -49,7 +49,9 @@ class Main : Game() {
             TitleScreenParams(generator, getCurDims(), batch, screenChanger)))
 
     fun toGameScreen() = setScreen(
-            GameScreen(GameScreenParams(getCurDims(), batch, screenChanger)))
+            GameScreen(
+                    GameScreenParams(
+                            getCurDims(), batch, screenChanger)))
 
     private fun getCurDims(): Dims2 =
             Dims2(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())

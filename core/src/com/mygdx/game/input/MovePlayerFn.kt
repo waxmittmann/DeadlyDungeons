@@ -1,6 +1,6 @@
 package com.mygdx.game.input
 
-import com.mygdx.game.util.Direction
+import com.mygdx.game.util.FourDirection
 import com.mygdx.game.util.Utils
 import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.geometry.Vec2
@@ -18,21 +18,21 @@ fun debugS(str: String) {
 
 fun <S> movePlayer(player: Rect2, terrainSize: Int, terrain: List<List<S>>,
                    accessFn: (S) -> (Boolean), amount: Int,
-                   dir: Direction): Vec2 {
+                   dir: FourDirection): Vec2 {
     return when (dir) {
-        Direction.UP -> Vec2(0.0,
+        FourDirection.UP -> Vec2(0.0,
                 movePlayer(player, terrainSize.toDouble(), terrain, accessFn,
                         upFn, amount))
 
-        Direction.DOWN -> Vec2(0.0,
+        FourDirection.DOWN -> Vec2(0.0,
                 -movePlayer(player, terrainSize.toDouble(), terrain, accessFn,
                         downFn, amount))
 
-        Direction.LEFT -> Vec2(
+        FourDirection.LEFT -> Vec2(
                 -movePlayer(player, terrainSize.toDouble(), terrain, accessFn,
                         leftFn, amount), 0.0)
 
-        Direction.RIGHT -> Vec2(
+        FourDirection.RIGHT -> Vec2(
                 movePlayer(player, terrainSize.toDouble(), terrain, accessFn,
                         rightFn, amount), 0.0)
     }

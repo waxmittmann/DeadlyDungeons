@@ -4,7 +4,7 @@ import com.mygdx.game.entities.terrain.Terrain
 import com.mygdx.game.entities.worldobj.WorldObj
 import com.mygdx.game.entities.worldobj.WorldObjFactory
 import com.mygdx.game.entities.worldobj.WorldObjs
-import com.mygdx.game.util.FullDirection
+import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Vec2
@@ -33,7 +33,7 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
         view.plus(moveBy)
     }
 
-    fun changePlayerOrientation(direction: FullDirection) {
+    fun changePlayerOrientation(direction: EightDirection) {
         worldObjects.player.attributes.orientation = direction
     }
 

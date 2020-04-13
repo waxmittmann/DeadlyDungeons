@@ -2,14 +2,14 @@ package com.mygdx.game.input
 
 import com.mygdx.game.entities.World
 import com.mygdx.game.entities.terrain.Terrain
-import com.mygdx.game.util.Direction
-import com.mygdx.game.util.FullDirection
+import com.mygdx.game.util.FourDirection
+import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 
 typealias Action = (World) -> Unit
 
-fun moveBy(amount: Int, cardinality: Direction): Action = { world ->
+fun moveBy(amount: Int, cardinality: FourDirection): Action = { world ->
     val moveBy =
             movePlayer(world.worldObjects.player.rect(), amount, world.terrain,
                     { t: Terrain -> t.prototype.attributes.passable }, amount,
@@ -19,44 +19,44 @@ fun moveBy(amount: Int, cardinality: Direction): Action = { world ->
 
 class MoveActions(val amount: Int) {
     val LEFT_UP: (World) -> Unit = { world ->
-        moveBy(amount, Direction.UP)(world)
-        moveBy(amount, Direction.LEFT)(world)
-        world.changePlayerOrientation(FullDirection.NORTH_WEST)
+        moveBy(amount, FourDirection.UP)(world)
+        moveBy(amount, FourDirection.LEFT)(world)
+        world.changePlayerOrientation(EightDirection.NORTH_WEST)
     }
     val RIGHT_UP: (World) -> Unit = { world ->
-        moveBy(amount, Direction.UP)(world)
-        moveBy(amount, Direction.RIGHT)(world)
-        world.changePlayerOrientation(FullDirection.NORTH_EAST)
+        moveBy(amount, FourDirection.UP)(world)
+        moveBy(amount, FourDirection.RIGHT)(world)
+        world.changePlayerOrientation(EightDirection.NORTH_EAST)
     }
     val LEFT_DOWN: (World) -> Unit = { world ->
-        moveBy(amount, Direction.DOWN)(world)
-        moveBy(amount, Direction.LEFT)(world)
-        world.changePlayerOrientation(FullDirection.SOUTH_WEST)
+        moveBy(amount, FourDirection.DOWN)(world)
+        moveBy(amount, FourDirection.LEFT)(world)
+        world.changePlayerOrientation(EightDirection.SOUTH_WEST)
     }
     val RIGHT_DOWN: (World) -> Unit = { world ->
-        moveBy(amount, Direction.DOWN)(world)
-        moveBy(amount, Direction.RIGHT)(world)
-        world.changePlayerOrientation(FullDirection.SOUTH_EAST)
+        moveBy(amount, FourDirection.DOWN)(world)
+        moveBy(amount, FourDirection.RIGHT)(world)
+        world.changePlayerOrientation(EightDirection.SOUTH_EAST)
     }
 
     val UP: (World) -> Unit = { world ->
-        moveBy(amount, Direction.UP)(world)
-        world.changePlayerOrientation(FullDirection.NORTH)
+        moveBy(amount, FourDirection.UP)(world)
+        world.changePlayerOrientation(EightDirection.NORTH)
     }
 
     val DOWN: (World) -> Unit = { world ->
-        moveBy(amount, Direction.DOWN)(world)
-        world.changePlayerOrientation(FullDirection.SOUTH)
+        moveBy(amount, FourDirection.DOWN)(world)
+        world.changePlayerOrientation(EightDirection.SOUTH)
     }
 
     val LEFT: (World) -> Unit = { world ->
-        moveBy(amount, Direction.LEFT)(world)
-        world.changePlayerOrientation(FullDirection.WEST)
+        moveBy(amount, FourDirection.LEFT)(world)
+        world.changePlayerOrientation(EightDirection.WEST)
     }
 
     val RIGHT: (World) -> Unit = { world ->
-        moveBy(amount, Direction.RIGHT)(world)
-        world.changePlayerOrientation(FullDirection.EAST)
+        moveBy(amount, FourDirection.RIGHT)(world)
+        world.changePlayerOrientation(EightDirection.EAST)
     }
 }
 

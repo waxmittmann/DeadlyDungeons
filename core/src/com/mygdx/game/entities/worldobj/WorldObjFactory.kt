@@ -4,7 +4,7 @@ import com.mygdx.game.draw.DrawState
 import com.mygdx.game.entities.PlayerAttributes
 import com.mygdx.game.entities.ProjectileAttributes
 import com.mygdx.game.entities.Prototypes
-import com.mygdx.game.util.FullDirection
+import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Vec2
@@ -18,12 +18,12 @@ class WorldObjFactory(private val prototype: Prototypes) {
         val pos = position.minus(Vec2(prototype.bullet.size.width / 2.0,
                 prototype.bullet.size.height / 2.0))
         return WorldObj(prototype.bullet,
-                ProjectileAttributes(FullDirection.WEST, vec), pos, Angle(0),
+                ProjectileAttributes(EightDirection.WEST, vec), pos, Angle(0),
                 DrawState(0.0f))
     }
 
     fun player(pos: Point2): WorldObj<PlayerAttributes> =
             WorldObj(prototype.player,
-                    PlayerAttributes(FullDirection.NORTH, -100), pos, Angle(0),
+                    PlayerAttributes(EightDirection.NORTH, -100), pos, Angle(0),
                     DrawState(0f))
 }
