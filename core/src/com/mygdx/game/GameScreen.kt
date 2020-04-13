@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.*
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.Menu
 import com.kotcrab.vis.ui.widget.MenuBar
 import com.kotcrab.vis.ui.widget.MenuItem
@@ -26,8 +27,11 @@ import com.mygdx.game.util.geometry.Point2
 import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.min
 
+
+class GameScreenParams(val windowDims: Dims2, val batch: Batch, val screenChanger: ScreenChanger)
+
 // Run via KotlinLauncher.
-class GameScreen(windowDims: Dims2, val batch: Batch) : Screen {
+class GameScreen(params: GameScreenParams) : Screen {
     private val prototypes: Prototypes = Prototypes(DefaultTextures())
     private val worldObjFactory: WorldObjFactory = WorldObjFactory(prototypes)
     private lateinit var world: World
@@ -41,9 +45,12 @@ class GameScreen(windowDims: Dims2, val batch: Batch) : Screen {
     private lateinit var stage: Stage
     private lateinit var root: VisTable
 
+    private val screenChanger: ScreenChanger = params.screenChanger
+    private val batch: Batch = params.batch
+
     init {
         configUi()
-        configGame(windowDims)
+        configGame(params.windowDims)
     }
 
     private fun configGame(windowDims: Dims2) {
@@ -61,7 +68,6 @@ class GameScreen(windowDims: Dims2, val batch: Batch) : Screen {
 
     private fun configUi() {
         // Set up UI.
-        VisUI.load(VisUI.SkinScale.X1)
         stage = Stage(ScreenViewport(), batch)
         root = VisTable()
         root.setFillParent(true)
@@ -70,7 +76,15 @@ class GameScreen(windowDims: Dims2, val batch: Batch) : Screen {
         // Set up menu.
         val menuBar = MenuBar()
         val fileMenu = Menu("File")
-        fileMenu.addItem(MenuItem("menuitem #1"))
+        val menuItem1 = MenuItem("menuitem #1")
+        fileMenu.addItem(menuItem1)
+        menuItem1.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                println("To Menu pressed.")
+                screenChanger.changeScreen(ScreenId.TITLE)
+                true
+            }
+        })
         fileMenu.addItem(MenuItem("menuitem #2").setShortcut("f1"))
         fileMenu.addItem(MenuItem("menuitem #3").setShortcut("f2"))
         fileMenu.addItem(MenuItem("menuitem #4").setShortcut("alt + f4"))
@@ -92,7 +106,7 @@ class GameScreen(windowDims: Dims2, val batch: Batch) : Screen {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        drawScene(stage!!.batch)
+        drawScene(stage.batch)
         drawUi()
     }
 
