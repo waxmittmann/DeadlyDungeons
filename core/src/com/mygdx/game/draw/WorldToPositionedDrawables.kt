@@ -24,7 +24,7 @@ fun sceneObjectPositionedDrawables(worldObjects: WorldObjs, view: Rect2): List<P
         if (wo.position.x >= view.lx && wo.position.x < view.ux() && wo.position.y >= view.ly && wo.position.y <= view.uy()) {
             val translatedPosition = wo.position.minus(view.lowerLeft().asVector())
             listOf(PositionedDrawable(wo.prototype.drawable,
-                    wo.prototype.width.toFloat(), wo.prototype.height.toFloat(),
+                    wo.prototype.size.width.toFloat(), wo.prototype.size.height.toFloat(),
                     translatedPosition.x.toFloat(), translatedPosition.y.toFloat(), wo.rotation.degrees.toFloat(), wo.drawState))
         } else {
             emptyList()

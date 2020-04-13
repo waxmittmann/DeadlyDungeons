@@ -27,52 +27,45 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.min
 
 // Run via KotlinLauncher.
-class GameScreen(val batch: Batch) : Screen {
-    private lateinit var prototypes: Prototypes
-    private lateinit var worldObjFactory: WorldObjFactory
+class GameScreen(windowDims: Dims2, val batch: Batch) : Screen {
+    private val prototypes: Prototypes = Prototypes(DefaultTextures())
+    private val worldObjFactory: WorldObjFactory = WorldObjFactory(prototypes)
     private lateinit var world: World
     private var spawnState: SpawnMobState = SpawnMobState(0)
-    private lateinit var mobSpawner: SpawnMobs
+    private val mobSpawner: SpawnMobs = SpawnMobs(prototypes)
     private var stateTime: Float = 0.0f
-
-    private val windowWidth = 1200 //cameraWidth
-    private val windowHeight = 800 //cameraHeight
 
     // Debug cam for 'true' coordinates.
     lateinit var debugCam: OrthographicCamera
 
-    private var stage: Stage? = null
+    private lateinit var stage: Stage
+    private lateinit var root: VisTable
 
     init {
-        prototypes = Prototypes(DefaultTextures())
-        worldObjFactory = WorldObjFactory(prototypes)
-        mobSpawner = SpawnMobs(prototypes)
-
         configUi()
-        configGame()
+        configGame(windowDims)
     }
 
-    private fun configGame() {
+    private fun configGame(windowDims: Dims2) {
         // Set up World.
         val randomTerrain = WeightedAllocator(listOf(Pair(80, prototypes.grass), Pair(80, prototypes.mud), Pair(10, prototypes.rocks)))
         val terrain = generateTerrain(100, 100, prototypes.rocks) { _: Int, _: Int -> randomTerrain.allocate() }
 
-        // Set up debug cam.
-        debugCam = OrthographicCamera(windowWidth.toFloat(), windowHeight.toFloat())
-        debugCam.translate(windowWidth / 2.0f, windowHeight / 2.0f)
+        // Set up debug cam. Will break on resize.
+        debugCam = OrthographicCamera(windowDims.width, windowDims.height)
+        debugCam.translate(windowDims.width/ 2.0f, windowDims.height/ 2.0f)
         debugCam.update()
 
-        world = World(Point2(500.0, 500.0), Dims2(windowWidth.toFloat(), windowHeight.toFloat()), emptyList(),
-                0, worldObjFactory, 50, terrain, Dims2(windowWidth.toFloat(), windowHeight.toFloat()))
+        world = World(Point2(500.0, 500.0), emptyList(), 0, worldObjFactory, 50, terrain, windowDims)
     }
 
     private fun configUi() {
         // Set up UI.
         VisUI.load(VisUI.SkinScale.X1)
         stage = Stage(ScreenViewport(), batch)
-        val root = VisTable()
+        root = VisTable()
         root.setFillParent(true)
-        stage!!.addActor(root)
+        stage.addActor(root)
 
         // Set up menu.
         val menuBar = MenuBar()
@@ -120,41 +113,34 @@ class GameScreen(val batch: Batch) : Screen {
         world.view.setProjectionMatrix(batch)
         drawer.draw(batch, worldPositionedDrawables(world))
         borderCircle(shapeDrawer, Color(0f, 1f, 0f, 1f), Color(0f, 0f, 0f, 1f),
-                Point2(windowWidth / 2.0, windowHeight / 2.0), 5.0f)
+                Point2(world.view.getWindowDims().width/ 2.0, world.view.getWindowDims().height/ 2.0), 5.0f)
 
         // Draw debug circle at true (0, 0)
         batch.projectionMatrix = debugCam.combined
         borderCircle(shapeDrawer, Color(1f, 1f, 0f, 1f), Color(0f, 0f, 0f, 1f),
-                Point2(windowWidth / 2.0, windowHeight / 2.0), 5.0f)
+                Point2(world.view.getWindowDims().width / 2.0, world.view.getWindowDims().height / 2.0), 5.0f)
         batch.end()
     }
 
     private fun drawUi() {
-        stage!!.act(min(Gdx.graphics.deltaTime, 1 / 30f))
-        stage!!.draw()
-    }
-
-    override fun hide() {
-//        TODO("Not yet implemented")
-    }
-
-    override fun show() {
-//        TODO("Not yet implemented")
-    }
-
-    override fun pause() {
-//        TODO("Not yet implemented")
-    }
-
-    override fun resume() {
-//        TODO("Not yet implemented")
+        stage.act(min(Gdx.graphics.deltaTime, 1 / 30f))
+        stage.draw()
     }
 
     override fun resize(width: Int, height: Int) {
-//        TODO("Not yet implemented")
+        // Update world view
+        world.updateWindowSize(Dims2(width.toFloat(), height.toFloat()))
+
+        // Update UI stage
+        stage.viewport.update(width, height, true)
     }
 
+    override fun hide() {}
+    override fun show() {}
+    override fun pause() {}
+    override fun resume() {}
+
     override fun dispose() {
-        stage!!.dispose()
+        stage.dispose()
     }
 }

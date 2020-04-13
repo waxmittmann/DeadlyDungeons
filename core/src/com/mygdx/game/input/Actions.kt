@@ -72,8 +72,8 @@ val AttackAction: Action = { world ->
 //    world.worldObjects.player.rotation = angle
 //}
 
-fun ChangeOrientation(mouseClick: Point2): Action = { world ->
-    val angle = Angle.create(Point2(mouseClick.x - world.windowDims.width / 2.0, world.windowDims.height / 2.0 - mouseClick.y))
+fun ChangeOrientation(mouseClick: Point2): Action = { world: World ->
+    val angle = Angle.create(Point2(mouseClick.x - world.view.getWindowDims().width / 2.0, world.view.getWindowDims().height / 2.0 - mouseClick.y))
 //    println("Setting angle to : " + angle)
     world.worldObjects.player.rotation = angle
 }

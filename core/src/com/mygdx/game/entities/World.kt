@@ -8,20 +8,17 @@ import com.mygdx.game.entities.worldobj.WorldObjs
 import com.mygdx.game.util.FullDirection
 import com.mygdx.game.util.geometry.*
 
-class World(var playerPos: Point2, viewDims: Dims2, mobs: List<WorldObj<MobAttributes>>, var timeNow: Long,
+class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>, var timeNow: Long,
             private val worldObjFactory: WorldObjFactory, val tileSize: Int,
-            val terrain: List<List<Terrain>> = listOf(),
-            val windowDims: Dims2) {
+            val terrain: List<List<Terrain>> = listOf(), windowDims: Dims2
+            ) {
 
     val view: View
     val worldObjects: WorldObjs
 
     init {
         val player: WorldObj<PlayerAttributes> = worldObjFactory.player(playerPos)
-        val viewCenter = Point2(windowDims.width / 2.0, windowDims.height / 2.0)
-                .plus(Vec2(player.prototype.width/2.0, player.prototype.height/2.0))
-        view = View(playerPos, viewCenter, viewDims)
-
+        view = View(playerPos, player.prototype.size, windowDims)
         worldObjects = WorldObjs(player, mobs, emptyList())
     }
 
@@ -46,6 +43,10 @@ class World(var playerPos: Point2, viewDims: Dims2, mobs: List<WorldObj<MobAttri
 
     fun setTime(time: Long) {
         timeNow = time
+    }
+
+    fun updateWindowSize(newDims: Dims2) {
+        view.setWindowDims(newDims)
     }
 }
 
