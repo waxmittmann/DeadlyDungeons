@@ -4,10 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.mygdx.game.collision.processCollisions
-import com.mygdx.game.draw.DefaultTextures
-import com.mygdx.game.draw.ObjectDrawer
-import com.mygdx.game.draw.singlePixel
-import com.mygdx.game.draw.worldPositionedDrawables
+import com.mygdx.game.draw.*
 import com.mygdx.game.entities.*
 import com.mygdx.game.entities.terrain.WeightedAllocator
 import com.mygdx.game.entities.terrain.generateTerrain
@@ -18,8 +15,8 @@ import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-class Game(private val batch: Batch, windowDims: Dims2) {
-    private val prototypes: Prototypes = Prototypes(DefaultTextures())
+class Game(private val batch: Batch, windowDims: Dims2, textures: Textures) {
+    private val prototypes: Prototypes = Prototypes(textures)
     private val worldObjFactory: WorldObjFactory = WorldObjFactory(prototypes)
     private val world: World
     private val mobSpawner: SpawnMobs = SpawnMobs(prototypes)

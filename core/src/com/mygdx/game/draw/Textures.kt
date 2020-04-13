@@ -14,6 +14,9 @@ interface Textures {
     val mountainDrawable: Drawable
     val bulletDrawable: Drawable
     val grassDrawable: Drawable
+
+    val mountainTexture: TextureRegion
+    val bagTexture: TextureRegion
 }
 
 class DefaultTextures : Textures {
@@ -33,7 +36,7 @@ class DefaultTextures : Textures {
             TextureRegion(Texture("Avatar.png"))
     private val yetiTexture: TextureRegion =
             TextureRegion(Texture("PixelArt.png"))
-    private val mountainTexture: TextureRegion =
+    override val mountainTexture: TextureRegion =
             TextureRegion(Texture("Mountain.jpg"))
     private val grassTexture: TextureRegion =
             TextureRegion(Texture("grass.png"))
@@ -41,6 +44,9 @@ class DefaultTextures : Textures {
             TextureRegion(Texture("Arrow.png"))
     private val boxedKnightTexture: TextureRegion =
             TextureRegion(Texture("BoxedKnight.png"))
+
+    override val bagTexture: TextureRegion =
+            TextureRegion(Texture("Bag.png"))
 
     // Drawables
     override val rockDrawable: Drawable =
@@ -50,10 +56,10 @@ class DefaultTextures : Textures {
     override val yetiDrawable: Drawable =
             TextureDrawable(yetiTexture, Dims2(1f, 1f))
 
-    //    override val playerDrawable: Drawable = TextureDrawable(avatarTexture, Dims2(1f, 1f))
+        override val playerDrawable: Drawable = TextureDrawable(avatarTexture, Dims2(1f, 1f))
 //    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(1f, 1f))
 //    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(50f, 50f))
-    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(1f, 1f))
+//    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(1f, 1f))
 
     //    override val playerDrawable = TextureDrawable(boxedKnightTexture, Dims2(1f, 1f))
 //    override val playerDrawable = AnimationDrawable(knightAnimation, 0.0f, Dims2(1f, 1f))

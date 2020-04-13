@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.kotcrab.vis.ui.VisUI
+import com.mygdx.game.draw.DefaultTextures
 import com.mygdx.game.screens.game.GameScreen
 import com.mygdx.game.screens.game.GameScreenParams
 import com.mygdx.game.screens.TitleScreen
@@ -26,6 +27,7 @@ class ScreenChanger(val main: Main) {
 }
 
 class Main : Game() {
+    private lateinit var textures: DefaultTextures
     private lateinit var batch: Batch
     private lateinit var generator: FreeTypeFontGenerator
     private lateinit var screenChanger: ScreenChanger
@@ -40,6 +42,7 @@ class Main : Game() {
         generator = FreeTypeFontGenerator(
                 Gdx.files.internal("core/assets/fonts/OpenSans-Regular.ttf"))
         screenChanger = ScreenChanger(this)
+        textures = DefaultTextures()
         toTitleScreen()
     }
 
@@ -51,7 +54,7 @@ class Main : Game() {
     fun toGameScreen() = setScreen(
             GameScreen(
                     GameScreenParams(
-                            getCurDims(), batch, screenChanger)))
+                            getCurDims(), batch, screenChanger, textures)))
 
     private fun getCurDims(): Dims2 =
             Dims2(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
