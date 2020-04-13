@@ -9,7 +9,8 @@ import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.geometry.Vec2
 
-class View(var viewAt: Point2, private val playerDims: Dims2, private var windowDims: Dims2) {
+class View(var viewAt: Point2, private val playerDims: Dims2,
+           private var windowDims: Dims2) {
     private var camera: OrthographicCamera
     private var viewport: Viewport
 
@@ -20,8 +21,10 @@ class View(var viewAt: Point2, private val playerDims: Dims2, private var window
     }
 
     private fun updateCamera(): Pair<OrthographicCamera, Viewport> {
-        val viewCenter = Point2(windowDims.width / 2.0, windowDims.height / 2.0)
-                .plus(Vec2(playerDims.width/2.0, playerDims.height/2.0))
+        val viewCenter =
+                Point2(windowDims.width / 2.0, windowDims.height / 2.0).plus(
+                                Vec2(playerDims.width / 2.0,
+                                        playerDims.height / 2.0))
 
         camera = OrthographicCamera(windowDims.width, windowDims.height)
         viewport = FitViewport(windowDims.width, windowDims.height, camera)
@@ -45,7 +48,8 @@ class View(var viewAt: Point2, private val playerDims: Dims2, private var window
     }
 
     fun getViewRect(): Rect2 {
-        val ll = Point2(viewAt.x - windowDims.width / 2, viewAt.y - windowDims.height / 2)
+        val ll = Point2(viewAt.x - windowDims.width / 2,
+                viewAt.y - windowDims.height / 2)
         return Rect2.create(ll, windowDims)
     }
 

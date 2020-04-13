@@ -9,7 +9,8 @@ class TerrainAttributes(val passable: Boolean = true) {
     }
 }
 
-class TerrainPrototype(val name: String, val drawable: Drawable, val attributes: TerrainAttributes = TerrainAttributes()) {
+class TerrainPrototype(val name: String, val drawable: Drawable,
+                       val attributes: TerrainAttributes = TerrainAttributes()) {
     override fun toString(): String {
         return "$name: $attributes"
     }

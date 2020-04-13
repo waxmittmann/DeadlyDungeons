@@ -1,4 +1,4 @@
-package com.mygdx.game
+package com.mygdx.game.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
@@ -16,16 +16,15 @@ import com.kotcrab.vis.ui.widget.PopupMenu
 import com.kotcrab.vis.ui.widget.VisImage
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
+import com.mygdx.game.ScreenChanger
+import com.mygdx.game.ScreenId
 import com.mygdx.game.util.geometry.Dims2
 import kotlin.math.min
 
 
-class TitleScreenParams(
-        val fontGenerator: FreeTypeFontGenerator,
-        val windowDims: Dims2,
-        val batch: Batch,
-        val screenChanger: ScreenChanger
-)
+class TitleScreenParams(val fontGenerator: FreeTypeFontGenerator,
+                        val windowDims: Dims2, val batch: Batch,
+                        val screenChanger: ScreenChanger)
 
 // Run via KotlinLauncher.
 class TitleScreen(params: TitleScreenParams) : Screen {
@@ -42,7 +41,8 @@ class TitleScreen(params: TitleScreenParams) : Screen {
     init {
         val parameter = FreeTypeFontParameter()
         parameter.size = 36
-        font = params.fontGenerator.generateFont(parameter) // font size 12 pixels
+        font = params.fontGenerator.generateFont(
+                parameter) // font size 12 pixels
         batch = params.batch
         screenChanger = params.screenChanger
 
@@ -64,7 +64,7 @@ class TitleScreen(params: TitleScreenParams) : Screen {
 
         val startButton = VisTextButton("Start", style)
 
-       startButton.addListener(object : ChangeListener() {
+        startButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 screenChanger.changeScreen(ScreenId.MAIN_GAME)
                 println("Start pressed.")

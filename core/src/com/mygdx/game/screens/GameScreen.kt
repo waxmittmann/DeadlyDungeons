@@ -1,11 +1,11 @@
-package com.mygdx.game
+package com.mygdx.game.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.*
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
@@ -14,8 +14,13 @@ import com.kotcrab.vis.ui.widget.Menu
 import com.kotcrab.vis.ui.widget.MenuBar
 import com.kotcrab.vis.ui.widget.MenuItem
 import com.kotcrab.vis.ui.widget.VisTable
+import com.mygdx.game.ScreenChanger
+import com.mygdx.game.ScreenId
 import com.mygdx.game.collision.processCollisions
-import com.mygdx.game.draw.*
+import com.mygdx.game.draw.DefaultTextures
+import com.mygdx.game.draw.ObjectDrawer
+import com.mygdx.game.draw.singlePixel
+import com.mygdx.game.draw.worldPositionedDrawables
 import com.mygdx.game.entities.*
 import com.mygdx.game.entities.terrain.WeightedAllocator
 import com.mygdx.game.entities.terrain.generateTerrain
@@ -28,7 +33,8 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.min
 
 
-class GameScreenParams(val windowDims: Dims2, val batch: Batch, val screenChanger: ScreenChanger)
+class GameScreenParams(val windowDims: Dims2, val batch: Batch,
+                       val screenChanger: ScreenChanger)
 
 // Run via KotlinLauncher.
 class GameScreen(params: GameScreenParams) : Screen {
@@ -55,15 +61,19 @@ class GameScreen(params: GameScreenParams) : Screen {
 
     private fun configGame(windowDims: Dims2) {
         // Set up World.
-        val randomTerrain = WeightedAllocator(listOf(Pair(80, prototypes.grass), Pair(80, prototypes.mud), Pair(10, prototypes.rocks)))
-        val terrain = generateTerrain(100, 100, prototypes.rocks) { _: Int, _: Int -> randomTerrain.allocate() }
+        val randomTerrain = WeightedAllocator(
+                listOf(Pair(80, prototypes.grass), Pair(80, prototypes.mud),
+                        Pair(10, prototypes.rocks)))
+        val terrain = generateTerrain(100, 100,
+                prototypes.rocks) { _: Int, _: Int -> randomTerrain.allocate() }
 
         // Set up debug cam. Will break on resize.
         debugCam = OrthographicCamera(windowDims.width, windowDims.height)
-        debugCam.translate(windowDims.width/ 2.0f, windowDims.height/ 2.0f)
+        debugCam.translate(windowDims.width / 2.0f, windowDims.height / 2.0f)
         debugCam.update()
 
-        world = World(Point2(500.0, 500.0), emptyList(), 0, worldObjFactory, 50, terrain, windowDims)
+        world = World(Point2(500.0, 500.0), emptyList(), 0, worldObjFactory, 50,
+                terrain, windowDims)
     }
 
     private fun configUi() {
@@ -112,7 +122,8 @@ class GameScreen(params: GameScreenParams) : Screen {
 
     private fun updateState() {
         world.setTime((stateTime * 1000).toLong())
-        spawnState = mobSpawner.spawnMobs(world)(spawnState)((stateTime * 1000).toLong())
+        spawnState = mobSpawner.spawnMobs(world)(spawnState)(
+                (stateTime * 1000).toLong())
         processInput(world)
         moveProjectiles(world.worldObjects.projectiles)
         processCollisions(world)
@@ -127,12 +138,14 @@ class GameScreen(params: GameScreenParams) : Screen {
         world.view.setProjectionMatrix(batch)
         drawer.draw(batch, worldPositionedDrawables(world))
         borderCircle(shapeDrawer, Color(0f, 1f, 0f, 1f), Color(0f, 0f, 0f, 1f),
-                Point2(world.view.getWindowDims().width/ 2.0, world.view.getWindowDims().height/ 2.0), 5.0f)
+                Point2(world.view.getWindowDims().width / 2.0,
+                        world.view.getWindowDims().height / 2.0), 5.0f)
 
         // Draw debug circle at true (0, 0)
         batch.projectionMatrix = debugCam.combined
         borderCircle(shapeDrawer, Color(1f, 1f, 0f, 1f), Color(0f, 0f, 0f, 1f),
-                Point2(world.view.getWindowDims().width / 2.0, world.view.getWindowDims().height / 2.0), 5.0f)
+                Point2(world.view.getWindowDims().width / 2.0,
+                        world.view.getWindowDims().height / 2.0), 5.0f)
         batch.end()
     }
 

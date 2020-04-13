@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.kotcrab.vis.ui.VisUI
+import com.mygdx.game.screens.GameScreen
+import com.mygdx.game.screens.GameScreenParams
+import com.mygdx.game.screens.TitleScreen
+import com.mygdx.game.screens.TitleScreenParams
 import com.mygdx.game.util.geometry.Dims2
 
 enum class ScreenId {
@@ -21,29 +25,32 @@ class ScreenChanger(val main: Main) {
     }
 }
 
-// Run via KotlinLauncher.
 class Main : Game() {
     private lateinit var batch: Batch
-    lateinit var generator: FreeTypeFontGenerator
-    val windowWidth = 1200
-    val windowHeight = 800
-
-    lateinit var screenChanger: ScreenChanger
+    private lateinit var generator: FreeTypeFontGenerator
+    private lateinit var screenChanger: ScreenChanger
 
     override fun create() {
+        val windowWidth = 1200
+        val windowHeight = 800
+
         VisUI.load(VisUI.SkinScale.X1)
         Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
         batch = SpriteBatch()
-        generator = FreeTypeFontGenerator(Gdx.files.internal("core/assets/fonts/OpenSans-Regular.ttf"))
+        generator = FreeTypeFontGenerator(
+                Gdx.files.internal("core/assets/fonts/OpenSans-Regular.ttf"))
         screenChanger = ScreenChanger(this)
         toTitleScreen()
     }
 
-    override fun dispose() {
-        generator.dispose()
-    }
+    override fun dispose() = generator.dispose()
 
-    fun toTitleScreen() = setScreen(TitleScreen(TitleScreenParams(generator, Dims2(windowWidth.toFloat(), windowHeight.toFloat()), batch, screenChanger)))
+    fun toTitleScreen() = setScreen(TitleScreen(
+            TitleScreenParams(generator, getCurDims(), batch, screenChanger)))
 
-    fun toGameScreen() = setScreen(GameScreen(GameScreenParams(Dims2(windowWidth.toFloat(), windowHeight.toFloat()), batch, screenChanger)))
+    fun toGameScreen() = setScreen(
+            GameScreen(GameScreenParams(getCurDims(), batch, screenChanger)))
+
+    private fun getCurDims(): Dims2 =
+            Dims2(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
 }

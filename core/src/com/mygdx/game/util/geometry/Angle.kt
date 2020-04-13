@@ -1,7 +1,8 @@
 package com.mygdx.game.util.geometry
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D
-import java.lang.Math.*
+import java.lang.Math.PI
+import java.lang.Math.toDegrees
 import kotlin.math.acos
 
 
@@ -10,7 +11,7 @@ class Angle internal constructor(val degrees: Int) {
         fun create(degrees: Int): Angle = Angle(0).rotate(degrees)
 
 
-//        fun create(dirV: Vec2): Angle {
+        //        fun create(dirV: Vec2): Angle {
         fun create(p: Point2): Angle {
 //            val up = Vec2(0, 1)
 
@@ -26,15 +27,12 @@ class Angle internal constructor(val degrees: Int) {
             val dir = Vector2D(p.x.toDouble(), p.y.toDouble())
 
 
-
             val radianAngle = Vector2D.angle(up, dir)
 //    val radianAngle = Vector2D.angle(dir, up)
-    val degreeAngle = toDegrees(radianAngle)
+            val degreeAngle = toDegrees(radianAngle)
 
-            if (p.x >= 0)
-               return create(degreeAngle.toInt())
-            else
-                return create(-degreeAngle.toInt())
+            if (p.x >= 0) return create(degreeAngle.toInt())
+            else return create(-degreeAngle.toInt())
 
 
 //            return create(Vector2D.angle(up, dir))
@@ -42,7 +40,9 @@ class Angle internal constructor(val degrees: Int) {
 
         fun create2(up: Vec2, dir: Vec2): Angle {
             val abBar = (up.x * dir.y) + (dir.x * up.y)
-            val abMag = kotlin.math.sqrt((up.x * up.x + up.y * up.y).toDouble()) * kotlin.math.sqrt((dir.x * dir.x + dir.y * dir.y).toDouble())
+            val abMag = kotlin.math.sqrt(
+                    (up.x * up.x + up.y * up.y).toDouble()) * kotlin.math.sqrt(
+                    (dir.x * dir.x + dir.y * dir.y).toDouble())
 
             val a = abBar.toDouble() / abMag
 //            println("A " + a)
@@ -112,10 +112,8 @@ class Angle internal constructor(val degrees: Int) {
 
     fun rotate(degreesBy: Int): Angle {
         var degreesNew = degrees + degreesBy
-        if (degreesNew < 0)
-            degreesNew = 360 - (-degreesNew % 360)
-        else if (degreesNew > 360)
-            degreesNew %= 360
+        if (degreesNew < 0) degreesNew = 360 - (-degreesNew % 360)
+        else if (degreesNew > 360) degreesNew %= 360
         return Angle(degreesNew)
     }
 

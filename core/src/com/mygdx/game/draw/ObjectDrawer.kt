@@ -1,7 +1,6 @@
 package com.mygdx.game.draw
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 class ObjectDrawer {
@@ -11,8 +10,8 @@ class ObjectDrawer {
         val shapeDrawer = ShapeDrawer(batch, singlePixel)
         drawables.forEach { drawable ->
             drawable.draw(batch)
-            if (debug)
-                shapeDrawer.rectangle(drawable.x, drawable.y, drawable.width, drawable.height)
+            if (debug) shapeDrawer.rectangle(drawable.x, drawable.y,
+                    drawable.width, drawable.height)
         }
     }
 }

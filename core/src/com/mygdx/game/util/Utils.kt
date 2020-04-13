@@ -42,20 +42,23 @@ class Utils(private val tileSize: Int) {
         } else {
             (point2.y - tileSize + 1) / tileSize
         }
-        return if (floor) Pair(floor(x + 0.005), floor(y+ 0.005)) else Pair(ceil(x - 0.005), ceil(y - 0.005))
+        return if (floor) Pair(floor(x + 0.005), floor(y + 0.005)) else Pair(
+                ceil(x - 0.005), ceil(y - 0.005))
     }
 
     fun rectToIndex(rect: Rect2): Indices {
-        val l = pointToIndex(rect.lowerLeft(), floor =true)
+        val l = pointToIndex(rect.lowerLeft(), floor = true)
 //        val u = pointToIndex(rect.upperRight().minus(Vec2(1.0, 1.0)), floor = false)
 //        val l = pointToIndex(rect.lowerLeft(), floor =false)
-        val u = pointToIndex(rect.upperRight().minus(Vec2(1.0, 1.0)), floor = true)
-        return Indices(l.first .. u.first, l.second .. u.second)
+        val u = pointToIndex(rect.upperRight().minus(Vec2(1.0, 1.0)),
+                floor = true)
+        return Indices(l.first..u.first, l.second..u.second)
     }
 }
 
 fun <S> slice(indices: Indices, terrain: List<List<S>>): List<List<S>> {
-    return terrain.slice(IntRange(indices.yr.first, indices.yr.last)).map { a -> a.slice(IntRange(indices.xr.first, indices.xr.last)) }
+    return terrain.slice(IntRange(indices.yr.first, indices.yr.last))
+            .map { a -> a.slice(IntRange(indices.xr.first, indices.xr.last)) }
 }
 
 fun floor(v: Double): Int = Math.floor(v).toInt()

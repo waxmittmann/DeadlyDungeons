@@ -1,8 +1,6 @@
 package com.mygdx.game.util.geometry
 
-import com.mygdx.game.util.geometry.Angle
-import com.mygdx.game.util.geometry.Vec2
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class Vec2Test {

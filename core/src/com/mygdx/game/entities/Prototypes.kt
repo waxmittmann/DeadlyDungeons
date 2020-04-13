@@ -8,13 +8,16 @@ import com.mygdx.game.util.geometry.Dims2
 
 class Prototypes(val textures: Textures) {
     // Terrain prototypes.
-    val grass= TerrainPrototype("grass", textures.grassDrawable)
+    val grass = TerrainPrototype("grass", textures.grassDrawable)
     val mud = TerrainPrototype("mud", textures.mudDrawable)
-    val rocks = TerrainPrototype("rock", textures.rockDrawable, TerrainAttributes(false))
+    val rocks = TerrainPrototype("rock", textures.rockDrawable,
+            TerrainAttributes(false))
 
     // GameObj prototypes.
-    val player = WorldObjPrototype("player", textures.playerDrawable, Dims2(50f, 50f))
+    val player = WorldObjPrototype("player", textures.playerDrawable,
+            Dims2(50f, 50f))
     val yeti = WorldObjPrototype("yeti", textures.yetiDrawable, Dims2(50f, 50f))
-    val bullet = WorldObjPrototype("bullet", textures.bulletDrawable, Dims2(25f, 25f))
+    val bullet = WorldObjPrototype("bullet", textures.bulletDrawable,
+            Dims2(25f, 25f))
 
 }

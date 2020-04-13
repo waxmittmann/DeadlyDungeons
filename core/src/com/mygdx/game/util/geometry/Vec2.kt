@@ -31,7 +31,9 @@ class Vec2(val x: Double, val y: Double) {
     }
 
     fun rotate(angle: Angle, clockwise: Boolean = true): Vec2 {
-        val degrees = if (clockwise) Math.toRadians(360 - angle.degrees.toDouble()) else Math.toRadians(angle.degrees.toDouble())
+        val degrees = if (clockwise) Math.toRadians(
+                360 - angle.degrees.toDouble()) else Math.toRadians(
+                angle.degrees.toDouble())
 
         val _x = cos(degrees) * x - sin(degrees) * y
         val _y = sin(degrees) * x + cos(degrees) * y

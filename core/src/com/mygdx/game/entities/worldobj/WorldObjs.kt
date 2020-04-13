@@ -5,7 +5,9 @@ import com.mygdx.game.entities.PlayerAttributes
 import com.mygdx.game.entities.ProjectileAttributes
 
 
-class WorldObjs(val player: WorldObj<PlayerAttributes>, var mobs: List<WorldObj<MobAttributes>>, var projectiles: List<WorldObj<ProjectileAttributes>>) {
+class WorldObjs(val player: WorldObj<PlayerAttributes>,
+                var mobs: List<WorldObj<MobAttributes>>,
+                var projectiles: List<WorldObj<ProjectileAttributes>>) {
 
     fun all(): List<WorldObj<out Any>> {
         return (mobs + player) + projectiles

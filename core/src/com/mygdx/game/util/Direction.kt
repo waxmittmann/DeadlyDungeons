@@ -14,14 +14,7 @@ object FullDirectionFns {
 }
 
 enum class FullDirection {
-    SOUTH,
-    SOUTH_WEST,
-    WEST,
-    NORTH_WEST,
-    NORTH,
-    NORTH_EAST,
-    EAST,
-    SOUTH_EAST
+    SOUTH, SOUTH_WEST, WEST, NORTH_WEST, NORTH, NORTH_EAST, EAST, SOUTH_EAST
 }
 
 val S = FullDirection.SOUTH
