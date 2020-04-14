@@ -3,6 +3,7 @@ package com.mygdx.game.screens.game
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.mygdx.game.actions.old.GameState
 import com.mygdx.game.collision.processCollisions
 import com.mygdx.game.draw.*
 import com.mygdx.game.entities.*
@@ -13,8 +14,7 @@ import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-class Game(private val world: World, private val batch: Batch, windowDims:
-Dims2, textures: Textures) {
+class Game(private val batch: Batch, windowDims: Dims2, textures: Textures) {
     private val prototypes: Prototypes = Prototypes(textures)
     private val mobSpawner: SpawnMobs = SpawnMobs(prototypes)
     private val debugCam: OrthographicCamera
@@ -23,18 +23,13 @@ Dims2, textures: Textures) {
     private var spawnState: SpawnMobState = SpawnMobState(0)
 
     init {
-        // Set up World.
-        val randomTerrain = WeightedAllocator(
-                listOf(Pair(80, prototypes.grass), Pair(80, prototypes.mud),
-                        Pair(10, prototypes.rocks)))
-
         // Set up debug cam. Will break on resize.
         debugCam = OrthographicCamera(windowDims.width, windowDims.height)
         debugCam.translate(windowDims.width / 2.0f, windowDims.height / 2.0f)
         debugCam.update()
     }
 
-    fun drawScene() {
+    fun drawScene(world: World) {
         // Draw scene.
         val drawer = ObjectDrawer()
         batch.enableBlending()
@@ -54,18 +49,19 @@ Dims2, textures: Textures) {
         batch.end()
     }
 
-    fun updateState(delta: Float) {
+    fun updateState(delta: Float, gameState: GameState) {
         stateTime += delta
+        val world = gameState.world
 
         world.setTime((stateTime * 1000).toLong())
         spawnState = mobSpawner.spawnMobs(world)(spawnState)(
                 (stateTime * 1000).toLong())
-        processInput(world)
+        processInput(gameState)
         moveProjectiles(world.worldObjects.projectiles)
         processCollisions(world)
     }
 
-    fun resize(width: Int, height: Int) {
+    fun resize(world: World, width: Int, height: Int) {
         // Update world view
         world.updateWindowSize(Dims2(width.toFloat(), height.toFloat()))
     }

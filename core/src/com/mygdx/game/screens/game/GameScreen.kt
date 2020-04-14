@@ -28,7 +28,7 @@ class GameScreen(params: GameScreenParams) : Screen {
                 params.windowDims)
         state = GameState(world, UiState.create())
         ui = Ui(state.ui, batch, params.screenChanger, params.textures)
-        game = Game(state.world, batch, params.windowDims, params.textures)
+        game = Game(batch, params.windowDims, params.textures)
     }
 
     override fun render(delta: Float) {
@@ -37,15 +37,15 @@ class GameScreen(params: GameScreenParams) : Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         // Update state.
-        game.updateState(delta)
+        game.updateState(delta, state)
 
         // Draw scene and UI.
-        game.drawScene()
+        game.drawScene(state.world)
         ui.drawUi()
     }
 
     override fun resize(width: Int, height: Int) {
-        game.resize(width, height)
+        game.resize(state.world, width, height)
         ui.resize(width, height)
     }
 

@@ -18,7 +18,7 @@ import com.mygdx.game.draw.Textures
 import com.mygdx.game.entities.UiState
 import kotlin.math.min
 
-class Ui(uiState: UiState, batch: Batch,
+class Ui(val uiState: UiState, batch: Batch,
          private val screenChanger: ScreenChanger,
          private val textures: Textures) {
     private val menuStage: Stage = Stage(ScreenViewport(), batch)
@@ -32,7 +32,7 @@ class Ui(uiState: UiState, batch: Batch,
     init {
         // Set up UI.
         setupMenu()
-//        setupHud()
+        setupHud()
 
         // Set inputProcessor to be stages.
         Gdx.input.inputProcessor = InputMultiplexer(*(stages.toTypedArray()))
@@ -69,9 +69,14 @@ class Ui(uiState: UiState, batch: Batch,
         hudStage.addActor(inventoryTable)
     }
 
-    fun drawUi() = stages.forEach { stage ->
-        stage.act(min(Gdx.graphics.deltaTime, 1 / 30f))
-        stage.draw()
+    fun drawUi() {
+        menuStage.act(min(Gdx.graphics.deltaTime, 1 / 30f))
+        menuStage.draw()
+
+        if (uiState.showInventory) {
+            hudStage.act(min(Gdx.graphics.deltaTime, 1 / 30f))
+            hudStage.draw()
+        }
     }
 
     fun resize(width: Int, height: Int) =

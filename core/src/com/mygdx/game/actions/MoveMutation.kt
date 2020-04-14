@@ -6,11 +6,10 @@ import com.mygdx.game.input.movePlayer
 import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.FourDirection
 import com.mygdx.game.util.geometry.Angle
-import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 
 class MoveMutationFactory(val amount: Int) {
-    val leftUp: Mutation = { world ->
+    val leftUp: Mutation = fromWorld { world ->
         moveBy(amount,
                 FourDirection.UP)(world)
         moveBy(amount,
@@ -18,7 +17,8 @@ class MoveMutationFactory(val amount: Int) {
         world.changePlayerOrientation(
                 EightDirection.NORTH_WEST)
     }
-    val rightUp: Mutation = { world ->
+    
+    val rightUp: Mutation = fromWorld { world ->
         moveBy(amount,
                 FourDirection.UP)(world)
         moveBy(amount,
@@ -26,7 +26,7 @@ class MoveMutationFactory(val amount: Int) {
         world.changePlayerOrientation(
                 EightDirection.NORTH_EAST)
     }
-    val leftDown: Mutation = { world ->
+    val leftDown: Mutation = fromWorld { world ->
         moveBy(amount,
                 FourDirection.DOWN)(world)
         moveBy(amount,
@@ -34,7 +34,7 @@ class MoveMutationFactory(val amount: Int) {
         world.changePlayerOrientation(
                 EightDirection.SOUTH_WEST)
     }
-    val rightDown: Mutation = { world ->
+    val rightDown: Mutation = fromWorld { world ->
         moveBy(amount,
                 FourDirection.DOWN)(world)
         moveBy(amount,
@@ -42,25 +42,25 @@ class MoveMutationFactory(val amount: Int) {
         world.changePlayerOrientation(
                 EightDirection.SOUTH_EAST)
     }
-    val up: Mutation = { world ->
+    val up: Mutation = fromWorld { world ->
         moveBy(amount,
                 FourDirection.UP)(world)
         world.changePlayerOrientation(
                 EightDirection.NORTH)
     }
-    val down: Mutation = { world ->
+    val down: Mutation = fromWorld { world ->
         moveBy(amount,
                 FourDirection.DOWN)(world)
         world.changePlayerOrientation(
                 EightDirection.SOUTH)
     }
-    val left: Mutation = { world ->
+    val left: Mutation = fromWorld { world ->
         moveBy(amount,
                 FourDirection.LEFT)(world)
         world.changePlayerOrientation(
                 EightDirection.WEST)
     }
-    val right: Mutation = { world ->
+    val right: Mutation = fromWorld { world ->
         moveBy(amount,
                 FourDirection.RIGHT)(world)
         world.changePlayerOrientation(
@@ -68,7 +68,7 @@ class MoveMutationFactory(val amount: Int) {
     }
 }
 
-fun moveBy(amount: Int, cardinality: FourDirection): Mutation = { world ->
+fun moveBy(amount: Int, cardinality: FourDirection): WorldMutation = { world ->
     val moveBy = movePlayer(
             world.worldObjects.player.rect(), amount, world.terrain,
             { t: Terrain -> t.prototype.attributes.passable },
@@ -76,7 +76,7 @@ fun moveBy(amount: Int, cardinality: FourDirection): Mutation = { world ->
     world.movePlayer(moveBy)
 }
 
-fun changeOrientation(mouseClick: Point2): Mutation = { world: World ->
+fun changeOrientation(mouseClick: Point2): WorldMutation = { world: World ->
     val angle =
             Angle.create(
                     Point2(
