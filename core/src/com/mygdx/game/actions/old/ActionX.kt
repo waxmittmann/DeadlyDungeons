@@ -1,20 +1,18 @@
 package com.mygdx.game.actions.old
 
+import com.mygdx.game.entities.UiState
 import com.mygdx.game.entities.World
 
-class UiState()
+//class UiState()
 
-interface GameState {
-    val world: World?
-    val ui: UiState
-}
+class GameState(val world: World, val ui: UiState)
 
-class StartedGameState(override val world: World,
-                       override val ui: UiState) : GameState
-
-class InitialGameState(override val ui: UiState) : GameState {
-    override val world: World? = null
-}
+//class StartedGameState(override val world: World,
+//                       override val ui: UiState) : GameState
+//
+//class InitialGameState(override val ui: UiState) : GameState {
+//    override val world: World? = null
+//}
 
 typealias ActionX = (GameState) -> Unit
 

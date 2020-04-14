@@ -1,6 +1,9 @@
 package com.mygdx.game.entities
 
+import com.mygdx.game.draw.Textures
 import com.mygdx.game.entities.terrain.Terrain
+import com.mygdx.game.entities.terrain.WeightedAllocator
+import com.mygdx.game.entities.terrain.generateTerrain
 import com.mygdx.game.entities.worldobj.WorldObj
 import com.mygdx.game.entities.worldobj.WorldObjFactory
 import com.mygdx.game.entities.worldobj.WorldObjs
@@ -9,11 +12,27 @@ import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Vec2
 
+fun createWorld(textures: Textures, playerPos: Point2, windowDims: Dims2):
+        World {
+    // Set up prototypes.
+    val prototypes = Prototypes(textures)
+    val worldObjFactory = WorldObjFactory(prototypes)
+
+    // Create terrain.
+    val randomTerrain = WeightedAllocator(
+            listOf(Pair(80, prototypes.grass), Pair(80, prototypes.mud),
+                    Pair(10, prototypes.rocks)))
+    val terrain: List<MutableList<Terrain>> = generateTerrain(100, 100,
+            prototypes.rocks) { _: Int, _: Int -> randomTerrain.allocate() }
+
+    return World(playerPos, emptyList(), 0, worldObjFactory, 50,
+            terrain, windowDims)
+}
+
 class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
             var timeNow: Long, private val worldObjFactory: WorldObjFactory,
             val tileSize: Int, val terrain: List<List<Terrain>> = listOf(),
             windowDims: Dims2) {
-
     val view: View
     val worldObjects: WorldObjs
 

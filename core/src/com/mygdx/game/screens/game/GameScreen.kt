@@ -5,8 +5,12 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.mygdx.game.ScreenChanger
+import com.mygdx.game.actions.old.GameState
 import com.mygdx.game.draw.Textures
+import com.mygdx.game.entities.UiState
+import com.mygdx.game.entities.createWorld
 import com.mygdx.game.util.geometry.Dims2
+import com.mygdx.game.util.geometry.Point2
 
 
 class GameScreenParams(val windowDims: Dims2, val batch: Batch,
@@ -17,10 +21,14 @@ class GameScreen(params: GameScreenParams) : Screen {
 
     private val ui: Ui
     private val game: Game
+    private val state: GameState
 
     init {
-        ui = Ui(batch, params.screenChanger, params.textures)
-        game = Game(batch, params.windowDims, params.textures)
+        val world = createWorld(params.textures, Point2(300.0, 300.0),
+                params.windowDims)
+        state = GameState(world, UiState.create())
+        ui = Ui(state.ui, batch, params.screenChanger, params.textures)
+        game = Game(state.world, batch, params.windowDims, params.textures)
     }
 
     override fun render(delta: Float) {

@@ -7,18 +7,15 @@ import com.mygdx.game.collision.processCollisions
 import com.mygdx.game.draw.*
 import com.mygdx.game.entities.*
 import com.mygdx.game.entities.terrain.WeightedAllocator
-import com.mygdx.game.entities.terrain.generateTerrain
-import com.mygdx.game.entities.worldobj.WorldObjFactory
 import com.mygdx.game.input.processInput
 import com.mygdx.game.util.borderCircle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-class Game(private val batch: Batch, windowDims: Dims2, textures: Textures) {
+class Game(private val world: World, private val batch: Batch, windowDims:
+Dims2, textures: Textures) {
     private val prototypes: Prototypes = Prototypes(textures)
-    private val worldObjFactory: WorldObjFactory = WorldObjFactory(prototypes)
-    private val world: World
     private val mobSpawner: SpawnMobs = SpawnMobs(prototypes)
     private val debugCam: OrthographicCamera
 
@@ -30,16 +27,11 @@ class Game(private val batch: Batch, windowDims: Dims2, textures: Textures) {
         val randomTerrain = WeightedAllocator(
                 listOf(Pair(80, prototypes.grass), Pair(80, prototypes.mud),
                         Pair(10, prototypes.rocks)))
-        val terrain = generateTerrain(100, 100,
-                prototypes.rocks) { _: Int, _: Int -> randomTerrain.allocate() }
 
         // Set up debug cam. Will break on resize.
         debugCam = OrthographicCamera(windowDims.width, windowDims.height)
         debugCam.translate(windowDims.width / 2.0f, windowDims.height / 2.0f)
         debugCam.update()
-
-        world = World(Point2(500.0, 500.0), emptyList(), 0, worldObjFactory, 50,
-                terrain, windowDims)
     }
 
     fun drawScene() {

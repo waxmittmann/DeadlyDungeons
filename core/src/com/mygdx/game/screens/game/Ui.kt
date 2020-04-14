@@ -2,12 +2,10 @@ package com.mygdx.game.screens.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.kotcrab.vis.ui.widget.Menu
@@ -16,11 +14,12 @@ import com.kotcrab.vis.ui.widget.MenuItem
 import com.kotcrab.vis.ui.widget.VisTable
 import com.mygdx.game.ScreenChanger
 import com.mygdx.game.ScreenId
-import com.mygdx.game.draw.TextureDrawable
 import com.mygdx.game.draw.Textures
+import com.mygdx.game.entities.UiState
 import kotlin.math.min
 
-class Ui(batch: Batch, private val screenChanger: ScreenChanger,
+class Ui(uiState: UiState, batch: Batch,
+         private val screenChanger: ScreenChanger,
          private val textures: Textures) {
     private val menuStage: Stage = Stage(ScreenViewport(), batch)
     private var menuRoot: VisTable = VisTable()
