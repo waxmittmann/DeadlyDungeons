@@ -3,12 +3,17 @@ package com.mygdx.game.input
 import arrow.core.compose
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.mygdx.game.actions.Action
+import com.mygdx.game.actions.AttackAction
+import com.mygdx.game.actions.MoveActionFactory
+import com.mygdx.game.actions.changeOrientation
 import com.mygdx.game.entities.World
 import com.mygdx.game.util.geometry.Point2
 
-val moveActions = MoveActions(amount = 5)
+val moveActions =
+        MoveActionFactory(amount = 5)
 
-class InputData(val keys: Set<Key>, val mouseX: Int, val mouseY: Int)
+class InputData(val keys: Set<Key>, val mousePos: Point2)
 
 var debugA = 0
 
@@ -24,35 +29,34 @@ val readKey: (Unit) -> InputData = {
     if (Gdx.input.isKeyPressed(Input.Keys.D)) keys += PressedSpecial.RIGHT
     if (Gdx.input.isKeyPressed(Input.Keys.W)) keys += PressedSpecial.UP
 
-    InputData(keys, Gdx.input.x, Gdx.input.y)
+    InputData(keys, Point2.create(Gdx.input.x, Gdx.input.y))
 }
 
 val processKeys: (InputData) -> (Set<Action>) = {
-
     val keys: Set<Key> = it.keys
-    val mouseX = it.mouseX
-    val mouseY = it.mouseY
     val actions = emptySet<Action>().toMutableSet()
 
     // Movement
     if (keys.contains(PressedSpecial.UP) && keys.contains(
-                    PressedSpecial.LEFT)) actions.add(moveActions.LEFT_UP)
+                    PressedSpecial.LEFT)) actions.add(moveActions.leftUp)
     else if (keys.contains(PressedSpecial.UP) && keys.contains(
-                    PressedSpecial.RIGHT)) actions.add(moveActions.RIGHT_UP)
+                    PressedSpecial.RIGHT)) actions.add(moveActions.rightUp)
     else if (keys.contains(PressedSpecial.DOWN) && keys.contains(
-                    PressedSpecial.LEFT)) actions.add(moveActions.LEFT_DOWN)
+                    PressedSpecial.LEFT)) actions.add(moveActions.leftDown)
     else if (keys.contains(PressedSpecial.DOWN) && keys.contains(
-                    PressedSpecial.RIGHT)) actions.add(moveActions.RIGHT_DOWN)
-    else if (keys.contains(PressedSpecial.UP)) actions.add(moveActions.UP)
-    else if (keys.contains(PressedSpecial.DOWN)) actions.add(moveActions.DOWN)
-    else if (keys.contains(PressedSpecial.LEFT)) actions.add(moveActions.LEFT)
-    else if (keys.contains(PressedSpecial.RIGHT)) actions.add(moveActions.RIGHT)
+                    PressedSpecial.RIGHT)) actions.add(moveActions.rightDown)
+    else if (keys.contains(PressedSpecial.UP)) actions.add(moveActions.up)
+    else if (keys.contains(PressedSpecial.DOWN)) actions.add(moveActions.down)
+    else if (keys.contains(PressedSpecial.LEFT)) actions.add(moveActions.left)
+    else if (keys.contains(PressedSpecial.RIGHT)) actions.add(moveActions.right)
+
+    // Update orientation based on mouse direction.
+    actions.add(changeOrientation(
+            it.mousePos))
 
     // Attack
-    if (keys.contains(PressedSpecial.SPACE)) actions.add(AttackAction)
-
-    actions.add(ChangeOrientation(
-            Point2(it.mouseX.toDouble(), it.mouseY.toDouble())))
+    if (keys.contains(PressedSpecial.SPACE)) actions.add(
+            AttackAction)
 
     actions
 }

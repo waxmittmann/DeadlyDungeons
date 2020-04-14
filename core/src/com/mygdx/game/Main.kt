@@ -2,6 +2,7 @@ package com.mygdx.game
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
@@ -26,7 +27,11 @@ class ScreenChanger(val main: Main) {
     }
 }
 
-class Main : Game() {
+interface ChangeScreen {
+    fun changeScreen(screen: Screen)
+}
+
+class Main : ChangeScreen, Game() {
     private lateinit var textures: DefaultTextures
     private lateinit var batch: Batch
     private lateinit var generator: FreeTypeFontGenerator
@@ -58,4 +63,6 @@ class Main : Game() {
 
     private fun getCurDims(): Dims2 =
             Dims2(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+
+    override fun changeScreen(screen: Screen) = setScreen(screen)
 }
