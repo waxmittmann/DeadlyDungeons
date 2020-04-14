@@ -3,15 +3,15 @@ package com.mygdx.game.input
 import arrow.core.compose
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.mygdx.game.actions.Action
-import com.mygdx.game.actions.AttackAction
-import com.mygdx.game.actions.MoveActionFactory
+import com.mygdx.game.actions.Mutation
+import com.mygdx.game.actions.ATTACK_MUTATION
+import com.mygdx.game.actions.MoveMutationFactory
 import com.mygdx.game.actions.changeOrientation
 import com.mygdx.game.entities.World
 import com.mygdx.game.util.geometry.Point2
 
 val moveActions =
-        MoveActionFactory(amount = 5)
+        MoveMutationFactory(amount = 5)
 
 class InputData(val keys: Set<Key>, val mousePos: Point2)
 
@@ -32,9 +32,9 @@ val readKey: (Unit) -> InputData = {
     InputData(keys, Point2.create(Gdx.input.x, Gdx.input.y))
 }
 
-val processKeys: (InputData) -> (Set<Action>) = {
+val PROCESS_KEYS: (InputData) -> (Set<Mutation>) = {
     val keys: Set<Key> = it.keys
-    val actions = emptySet<Action>().toMutableSet()
+    val actions = emptySet<Mutation>().toMutableSet()
 
     // Movement
     if (keys.contains(PressedSpecial.UP) && keys.contains(
@@ -56,14 +56,14 @@ val processKeys: (InputData) -> (Set<Action>) = {
 
     // Attack
     if (keys.contains(PressedSpecial.SPACE)) actions.add(
-            AttackAction)
+            ATTACK_MUTATION)
 
     actions
 }
 
-val processActions: (World) -> (Set<Action>) -> Unit =
+val processActions: (World) -> (Set<Mutation>) -> Unit =
         { world -> { it.forEach { it(world) } } }
 
 val processInput: (World) -> Unit = { world ->
-    (processActions(world) compose (processKeys compose readKey))(Unit)
+    (processActions(world) compose (PROCESS_KEYS compose readKey))(Unit)
 }
