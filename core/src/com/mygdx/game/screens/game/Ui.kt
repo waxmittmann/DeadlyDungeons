@@ -18,7 +18,7 @@ import com.mygdx.game.draw.Textures
 import com.mygdx.game.entities.UiState
 import kotlin.math.min
 
-class Ui(val uiState: UiState, batch: Batch,
+class Ui(batch: Batch,
          private val screenChanger: ScreenChanger,
          private val textures: Textures) {
     private val menuStage: Stage = Stage(ScreenViewport(), batch)
@@ -69,7 +69,7 @@ class Ui(val uiState: UiState, batch: Batch,
         hudStage.addActor(inventoryTable)
     }
 
-    fun drawUi() {
+    fun drawUi(uiState: UiState) {
         menuStage.act(min(Gdx.graphics.deltaTime, 1 / 30f))
         menuStage.draw()
 

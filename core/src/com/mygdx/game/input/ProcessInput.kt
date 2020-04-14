@@ -40,7 +40,6 @@ val readKey: (Unit) -> InputData = {
 
 val processKeys: (InputData) -> (Set<Mutation>) = {
     val keys: Set<Key> = it.keys
-//    val actions = emptySet<Mutation>().toMutableSet()
     val actions = emptySet<Mutation>().toMutableSet()
 
     // Movement

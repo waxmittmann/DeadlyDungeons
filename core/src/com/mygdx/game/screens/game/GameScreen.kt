@@ -27,7 +27,7 @@ class GameScreen(params: GameScreenParams) : Screen {
         val world = createWorld(params.textures, Point2(300.0, 300.0),
                 params.windowDims)
         state = GameState(world, UiState.create())
-        ui = Ui(state.ui, batch, params.screenChanger, params.textures)
+        ui = Ui(batch, params.screenChanger, params.textures)
         game = Game(batch, params.windowDims, params.textures)
     }
 
@@ -41,7 +41,7 @@ class GameScreen(params: GameScreenParams) : Screen {
 
         // Draw scene and UI.
         game.drawScene(state.world)
-        ui.drawUi()
+        ui.drawUi(state.ui)
     }
 
     override fun resize(width: Int, height: Int) {
