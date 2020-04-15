@@ -14,21 +14,23 @@ class InputData(val keys: Set<Key>, val mousePos: Point2)
 
 var debugA = 0
 
-fun insensitivePressed(s: String): Boolean =
-    (Gdx.input.isKeyPressed(Input.Keys.valueOf(s.toLowerCase()))) ||
-                (Gdx.input.isKeyPressed(Input.Keys.valueOf(s.toUpperCase())))
-
-fun insensitiveJustPressed(s: String): Boolean =
-        (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(s.toLowerCase()))) ||
-                (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(s.toUpperCase
-                ())))
+//fun insensitivePressed(s: String): Boolean =
+//    (Gdx.input.isKeyPressed(Input.Keys.valueOf(s.toLowerCase()))) ||
+//                (Gdx.input.isKeyPressed(Input.Keys.valueOf(s.toUpperCase())))
+//
+//fun insensitiveJustPressed(s: String): Boolean =
+//        (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(s.toLowerCase()))) ||
+//                (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(s.toUpperCase
+//                ())))
 
 val readKey: (Unit) -> InputData = {
     val keys = emptySet<Key>().toMutableSet()
 
     if (Gdx.input.isKeyPressed(Input.Keys.valueOf("!"))) debugA += 5
     if (Gdx.input.isKeyPressed(Input.Keys.valueOf("@"))) debugA -= 5
-    if (insensitiveJustPressed("i")) keys += PressedSpecial.ToggleInventory
+//    if (insensitiveJustPressed("i")) keys += PressedSpecial.ToggleInventory
+    if (Gdx.input.isKeyJustPressed(Input.Keys.I)) keys += PressedSpecial
+            .ToggleInventory
     if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) keys += PressedSpecial.Attack
     if (Gdx.input.isKeyPressed(Input.Keys.S)) keys += PressedSpecial.MoveDown
     if (Gdx.input.isKeyPressed(Input.Keys.A)) keys += PressedSpecial.MoveLeft
@@ -64,8 +66,10 @@ val processKeys: (InputData) -> (Set<Mutation>) = {
             attackMutation)
 
     // Ui mutations
-    if (keys.contains(PressedSpecial.ToggleInventory))
+    if (keys.contains(PressedSpecial.ToggleInventory)) {
+        println("Toggle")
         actions.add(toggleInventory())
+    }
 
     actions
 }

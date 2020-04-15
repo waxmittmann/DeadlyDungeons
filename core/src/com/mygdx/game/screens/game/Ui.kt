@@ -25,7 +25,7 @@ class Ui(batch: Batch,
     private var menuRoot: VisTable = VisTable()
 
     private val hudStage: Stage = Stage(ScreenViewport(), batch)
-    private var hudRoot: VisTable = VisTable()
+//    private var hudRoot: VisTable = VisTable()
 
     private val stages: List<Stage> = listOf(menuStage, hudStage)
 
