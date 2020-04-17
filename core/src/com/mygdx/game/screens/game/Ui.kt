@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
@@ -36,7 +35,8 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
     private val testDragAndDropStage: Stage = Stage(ScreenViewport(), batch)
 
 
-    private val stages: List<Stage> = listOf(menuStage, hudStage, testDragAndDropStage)
+    private val stages: List<Stage> =
+            listOf(menuStage, hudStage, testDragAndDropStage)
 
     init {
         // Set up UI.
@@ -154,8 +154,7 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
             override fun drop(source: DragAndDrop.Source, payload: Payload,
                               x: Float, y: Float, pointer: Int) {
 
-                println("Accepted 2: " + payload.getObject() + " " + x + ", "
-                        + y)
+                println("Accepted 2: " + payload.getObject() + " " + x + ", " + y)
             }
         })
 
@@ -174,8 +173,7 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
             override fun drop(source: DragAndDrop.Source, payload: Payload,
                               x: Float, y: Float, pointer: Int) {
 
-                println("Accepted 3: " + payload.getObject() + " " + x + ", "
-                        + y)
+                println("Accepted 3: " + payload.getObject() + " " + x + ", " + y)
             }
         })
 
@@ -209,30 +207,34 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
 
         val actorFactory = ActorFactory(testDragAndDropStage)
 
-        val source = dragDrop.Source(
-                actorFactory.image(it.next(), Rect2(100.0, 100.0, 100.0, 100.0)),
-                "Source",
-                actorFactory.image(it.next(), Rect2(0.0, 0.0, 100.0, 100.0),
-                        false),
-                actorFactory.image(it.next(), Rect2(0.0, 0.0, 100.0, 100.0),
-                        false),
-                actorFactory.image(it.next(), Rect2(0.0, 0.0, 100.0, 100.0),
-                        false)
-        )
+//        val source = dragDrop.Source(
+//                actorFactory.image(it.next(), Rect2(100.0, 100.0, 100.0, 100.0)),
+//                "Source",
+//                actorFactory.image(it.next(), Rect2(0.0, 0.0, 100.0, 100.0),
+//                        false),
+//                actorFactory.image(it.next(), Rect2(0.0, 0.0, 100.0, 100.0),
+//                        false),
+//                actorFactory.image(it.next(), Rect2(0.0, 0.0, 100.0, 100.0),
+//                        false)
+//        )
+
+        val source = dragDrop.sameSource({addToScene ->
+            println("Creating ..."); actorFactory.image(it.cur(),
+                Rect2(100.0, 100.0, 100.0, 100.0), addToScene)
+        },
+//                { actorFactory.image(it.cur(), Rect2(0.0, 0.0, 100.0, 100.0)) },
+                "Source")
+        it.next()
 
         val target = dragDrop.Target(
-                actorFactory.image(it.next(), Rect2(200.0, 100.0, 100.0, 100.0)),
-                { println(it); true; },
-                {},
-                {}
-        )
+                actorFactory.image(it.cur(), Rect2(200.0, 100.0, 100.0, 100.0)),
+                { println(it); true; }, {}, {})
+        it.next()
 
         val target2 = dragDrop.Target(
-                actorFactory.image(it.next(), Rect2(200.0, 200.0, 100.0, 100.0)),
-                { println(it); false; },
-                {},
-                {}
-        )
+                actorFactory.image(it.cur(), Rect2(200.0, 200.0, 100.0, 100.0)),
+                { println(it); false; }, {}, {})
+        it.next()
 
         dragDrop.addSource(source)
         dragDrop.addTarget(target)

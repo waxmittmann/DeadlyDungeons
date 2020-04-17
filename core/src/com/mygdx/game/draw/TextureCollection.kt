@@ -8,7 +8,12 @@ class WrappingIterator(private val textureCollection: TextureCollection) {
     var colAt = 0
     var rowAt = 0
 
+    fun cur(): TextureRegion =  textureCollection.get(textureCollection.rows - rowAt - 1, colAt)
+
     fun next(): TextureRegion {
+        val r = cur()
+        colAt += 1
+
         if (colAt >= textureCollection.cols) {
             rowAt += 1
             colAt = 0
@@ -18,9 +23,6 @@ class WrappingIterator(private val textureCollection: TextureCollection) {
             rowAt = 0
             colAt = 0
         }
-
-        val r = textureCollection.get(textureCollection.rows - rowAt - 1, colAt)
-        colAt += 1
         return r
     }
 }
