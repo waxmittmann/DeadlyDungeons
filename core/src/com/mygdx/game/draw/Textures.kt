@@ -17,6 +17,9 @@ interface Textures {
 
     val mountainTexture: TextureRegion
     val bagTexture: TextureRegion
+
+    val debugCollection: TextureCollection
+    val itemsCollection: TextureCollection
 }
 
 class DefaultTextures : Textures {
@@ -45,8 +48,13 @@ class DefaultTextures : Textures {
     private val boxedKnightTexture: TextureRegion =
             TextureRegion(Texture("BoxedKnight.png"))
 
-    override val bagTexture: TextureRegion =
-            TextureRegion(Texture("Bag.png"))
+    override val bagTexture: TextureRegion = TextureRegion(Texture("Bag.png"))
+
+    // Texture collections
+    override val debugCollection: TextureCollection =
+            TextureCollection(Texture("DebugGrid25x25.png"), 5, 5)
+    override val itemsCollection: TextureCollection =
+            TextureCollection(Texture("Items25x25.png"), 5, 5)
 
     // Drawables
     override val rockDrawable: Drawable =
@@ -56,7 +64,8 @@ class DefaultTextures : Textures {
     override val yetiDrawable: Drawable =
             TextureDrawable(yetiTexture, Dims2(1f, 1f))
 
-        override val playerDrawable: Drawable = TextureDrawable(avatarTexture, Dims2(1f, 1f))
+    override val playerDrawable: Drawable =
+            TextureDrawable(avatarTexture, Dims2(1f, 1f))
 //    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(1f, 1f))
 //    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(50f, 50f))
 //    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(1f, 1f))
