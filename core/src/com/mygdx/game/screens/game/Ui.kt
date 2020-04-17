@@ -2,18 +2,16 @@ package com.mygdx.game.screens.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.kotcrab.vis.ui.widget.*
+import com.kotcrab.vis.ui.widget.Menu
+import com.kotcrab.vis.ui.widget.MenuBar
+import com.kotcrab.vis.ui.widget.MenuItem
+import com.kotcrab.vis.ui.widget.VisTable
 import com.mygdx.game.ScreenChanger
 import com.mygdx.game.ScreenId
 import com.mygdx.game.draw.Textures
@@ -86,21 +84,19 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
 
         val source = it.thenNext {
             dragDrop.sameSource({ addToScene ->
-                println("Creating ..."); actorFactory.image(it.cur(),
-                    Rect2(100.0, 100.0, 100.0, 100.0), addToScene)
+                actorFactory.image(it.cur(), Rect2(100.0, 100.0, 100.0, 100.0),
+                        addToScene)
             }, "Source")
         }
 
         val target = it.thenNext {
             dragDrop.Target(actorFactory.image(it.cur(),
-                    Rect2(200.0, 100.0, 100.0, 100.0)), { true },
-                    {}, {})
+                    Rect2(200.0, 100.0, 100.0, 100.0)), { true }, {}, {})
         }
 
         val target2 = it.thenNext {
             dragDrop.Target(actorFactory.image(it.cur(),
-                    Rect2(200.0, 200.0, 100.0, 100.0)), { false },
-                    {}, {})
+                    Rect2(200.0, 200.0, 100.0, 100.0)), { false }, {}, {})
         }
 
         dragDrop.addSource(source)
