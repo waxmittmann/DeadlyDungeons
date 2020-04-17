@@ -9,10 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload
 import com.kotcrab.vis.ui.widget.VisImage
 import com.mygdx.game.util.geometry.Rect2
 
-/*
-
- */
-
 class ActorFactory(val stage: Stage) {
 
     fun image(texture: TextureRegion, area: Rect2,
@@ -40,11 +36,6 @@ class DragDrop<S> {
             Source(actorFn(true), payload, actorFn(false), actorFn(false),
                     actorFn(false))
 
-
-//    fun addSource(actor: Actor, payload: S, dragActor: Actor, validActor: Actor,
-//                  invalidActor: Actor) = addSource(
-//            Source(actor, payload, dragActor, validActor, invalidActor))
-
     fun addSource(source: Source) {
         println("adding source $source")
 
@@ -71,11 +62,6 @@ class DragDrop<S> {
         })
     }
 
-//    fun addTarget(actor: Actor, dragFn: (S) -> (Boolean),
-//                       resetFn: (S) -> Unit, acceptedFn: (S) -> Unit) {
-//        return addTarget(Target(actor, dragFn, resetFn, acceptedFn))
-//    }
-
     fun addTarget(target: Target) {
         visDragDrop.addTarget(object : DragAndDrop.Target(target.actor) {
             override fun drag(source: DragAndDrop.Source, payload: Payload,
@@ -94,5 +80,4 @@ class DragDrop<S> {
             }
         })
     }
-
 }
