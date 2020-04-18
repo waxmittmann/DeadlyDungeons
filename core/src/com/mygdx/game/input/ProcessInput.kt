@@ -7,8 +7,7 @@ import com.mygdx.game.actions.*
 import com.mygdx.game.actions.old.GameState
 import com.mygdx.game.util.geometry.Point2
 
-val moveActions =
-        MoveMutationFactory(amount = 5)
+val moveActions = MoveMutationFactory(amount = 5)
 
 class InputData(val keys: Set<Key>, val mousePos: Point2)
 
@@ -29,8 +28,8 @@ val readKey: (Unit) -> InputData = {
     if (Gdx.input.isKeyPressed(Input.Keys.valueOf("!"))) debugA += 5
     if (Gdx.input.isKeyPressed(Input.Keys.valueOf("@"))) debugA -= 5
 //    if (insensitiveJustPressed("i")) keys += PressedSpecial.ToggleInventory
-    if (Gdx.input.isKeyJustPressed(Input.Keys.I)) keys += PressedSpecial
-            .ToggleInventory
+    if (Gdx.input.isKeyJustPressed(
+                    Input.Keys.I)) keys += PressedSpecial.ToggleInventory
     if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) keys += PressedSpecial.Attack
     if (Gdx.input.isKeyPressed(Input.Keys.S)) keys += PressedSpecial.MoveDown
     if (Gdx.input.isKeyPressed(Input.Keys.A)) keys += PressedSpecial.MoveLeft
@@ -52,18 +51,21 @@ val processKeys: (InputData) -> (Set<Mutation>) = {
     else if (keys.contains(PressedSpecial.MoveDown) && keys.contains(
                     PressedSpecial.MoveLeft)) actions.add(moveActions.leftDown)
     else if (keys.contains(PressedSpecial.MoveDown) && keys.contains(
-                    PressedSpecial.MoveRight)) actions.add(moveActions.rightDown)
+                    PressedSpecial.MoveRight)) actions.add(
+            moveActions.rightDown)
     else if (keys.contains(PressedSpecial.MoveUp)) actions.add(moveActions.up)
-    else if (keys.contains(PressedSpecial.MoveDown)) actions.add(moveActions.down)
-    else if (keys.contains(PressedSpecial.MoveLeft)) actions.add(moveActions.left)
-    else if (keys.contains(PressedSpecial.MoveRight)) actions.add(moveActions.right)
+    else if (keys.contains(PressedSpecial.MoveDown)) actions.add(
+            moveActions.down)
+    else if (keys.contains(PressedSpecial.MoveLeft)) actions.add(
+            moveActions.left)
+    else if (keys.contains(PressedSpecial.MoveRight)) actions.add(
+            moveActions.right)
 
     // Update orientation based on mouse direction.
     actions.add(fromWorld(changeOrientation(it.mousePos)))
 
     // Attack
-    if (keys.contains(PressedSpecial.Attack)) actions.add(
-            attackMutation)
+    if (keys.contains(PressedSpecial.Attack)) actions.add(attackMutation)
 
     // Ui mutations
     if (keys.contains(PressedSpecial.ToggleInventory)) {

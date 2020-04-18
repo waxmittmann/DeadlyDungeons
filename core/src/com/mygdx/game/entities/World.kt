@@ -69,5 +69,7 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
     fun updateWindowSize(newDims: Dims2) {
         view.setWindowDims(newDims)
     }
+
+
 }
 
