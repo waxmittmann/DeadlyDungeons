@@ -36,25 +36,22 @@ class PolygonBuilder(firstPoint: Point2) {
 }
 
 class Polygon2(val vertices: List<Point2>) {
-    val edges: List<Vec2>
-    val axes: List<Vec2>
-    val vertexSet: Set<Point2>
-
-    init {
-        edges = mutableListOf()
+    val edges: List<Vec2> by lazy {
+        val edges = mutableListOf<Vec2>()
         for (i in vertices.indices) {
             edges += Vec2(vertices[(i + 1) % vertices.size].x - vertices[i].x,
                     vertices[(i + 1) % vertices.size].y - vertices[i].y)
         }
-
-        axes = edges.k().map { it.perpendicular() }
-        vertexSet = vertices.toSet()
+        edges
     }
+
+    val axes: List<Vec2> by lazy { edges.k().map { it.perpendicular() } }
+
+    private val vertexSet: Set<Point2> by lazy { vertices.toSet() }
 
     // Don't override equals because the polygons could have different internal
     // representations and that's not traditionally 'equals'.
     // Could be made faster by caching a hash value of the set.
     fun samePolygon(other: Polygon2): Boolean = vertexSet == other.vertexSet
 }
-
 
