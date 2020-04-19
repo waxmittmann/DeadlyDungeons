@@ -7,6 +7,9 @@ import kotlin.random.Random
 
 class Vec2(val x: Double, val y: Double) {
 
+    val xF: Float = x.toFloat()
+    val yF: Float = y.toFloat()
+
     companion object Factory {
         fun random(ux: Int, uy: Int): Vec2 =
                 create(Random.nextInt(0, ux), Random.nextInt(0, uy))
@@ -35,10 +38,10 @@ class Vec2(val x: Double, val y: Double) {
                 360 - angle.degrees.toDouble()) else Math.toRadians(
                 angle.degrees.toDouble())
 
-        val _x = cos(degrees) * x - sin(degrees) * y
-        val _y = sin(degrees) * x + cos(degrees) * y
+        val xr = cos(degrees) * x - sin(degrees) * y
+        val yr = sin(degrees) * x + cos(degrees) * y
 
-        return Vec2(_x, _y)
+        return Vec2(xr, yr)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -54,6 +57,8 @@ class Vec2(val x: Double, val y: Double) {
     }
 
     fun toVector2D(): Vector2D {
-        return Vector2D(x.toDouble(), y.toDouble())
+        return Vector2D(x, y)
     }
+
+    fun perpendicular(): Vec2 = Vec2(-y, x)
 }

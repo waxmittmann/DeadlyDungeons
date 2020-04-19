@@ -5,6 +5,11 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
     fun ux(): Double = lx + width
     fun uy(): Double = ly + height
 
+    val lxF = lx.toFloat()
+    val lyF = ly.toFloat()
+    val widthF = width.toFloat()
+    val heightF = height.toFloat()
+
     fun lowerLeft(): Point2 {
         return Point2(lx, ly)
     }

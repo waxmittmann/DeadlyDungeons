@@ -7,6 +7,8 @@ import kotlin.math.acos
 
 
 class Angle internal constructor(val degrees: Int) {
+    val radians: Double = Math.toRadians(degrees.toDouble())
+
     companion object Factory {
         fun create(degrees: Int): Angle = Angle(0).rotate(degrees)
 
