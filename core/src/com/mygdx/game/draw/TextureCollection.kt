@@ -14,6 +14,11 @@ class WrappingIterator(private val textureCollection: TextureCollection) {
         return t
     }
 
+    fun reset() {
+        colAt = 0
+        rowAt = 0
+    }
+
     fun cur(): TextureRegion =  textureCollection.get(textureCollection.rows - rowAt - 1, colAt)
 
     fun next(): TextureRegion {
@@ -44,6 +49,13 @@ class TextureCollection(texture: Texture, val cols: Int, val rows: Int) {
                     "${rows-1})")
         println("Returning $r $c")
         return subTextures[r][c]
+    }
+
+    fun get(at: Int): TextureRegion {
+        if (at >= cols * rows) {
+            throw RuntimeException("$at is out of bounds (${cols * rows})")
+        }
+        return subTextures[at / cols][at % cols]
     }
 
     fun iterator(): WrappingIterator = WrappingIterator(this)

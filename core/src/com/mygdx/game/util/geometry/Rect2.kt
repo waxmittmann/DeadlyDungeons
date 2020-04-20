@@ -58,6 +58,11 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
 
     fun midpoint(): Point2 = Point2(lx + width / 2, ly + height / 2)
 
+    val asPoylgon: Polygon2 by lazy {
+        PolygonBuilder(Point2(lx, ly)).moveX(width).moveY(height).moveX(-width)
+                .build()
+    }
+
     companion object Factory {
         fun create(lx: Int, ly: Int, width: Int, height: Int): Rect2 =
                 Rect2(lx.toDouble(), ly.toDouble(), width.toDouble(),
