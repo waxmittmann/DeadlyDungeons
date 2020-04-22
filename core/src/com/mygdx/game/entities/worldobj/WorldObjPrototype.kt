@@ -3,13 +3,11 @@ package com.mygdx.game.entities.worldobj
 import arrow.core.k
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Matrix4
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.mygdx.game.draw.Drawable
-import com.mygdx.game.util.geometry.Angle
-import com.mygdx.game.util.geometry.Dims2
-import com.mygdx.game.util.geometry.Rect2
-import com.mygdx.game.util.geometry.Vec2
+import com.mygdx.game.util.geometry.*
 import java.util.*
-
 
 class WrappedMatrix(private val rawMatrix: Matrix4 = Matrix4()) {
     companion object Factory {
@@ -38,36 +36,37 @@ class WrappedMatrix(private val rawMatrix: Matrix4 = Matrix4()) {
     fun get(): Matrix4 = Matrix4(rawMatrix)
 
     fun getInternals(): Matrix4 = rawMatrix
+
+    fun transform(p: Point2): Point2 {
+        val v = Vector3(p.x.toFloat(), p.y.toFloat(), 0f)
+        val vt = v.mul(rawMatrix)
+        return Point2(vt.x.toDouble(), vt.y.toDouble())
+    }
 }
 
-object MatrixUtils {
-//    fun
-}
-
-class HierarchicalPrototypeBuilder() {
-    val root: PrototypeTranslate = PrototypeTranslate(Vec2(0.0, 0.0))
-    var stack: Stack<HierarchicalParent> = Stack()
+class SceneNodeBuilder() {
+    val root: Translate = Translate(Vec2(0.0, 0.0))
+    var stack: Stack<SceneParent> = Stack()
 
     init {
         stack.push(root)
     }
 
-    fun translate(x: Double, y: Double): HierarchicalPrototypeBuilder {
-        val t = PrototypeTranslate(Vec2(x, y))
+    fun translate(x: Double, y: Double): SceneNodeBuilder {
+        val t = Translate(Vec2(x, y))
         stack.peek().add(t)
         stack.push(t)
         return this
     }
 
-
-    fun rotate(degrees: Int): HierarchicalPrototypeBuilder {
-        val t = PrototypeRotate(Angle.create(degrees))
+    fun rotate(degrees: Int): SceneNodeBuilder {
+        val t = Rotate(Angle.create(degrees))
         stack.peek().add(t)
         stack.push(t)
         return this
     }
 
-    fun pop(nr: Int = 1): HierarchicalPrototypeBuilder {
+    fun pop(nr: Int = 1): SceneNodeBuilder {
         if (stack.size <= nr) {
             throw RuntimeException("Cannot pop root")
         }
@@ -75,141 +74,65 @@ class HierarchicalPrototypeBuilder() {
         return this
     }
 
-    fun build(): HierarchicalPrototype {
+    fun build(): SceneNode {
         val hp = root
         stack.clear()
-        stack.push(PrototypeTranslate(Vec2(0.0, 0.0)))
+        stack.push(Translate(Vec2(0.0, 0.0)))
         return hp
     }
 
-    fun leaf(textureRegion: TextureRegion,
-             size: Dims2): HierarchicalPrototypeBuilder {
-        stack.peek().add(PrototypeLeaf(textureRegion, size))
+    fun leaf(textureRegion: TextureRegion, size: Dims2): SceneNodeBuilder {
+        stack.peek().add(Leaf(textureRegion, size))
         return this
     }
 }
 
-sealed class HierarchicalPrototype
-sealed class HierarchicalParent : HierarchicalPrototype() {
-    abstract fun add(proto: HierarchicalPrototype): HierarchicalParent
+sealed class SceneNode
+sealed class SceneParent : SceneNode() {
+    abstract fun add(proto: SceneNode): SceneParent
 }
 
 class WorldObjPrototype(val name: String, val drawable: Drawable,
                         val size: Dims2) //: HierarchicalPrototype
 
-//class PrototypeLeaf : HierarchicalPrototype()
-//class PrototypeTransform(val rotation: Angle, val transform: Vec2,
-//                         children: List<HierarchicalPrototype>) : HierarchicalPrototype
+class Leaf(val textureRegion: TextureRegion, val size: Dims2) : SceneNode()
 
-
-//class PrototypeLeaf(val drawable: Drawable, val size: Dims2) : HierarchicalPrototype
-class PrototypeLeaf(val textureRegion: TextureRegion,
-                    val size: Dims2) : HierarchicalPrototype()
-
-class PrototypeRotate(val rotation: Angle,
-                      val children: MutableList<HierarchicalPrototype> = mutableListOf()) : HierarchicalParent() {
-    override fun add(proto: HierarchicalPrototype): PrototypeRotate {
+class Rotate(val rotation: Angle,
+             val children: MutableList<SceneNode> = mutableListOf()) : SceneParent() {
+    override fun add(proto: SceneNode): Rotate {
         children += proto
         return this
     }
 }
 
-class PrototypeTranslate(val translation: Vec2,
-                         val children: MutableList<HierarchicalPrototype> = mutableListOf()) : HierarchicalParent() {
-    override fun add(proto: HierarchicalPrototype): PrototypeTranslate {
+class Translate(val translation: Vec2,
+                val children: MutableList<SceneNode> = mutableListOf()) : SceneParent() {
+    override fun add(proto: SceneNode): Translate {
         children += proto
         return this
     }
 }
 
-class TransformedPrototype(val textureRegion: TextureRegion,
+class TransformedSceneLeaf(val textureRegion: TextureRegion,
 //                           val polygon: Polygon2, val boundingRect: Rect2,
                            val rect: Rect2, //val boundingRect: Rect2,
                            val matrix: WrappedMatrix)
 
-
-//fun draw(sb: Batch, texture: TextureRegion, x: Float, y: Float, width: Float,
-//         height: Float, originX: Float = 0.0f, originY: Float = 0.0f,
-//         scaleX: Float = 1.0f, scaleY: Float = 1.0f, rotation: Float = 0.0f,
-//         clockwise: Boolean = true) {
-//    sb.draw(texture, x, y, originX, originY, width, height, scaleX, scaleY,
-//            90 - rotation, clockwise)
-//}
-
-//fun draw(batch: Batch, hp: TransformedPrototype) {
-//    val prevMatrix = Matrix4(batch.transformMatrix)
-////    batch.transformMatrix = hp.matrix.mul(batch.transformMatrix)
-//    batch.transformMatrix = batch.transformMatrix.mul(hp.matrix)
-//    batch.draw(hp.textureRegion, 0f, 0f, hp.rect.widthF, hp.rect.heightF)
-//    batch.transformMatrix = prevMatrix
-//}
-
-fun resolveHierarchicalPrototype(hp: HierarchicalPrototype,
-//                                 curMatrix: Matrix4 = Matrix4()): List<TransformedPrototype> {
-                                 curMatrix: WrappedMatrix = WrappedMatrix()): List<TransformedPrototype> {
+fun getLeaves(hp: SceneNode,
+              curMatrix: WrappedMatrix = WrappedMatrix()): List<TransformedSceneLeaf> {
     return when (hp) {
-        is PrototypeTranslate -> {
-//            val newMatrix =
-//                    Matrix4(curMatrix).trn(hp.translation.xF, hp.translation.yF, 0f)
+        is Translate -> hp.children.k().flatMap {
+            getLeaves(it,
+                    curMatrix.trn(hp.translation.xF, hp.translation.yF)).k()
+        }.toList()
 
-            val newMatrix = curMatrix.trn(hp.translation.xF, hp.translation.yF)
-//                    Matrix4().trn(hp.translation.xF, hp.translation.yF, 0f)
-//                            .mul(curMatrix)
+        is Rotate -> hp.children.k().flatMap {
+            getLeaves(it, curMatrix.rotate(hp.rotation.degrees)).k()
+        }.toList()
 
-            hp.children.k().flatMap {
-                resolveHierarchicalPrototype(it, newMatrix).k()
-            }.toList()
-        }
-        is PrototypeRotate -> {
-//            val newMatrix = Matrix4(curMatrix).rotate(0f, 0f, 1f, hp.rotation.degrees.toFloat())
-
-            val newMatrix = curMatrix.rotate(hp.rotation.degrees)
-//                    Matrix4().rotate(0f, 0f, 1f, hp.rotation.degrees.toFloat())
-//                            .mul(curMatrix)
-
-            hp.children.k().flatMap {
-                resolveHierarchicalPrototype(it, newMatrix).k()
-            }.toList()
-        }
-        is PrototypeLeaf -> {
-//            listOf(TransformedPrototype(hp.textureRegion, hp.size.asRect,
-//                    curMatrix.getInternals()))
-            listOf(TransformedPrototype(hp.textureRegion, hp.size.asRect,
-                    curMatrix))
-        }
+        is Leaf -> listOf(TransformedSceneLeaf(hp.textureRegion, hp.size.asRect,
+                curMatrix))
     }
 }
 
 //https://box2d.org/documentation/md__d_1__git_hub_box2d_docs_collision.html
-//fun resolveHierarchicalPrototype(curMatrix: Matrix4, hp: HierarchicalPrototype):
-//        List<TransformedPrototype> {
-//
-//    when (hp) {
-//        is PrototypeTranslate -> {
-//            val newMatrix = Matrix4(curMatrix).trn(hp.translation.xF, hp
-//                    .translation
-//                    .yF, 0f)
-//            hp.children.k().flatMap {
-//                resolveHierarchicalPrototype(newMatrix, hp).k()
-//            }.toList()
-//        }
-//        is PrototypeRotate -> {
-//            val newMatrix = Matrix4(curMatrix).rotate(0f, 0f, 1f, hp.rotation
-//                    .radians.toFloat())
-//            hp.children.k().flatMap {
-//                resolveHierarchicalPrototype(newMatrix, hp).k()
-//            }.toList()
-//        }
-//        is PrototypeLeaf -> {
-//            val world: World = World(Vector2(0f, 0f), true)
-//            val bodyDef: BodyDef = BodyDef()
-//            bodyDef.active = true
-////            bodyDef.position
-//            bodyDef.type
-//            world.createBody()
-////            val body = Body(world)
-//            listOf(TransformedPrototype(hp.textureRegion))
-//        }
-//    }
-//}
-//

@@ -10,10 +10,10 @@ import com.mygdx.game.draw.Textures
 import com.mygdx.game.draw.singlePixel
 import com.mygdx.game.draw.worldPositionedDrawables
 import com.mygdx.game.entities.*
-import com.mygdx.game.entities.worldobj.HierarchicalPrototypeBuilder
-import com.mygdx.game.entities.worldobj.TransformedPrototype
+import com.mygdx.game.entities.worldobj.SceneNodeBuilder
+import com.mygdx.game.entities.worldobj.TransformedSceneLeaf
 import com.mygdx.game.entities.worldobj.WrappedMatrix
-import com.mygdx.game.entities.worldobj.resolveHierarchicalPrototype
+import com.mygdx.game.entities.worldobj.getLeaves
 import com.mygdx.game.input.processInput
 import com.mygdx.game.util.borderCircle
 import com.mygdx.game.util.geometry.Dims2
@@ -29,7 +29,7 @@ class Game(private val batch: Batch, windowDims: Dims2,
     private var stateTime: Float = 0.0f
     private var spawnState: SpawnMobState = SpawnMobState(0)
 
-    private val hierarchicalPrototypeTest: List<TransformedPrototype>
+    private val hierarchicalPrototypeTest: List<TransformedSceneLeaf>
 
     init {
         // Set up debug cam. Will break on resize.
@@ -37,69 +37,28 @@ class Game(private val batch: Batch, windowDims: Dims2,
         debugCam.translate(windowDims.width / 2.0f, windowDims.height / 2.0f)
         debugCam.update()
 
-//        val it = textures.itemsCollection.iterator()
         val it = textures.debugCollection.iterator()
-//        val leaf1 = PrototypeLeaf(it.next(),
-//                Dims2(100f, 100f))
-//        val leaf2 = PrototypeLeaf(it.next(),
-//                Dims2(50f, 50f))
-
-//        val rotate1: PrototypeRotate = PrototypeRotate(Angle.create(90))
-//                .add(leaf1)
-//                .add(PrototypeTranslate(Vec2(100.0, 100.0))
-//                        .add(leaf2))
-//
-//        val rotate2 = PrototypeTranslate(Vec2(200.0, 200.0))
-//                .add(leaf1)
-//
-//        val rotate3 = PrototypeTranslate(Vec2(0.0, 500.0))
-//                .add(PrototypeRotate(Angle.create(90)).add(leaf1))
-//
-//        val rotate4 =
-//                PrototypeRotate(Angle.create(-90)).add(
-//                PrototypeTranslate(Vec2(0.0, 200.0))
-//                .add(leaf1))
-
-        val hp1 = HierarchicalPrototypeBuilder().translate(300.0, 300.0)
-                .leaf(it.next(), Dims2(100.0f, 100.0f)) // 1
-                .translate(0.0, 100.0)
-                .leaf(it.next(), Dims2(100.0f, 100.0f)) // 2
-                .rotate(90).leaf(it.next(), Dims2(100.0f, 100.0f)) // 3
-                .pop().rotate(-90).leaf(it.next(), Dims2(100.0f, 100.0f)) // 4
-                .translate(100.0, 0.0)
-//                .leaf(it.next(), Dims2(100.0f, 100.0f)) // 5
-                .pop().translate(0.0, 100.0)
-//                .leaf(it.next(), Dims2(100.0f, 100.0f)) // 6
-                .translate(0.0, 100.0)
-//                .leaf(it.next(), Dims2(100.0f, 100.0f)) // 7
-                .build()
-
         val t = textures.debugCollection
         it.reset()
-        val hp2_1 = HierarchicalPrototypeBuilder()
+
+        val hp2_1 = SceneNodeBuilder()
 //                .translate(100.0,100.0)
                 .translate(300.0, 300.0)
                 .leaf(t.get(0), Dims2(20.0f, 20.0f)) // 1
 
                 .rotate(90)
-                .leaf(t.get(2), Dims2(20.0f, 20.0f)) // 3
+                .leaf(t.get(1), Dims2(20.0f, 20.0f)) // 3
                 .translate(100.0, 0.0)
-                .leaf(t.get(3), Dims2(20.0f, 20.0f)) // )
+                .leaf(t.get(2), Dims2(20.0f, 20.0f)) // )
                 .pop(2)
 
                 .rotate(-90)
-                .leaf(t.get(4), Dims2(20.0f, 20.0f)) // 3
+                .leaf(t.get(3), Dims2(20.0f, 20.0f)) // 3
                 .translate(100.0, 0.0)
-                .leaf(t.get(5), Dims2(20.0f, 20.0f)) // 4
+                .leaf(t.get(4), Dims2(20.0f, 20.0f)) // 4
                 .build()
 
-
-//        fun translate(x: Float, y: Float): MatrixWrapper =
-//                MatrixWrapper(Matrix4(rawMatrix).translate(x, y, 0f))
-
-//        hierarchicalPrototypeTest = resolveHierarchicalPrototype(rotate1)
-//        hierarchicalPrototypeTest = resolveHierarchicalPrototype(rotate4)
-        hierarchicalPrototypeTest = resolveHierarchicalPrototype(hp2_1)
+       hierarchicalPrototypeTest = getLeaves(hp2_1)
     }
 
     fun drawScene(world: World) {
@@ -132,8 +91,9 @@ class Game(private val batch: Batch, windowDims: Dims2,
 //                .translate(200f, 0f)
         val it = textures.debugCollection.iterator()
 
-        val m = WrappedMatrix.from(baseWrappedMatrix).trn(200f, 0f).rotate(30)
-        batch.projectionMatrix = m.getInternals()
+//        val m = WrappedMatrix.from(baseWrappedMatrix).trn(200f, 0f).rotate(30)
+        val m = WrappedMatrix().trn(200f, 0f).rotate(30)
+        batch.projectionMatrix = baseWrappedMatrix.mul(m).getInternals()
         batch.draw(it.next(), 0f, 0f, 100f, 100f)
 
         val m2 = WrappedMatrix.from(m).trn(0f, 100f)
@@ -144,6 +104,11 @@ class Game(private val batch: Batch, windowDims: Dims2,
 //                .translate(0f, 100f)
         batch.projectionMatrix = m3.getInternals()
         batch.draw(it.next(), 0f, 0f, 100f, 100f)
+
+        println("10, 10 -> " + m.transform(Point2(10.0, 10.0)))
+        println("0, 0 -> " + m.transform(Point2(0.0, 0.0)))
+//        println("0, 0 -> " + m2.transform(Point2(10.0, 10.0)))
+//        println("0, 0 -> " + m3.transform(Point2(10.0, 10.0)))
 
 
         // Draw debug circle at true (0, 0)
