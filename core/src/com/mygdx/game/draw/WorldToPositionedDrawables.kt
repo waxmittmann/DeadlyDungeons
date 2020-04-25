@@ -10,12 +10,13 @@ import com.mygdx.game.util.geometry.Rect2
 import kotlin.math.max
 import kotlin.math.min
 
-
+/*
 fun worldPositionedDrawables(world: World): List<PositionedDrawable> {
     return terrainPositionedDrawables(world.terrain, world.tileSize,
             world.view.getViewRect()) + sceneObjectPositionedDrawables(
             world.worldObjects, world.view.getViewRect())
 }
+
 
 fun sceneObjectPositionedDrawables(worldObjects: WorldObjs,
                                    view: Rect2): List<PositionedDrawable> {
@@ -33,11 +34,12 @@ fun sceneObjectPositionedDrawables(worldObjects: WorldObjs,
         }
     } //+ PositionedDrawable(worldObjects.player.prototype.drawable, worldObjects.player.position.minus(view.lowerLeft()), worldObjects.player.drawState)
 }
+*/
 
+// TODO: Replace
+/*
 fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int,
                                view: Rect2): List<PositionedDrawable> {
-//    return (max((floor(view.ly + 0.005) / tileSize)-1, 0)..min((ceil(view.uy() - 0.005) / tileSize)+1, terrains.size-1)).flatMap { c ->
-//        (max((floor(view.lx + 0.005) / tileSize)-1, 0)..min((ceil(view.ux() - 0.005) / tileSize)+1, terrains[0].size-1)).map { r ->
     return (max(floor(view.ly / tileSize) - 1, 0)..min(
             floor(view.uy() / tileSize) + 1, terrains.size - 1)).flatMap { c ->
         (max(floor(view.lx / tileSize) - 1, 0)..min(
@@ -52,3 +54,4 @@ fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int,
         }
     }
 }
+*/

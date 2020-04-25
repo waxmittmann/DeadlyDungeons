@@ -77,10 +77,10 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
             else create(lx, ly, ux - lx, uy - ly)
         }
 
-        fun fromPoints(ll: Point2, ur: Point2) {
+        fun fromPoints(ll: Point2, ur: Point2): Rect2 {
             assert(ll.x <= ur.x)
             assert(ll.y <= ur.y)
-            Rect2(ll.x, ll.y, ur.x, ur.y)
+            return Rect2(ll.x, ll.y, ur.x, ur.y)
         }
 
         fun create(lowerLeft: Point2, dims: Dims2): Rect2 {

@@ -39,7 +39,7 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
     init {
         val player: WorldObj<PlayerAttributes> =
                 worldObjFactory.player(playerPos)
-        view = View(playerPos, player.prototype.size, windowDims)
+        view = View(playerPos, player.prototype.boundaryDims, windowDims)
         worldObjects = WorldObjs(player, mobs, emptyList())
     }
 
@@ -57,7 +57,7 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
     }
 
     fun addPlayerBullet() {
-        val midpoint = worldObjects.player.rect().midpoint()
+        val midpoint = worldObjects.player.rect.midpoint()
         worldObjects.addProjectile(worldObjFactory.createBullet(midpoint,
                 worldObjects.player.rotation))
     }

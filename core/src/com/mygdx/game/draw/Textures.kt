@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.mygdx.game.util.geometry.Dims2
 
+typealias Drawable = DrawableV2.Drawable
+typealias TextureDrawable = DrawableV2.Drawable.DrawableTextureRegion
+typealias AnimationDrawable = DrawableV2.Drawable.DrawableAnimation
+
 interface Textures {
     val rockDrawable: Drawable
     val mudDrawable: Drawable
@@ -58,14 +62,18 @@ class DefaultTextures : Textures {
 
     // Drawables
     override val rockDrawable: Drawable =
-            TextureDrawable(TextureRegion(Texture("rock.png")), Dims2(1f, 1f))
+            TextureDrawable(TextureRegion(Texture("rock.png")), 1.0f) //Dims2
+//    (1f,
+//                    1f))
     override val mudDrawable: Drawable =
-            TextureDrawable(TextureRegion(Texture("mud.png")), Dims2(1f, 1f))
+            TextureDrawable(TextureRegion(Texture("mud.png")), 1.0f)
+//    Dims2(1f,
+//                    1f))
     override val yetiDrawable: Drawable =
-            TextureDrawable(yetiTexture, Dims2(1f, 1f))
+            TextureDrawable(yetiTexture, 1.0f) //Dims2(1f, 1f))
 
     override val playerDrawable: Drawable =
-            TextureDrawable(avatarTexture, Dims2(1f, 1f))
+            TextureDrawable(avatarTexture, 1.0f) //Dims2(1f, 1f))
 //    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(1f, 1f))
 //    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(50f, 50f))
 //    override val playerDrawable = TextureDrawable(arrowTexture, Dims2(1f, 1f))
@@ -73,9 +81,10 @@ class DefaultTextures : Textures {
     //    override val playerDrawable = TextureDrawable(boxedKnightTexture, Dims2(1f, 1f))
 //    override val playerDrawable = AnimationDrawable(knightAnimation, 0.0f, Dims2(1f, 1f))
     override val mountainDrawable =
-            TextureDrawable(mountainTexture, Dims2(65f, 30f))
+            TextureDrawable(mountainTexture, 65f/30f) //Dims2(65f, 30f))
     override val bulletDrawable: Drawable =
-            AnimationDrawable(bulletAnimation, 0.0f, Dims2(1f, 1f))
-    override val grassDrawable = TextureDrawable(grassTexture, Dims2(1f, 1f))
+            AnimationDrawable(bulletAnimation, 0.0f, 1f) //Dims2(1f, 1f))
+    override val grassDrawable = TextureDrawable(grassTexture, 1f) //Dims2(1f,
+//    1f))
 //    override val arrowDrawable = TextureDrawable(arrowTexture, Dims2(1f, 1f))
 }

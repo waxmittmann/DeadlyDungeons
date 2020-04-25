@@ -15,15 +15,15 @@ class WorldObjFactory(private val prototype: Prototypes) {
                      angle: Angle): WorldObj<ProjectileAttributes> {
         val mod = 9
         val vec = Vec2.create(0, mod).rotate(angle)
-        val pos = position.minus(Vec2(prototype.bullet.size.width / 2.0,
-                prototype.bullet.size.height / 2.0))
+        val pos = position.minus(Vec2(prototype.bullet.boundaryDims.width / 2.0,
+                prototype.bullet.boundaryDims.height / 2.0))
         return WorldObj(prototype.bullet,
-                ProjectileAttributes(EightDirection.WEST, vec), pos, Angle(0),
-                DrawState(0.0f))
+                ProjectileAttributes(EightDirection.WEST, vec), pos, Angle(0))
+//                DrawState(0.0f))
     }
 
     fun player(pos: Point2): WorldObj<PlayerAttributes> =
             WorldObj(prototype.player,
-                    PlayerAttributes(EightDirection.NORTH, -100), pos, Angle(0),
-                    DrawState(0f))
+                    PlayerAttributes(EightDirection.NORTH, -100), pos, Angle(0))
+//                    DrawState(0f))
 }

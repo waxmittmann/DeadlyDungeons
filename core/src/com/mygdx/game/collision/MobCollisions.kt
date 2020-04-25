@@ -3,11 +3,16 @@ package com.mygdx.game.collision
 import arrow.core.extensions.list.foldable.nonEmpty
 import com.mygdx.game.entities.MobAttributes
 import com.mygdx.game.entities.World
-import com.mygdx.game.entities.worldobj.WorldObj
+//import com.mygdx.game.entities.worldobj.WorldObj
+//import com.mygdx.game.entities.worldobj.WorldObjV2
+import com.mygdx.game.entities.worldobj.WorldObjV2
 
 private val collisionDetector = CollisionDetector()
 
+typealias WorldObj<S> = WorldObjV2<S>
+
 fun processCollisions(world: World) {
+
     val mobPlayerCollisions: List<WorldObj<MobAttributes>> =
             collisionDetector.check(world.worldObjects.player,
                     world.worldObjects.mobs)

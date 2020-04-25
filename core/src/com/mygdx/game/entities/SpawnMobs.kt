@@ -2,12 +2,14 @@ package com.mygdx.game.entities
 
 import com.mygdx.game.draw.DrawState
 import com.mygdx.game.entities.worldobj.WorldObj
+import com.mygdx.game.entities.worldobj.WorldObjV2
 import com.mygdx.game.util.EightDirectionFns
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Vec2
 
 const val maxMobs = 20
+typealias WorldObj<S> = WorldObjV2<S>
 
 class SpawnMobState(val lastSpawn: Long)
 
@@ -21,7 +23,7 @@ class SpawnMobs(private val prototypes: Prototypes) {
                                     MobAttributes(EightDirectionFns.random(),
                                             Vec2.create(1, 1)),
                                     Point2.random(world.width, world.height),
-                                    Angle(0), DrawState(0f))
+                                    Angle(0)) //, DrawState(0f))
                             world.worldObjects.addMob(mob)
                             SpawnMobState(curTime)
                         } else {

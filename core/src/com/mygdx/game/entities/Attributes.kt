@@ -22,4 +22,3 @@ class ProjectileAttributes(override var orientation: EightDirection,
                            override var velocity: Vec2) : Attributes, HasOrientation, HasVelocity
 
 
-

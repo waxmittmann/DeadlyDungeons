@@ -5,16 +5,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.mygdx.game.actions.old.GameState
 import com.mygdx.game.collision.processCollisions
-import com.mygdx.game.draw.ObjectDrawer
-import com.mygdx.game.draw.Textures
-import com.mygdx.game.draw.singlePixel
-import com.mygdx.game.draw.worldPositionedDrawables
+import com.mygdx.game.draw.*
+import com.mygdx.game.draw.DrawableV2.drawCentered
 import com.mygdx.game.entities.*
-import com.mygdx.game.entities.worldobj.SceneNodeBuilder
-import com.mygdx.game.entities.worldobj.TransformedSceneLeaf
-import com.mygdx.game.entities.worldobj.WrappedMatrix
-import com.mygdx.game.entities.worldobj.getLeaves
+//import com.mygdx.game.entities.worldobj.SceneNodeBuilder
+//import com.mygdx.game.entities.worldobj.TransformedSceneLeaf
+import com.mygdx.game.util.linear.WrappedMatrix
+//import com.mygdx.game.entities.worldobj.getLeaves
 import com.mygdx.game.input.processInput
+import com.mygdx.game.scenegraph.SceneNodeBuilder
+import com.mygdx.game.scenegraph.SceneNodeDrawable
+import com.mygdx.game.scenegraph.TransformedSceneLeaf
+import com.mygdx.game.scenegraph.doTransform
+//import com.mygdx.game.scenegraph.getLeaves
 import com.mygdx.game.util.borderCircle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
@@ -29,7 +32,8 @@ class Game(private val batch: Batch, windowDims: Dims2,
     private var stateTime: Float = 0.0f
     private var spawnState: SpawnMobState = SpawnMobState(0)
 
-    private val hierarchicalPrototypeTest: List<TransformedSceneLeaf>
+//    private val hierarchicalPrototypeTest: List<TransformedSceneLeaf>
+    private val hierarchicalPrototypeTest: List<SceneNodeDrawable>
 
     init {
         // Set up debug cam. Will break on resize.
@@ -44,26 +48,28 @@ class Game(private val batch: Batch, windowDims: Dims2,
         val hp2_1 = SceneNodeBuilder()
 //                .translate(100.0,100.0)
                 .translate(300.0, 300.0)
-                .leaf(t.get(0), Dims2(20.0f, 20.0f)) // 1
+                .leaf(DrawableV2.create(t.get(0)), Dims2(20.0f, 20.0f))
+                // 1
 
                 .rotate(90)
-                .leaf(t.get(1), Dims2(20.0f, 20.0f)) // 3
+                .leaf(DrawableV2.create(t.get(1)), Dims2(20.0f, 20.0f)) // 3
                 .translate(100.0, 0.0)
-                .leaf(t.get(2), Dims2(20.0f, 20.0f)) // )
+                .leaf(DrawableV2.create(t.get(2)), Dims2(20.0f, 20.0f)) // )
                 .pop(2)
 
                 .rotate(-90)
-                .leaf(t.get(3), Dims2(20.0f, 20.0f)) // 3
+                .leaf(DrawableV2.create(t.get(3)), Dims2(20.0f, 20.0f)) // 3
                 .translate(100.0, 0.0)
-                .leaf(t.get(4), Dims2(20.0f, 20.0f)) // 4
+                .leaf(DrawableV2.create(t.get(4)), Dims2(20.0f, 20.0f)) // 4
                 .build()
 
-       hierarchicalPrototypeTest = getLeaves(hp2_1)
+//       hierarchicalPrototypeTest = getLeaves(hp2_1)
+        hierarchicalPrototypeTest = doTransform(hp2_1)
     }
 
     fun drawScene(world: World) {
         // Draw scene.
-        val drawer = ObjectDrawer()
+//        val drawer = ObjectDrawer()
         batch.enableBlending()
         batch.begin()
         val baseWrappedMatrix: WrappedMatrix =
@@ -71,18 +77,28 @@ class Game(private val batch: Batch, windowDims: Dims2,
 
         val shapeDrawer = ShapeDrawer(batch, singlePixel)
         world.view.setProjectionMatrix(batch)
-        drawer.draw(batch, worldPositionedDrawables(world))
+
+        // TODO: Replace
+        draw(batch, world)
+//        drawer.draw(batch, worldPositionedDrawables(world))
+
         borderCircle(shapeDrawer, Color(0f, 1f, 0f, 1f), Color(0f, 0f, 0f, 1f),
                 Point2(world.view.getWindowDims().width / 2.0,
                         world.view.getWindowDims().height / 2.0), 5.0f)
 
 //        val pre = Matrix4(batch.projectionMatrix)
-        for (tp in hierarchicalPrototypeTest) {
+//        for (tp: TransformedSceneLeaf in hierarchicalPrototypeTest) {
+        for (tp: SceneNodeDrawable in hierarchicalPrototypeTest) {
 //            batch.projectionMatrix = baseWrappedMatrix.mul(tp.matrix).getInternals()
-            batch.projectionMatrix =
-                    baseWrappedMatrix.mul(tp.matrix).getInternals()
-            batch.draw(tp.textureRegion, 0f, 0f, tp.rect.widthF,
-                    tp.rect.heightF)
+//            batch.projectionMatrix =
+//                    baseWrappedMatrix.mul(tp.matrix).getInternals()
+            // Not like this.
+//            drawCentered(tp.drawable, tp.dims)
+
+            tp.draw(batch, 0f)
+
+//            batch.draw(tp.textureRegion, 0f, 0f, tp.rect.widthF,
+//                    tp.rect.heightF)
         }
 
 
@@ -92,7 +108,8 @@ class Game(private val batch: Batch, windowDims: Dims2,
         val it = textures.debugCollection.iterator()
 
 //        val m = WrappedMatrix.from(baseWrappedMatrix).trn(200f, 0f).rotate(30)
-        val m = WrappedMatrix().trn(200f, 0f).rotate(30)
+        val m = WrappedMatrix()
+                .trn(200f, 0f).rotate(30)
         batch.projectionMatrix = baseWrappedMatrix.mul(m).getInternals()
         batch.draw(it.next(), 0f, 0f, 100f, 100f)
 
@@ -117,6 +134,10 @@ class Game(private val batch: Batch, windowDims: Dims2,
                 Point2(world.view.getWindowDims().width / 2.0,
                         world.view.getWindowDims().height / 2.0), 5.0f)
         batch.end()
+    }
+
+    private fun draw(batch: Batch, world: World) {
+        doTransform(world.worldObjects.player.prototype).forEach { it.draw(batch, 0f) }
     }
 
     fun updateState(delta: Float, gameState: GameState) {
