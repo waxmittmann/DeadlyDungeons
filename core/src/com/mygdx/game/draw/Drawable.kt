@@ -4,11 +4,9 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Matrix4
 import com.mygdx.game.util.geometry.Dims2
-
-
-class DrawState(val delta: Float)
-
+import com.mygdx.game.util.linear.WrappedMatrix
 
 object DrawableV2 {
     sealed class Drawable {
@@ -33,15 +31,26 @@ object DrawableV2 {
     fun drawCentered(drawable: Drawable,
                      size: Dims2): (batch: Batch, deltaTimeSeconds: Float) -> Unit =
             { batch, deltaTime ->
+                println("Inside draw:\n${batch.projectionMatrix}\n")
+
+
+                val wm = WrappedMatrix(batch.projectionMatrix)
+//                val wm2 = wm.trn(200f, 200f)
+//                batch.projectionMatrix = wm2.get()
+
+                println("Projection. Translate: ${wm.toTranslate()}, Rotate: ${wm.toAngle()}")
+
+//                batch.projectionMatrix = WrappedMatrix().getInternals()
+//                batch.projectionMatrix = WrappedMatrix().get()
+
                 when (drawable) {
                     is Drawable.DrawableTextureRegion -> batch.draw(
                             drawable.texture, -size.width / 2f,
-                            -size.height / 2f, size.width / 2f,
-                            size.height / 2f)
+                            -size.height / 2f, size.width, size.height)
 
                     is Drawable.DrawableTexture -> batch.draw(drawable.texture,
-                            -size.width / 2f, -size.height / 2f,
-                            size.width / 2f, size.height / 2f)
+                            -size.width / 2f, -size.height / 2f, size.width,
+                            size.height)
 
                     is Drawable.DrawableAnimation -> {
                         drawable.timeAt += deltaTime
@@ -49,59 +58,14 @@ object DrawableV2 {
                                 drawable.animation.getKeyFrame(drawable.timeAt,
                                         true)
                         batch.draw(frame, -size.width / 2f, -size.height / 2f,
-                                size.width / 2f, size.height / 2f)
+                                size.width, size.height)
                     }
                 }
             }
 
-    fun create(v: TextureRegion, ratio: Float = 1f): Drawable = Drawable
-            .DrawableTextureRegion(v, ratio)
-    fun create(v: Texture, ratio: Float = 1f): Drawable = Drawable
-            .DrawableTexture(v, ratio)
+    fun create(v: TextureRegion, ratio: Float = 1f): Drawable =
+            Drawable.DrawableTextureRegion(v, ratio)
 
-//    fun draw(sb: Batch, width: Float, height: Float, x: Float, y: Float) {
-//        val frame = animation.getKeyFrame(animTime, true)
-//        draw(sb, frame, x, y, width, height, rotation = rotation,
-//                originX = width / 2, originY = height / 2)
-//    }
-
+    fun create(v: Texture, ratio: Float = 1f): Drawable =
+            Drawable.DrawableTexture(v, ratio)
 }
-
-//
-//interface Drawable {
-//    val dims: Dims2
-//    fun draw(sb: Batch, width: Float, height: Float, x: Float, y: Float,
-//             rotation: Float, drawData: DrawState)
-//}
-//
-//fun draw(sb: Batch, texture: TextureRegion, x: Float, y: Float, width: Float,
-//         height: Float, originX: Float = 0.0f, originY: Float = 0.0f,
-//         scaleX: Float = 1.0f, scaleY: Float = 1.0f, rotation: Float = 0.0f,
-//         clockwise: Boolean = true) {
-//    sb.draw(texture, x, y, originX, originY, width, height, scaleX, scaleY,
-//            90 - rotation, clockwise)
-//}
-//
-//class TextureDrawable(private val texture: TextureRegion,
-//                      override val dims: Dims2) : Drawable {
-//    override fun draw(sb: Batch, width: Float, height: Float, x: Float,
-//                      y: Float, rotation: Float, drawData: DrawState) {
-//        draw(sb, texture, x, y, width, height, rotation = rotation,
-//                originX = width / 2, originY = height / 2)
-//    }
-//}
-//
-//class AnimationDrawable(val animation: Animation<TextureRegion>,
-//                        var animTime: Float,
-//                        override val dims: Dims2) : Drawable {
-//    override fun draw(sb: Batch, width: Float, height: Float, x: Float,
-//                      y: Float, rotation: Float, drawData: DrawState) {
-//        // TODO: DrawData should have the actual delta.
-//        animTime += drawData.delta
-//        animTime += 0.0025f
-//        val frame = animation.getKeyFrame(animTime, true)
-//        draw(sb, frame, x, y, width, height, rotation = rotation,
-//                originX = width / 2, originY = height / 2)
-//    }
-//}
-

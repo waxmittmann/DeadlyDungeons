@@ -1,6 +1,9 @@
 package com.mygdx.game.entities.worldobj
 
+import com.badlogic.gdx.math.Matrix4
 import com.mygdx.game.scenegraph.SceneNode
+import com.mygdx.game.scenegraph.TransformDrawable
+import com.mygdx.game.scenegraph.doTransform
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.AsRect
 import com.mygdx.game.util.geometry.Point2
@@ -31,12 +34,9 @@ class WorldObjV2<S>(val prototype: SceneNode, val attributes: S,
                 .transform(prototype.boundaryDims.asRect)
     }
 
-//    fun doit() {
-//        prototype.
-//
-//    }
-
-
+    val originTransformDrawables: List<TransformDrawable> by lazy {
+        doTransform(prototype)
+    }
 
 //            Rect2(position.x, position.y, prototype.size.width.toDouble(),
 //                    prototype.size.height.toDouble())
@@ -44,5 +44,8 @@ class WorldObjV2<S>(val prototype: SceneNode, val attributes: S,
     override fun toString(): String {
         return "Rect: $rect, Rotation: $rotation"
     }
+
+    fun transformMatrix(): WrappedMatrix =
+        WrappedMatrix().trn(position.asVector()).rotate(rotation)
 }
 

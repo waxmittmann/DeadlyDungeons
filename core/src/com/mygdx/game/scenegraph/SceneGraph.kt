@@ -1,13 +1,13 @@
 package com.mygdx.game.scenegraph
 
-import arrow.core.k
+//import com.mygdx.game.draw.PositionedDrawable
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.mygdx.game.draw.DrawableV2
 import com.mygdx.game.draw.DrawableV2.drawCentered
-//import com.mygdx.game.draw.PositionedDrawable
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Vec2
+import com.mygdx.game.util.linear.ProjectionSaver
 import com.mygdx.game.util.linear.WrappedMatrix
 import java.util.*
 
@@ -41,7 +41,7 @@ class SceneNodeBuilder {
         return this
     }
 
-//    fun build(): SceneNode {
+    //    fun build(): SceneNode {
     fun build(): SceneParent {
         val hp = root
         stack.clear()
@@ -49,8 +49,7 @@ class SceneNodeBuilder {
         return hp
     }
 
-    fun leaf(drawable: DrawableV2.Drawable, size: Dims2):
-            SceneNodeBuilder {
+    fun leaf(drawable: DrawableV2.Drawable, size: Dims2): SceneNodeBuilder {
 //        stack.peek().add(Leaf(drawable, size))
         stack.peek().add(Leaf(DrawableV2.SizedDrawable(drawable, size)))
         return this
@@ -80,8 +79,8 @@ class Rotate(val rotation: Angle,
     }
 
     override val boundaryDims: Dims2 by lazy {
-//        throw java.lang.RuntimeException("Whoops not implemented yet")
-        Dims2(0f, 0f)
+        throw java.lang.RuntimeException("Whoops not implemented yet")
+//        Dims2(0f, 0f)
     }
 }
 
@@ -98,8 +97,7 @@ class Translate(val translation: Vec2,
     }
 }
 
-class TransformedSceneLeaf(val drawable: DrawableV2.Drawable,
-                           val dims: Dims2,
+class TransformedSceneLeaf(val drawable: DrawableV2.Drawable, val dims: Dims2,
                            val matrix: WrappedMatrix)
 
 
@@ -108,81 +106,61 @@ sealed class SceneNodeDrawable {
 
 }
 
-class LeafDrawable(val drawable: DrawableV2.SizedDrawable) :
-        SceneNodeDrawable() {
+class LeafDrawable(
+        val drawable: DrawableV2.SizedDrawable) : SceneNodeDrawable() {
     override fun draw(batch: Batch, delta: Float) {
         drawCentered(drawable)(batch, delta)
     }
 }
 
 class TransformDrawable(val matrix: WrappedMatrix,
-                            val children: List<SceneNodeDrawable>) :
-        SceneNodeDrawable() {
+                        val children: List<SceneNodeDrawable>) : SceneNodeDrawable() {
     override fun draw(batch: Batch, delta: Float) {
-        val orig = WrappedMatrix.from(batch.transformMatrix)
-        batch.transformMatrix = batch.transformMatrix.mul(matrix.getInternals())
+//        val origTransform = WrappedMatrix.from(batch.transformMatrix)
+//        val origProjection = WrappedMatrix.from(batch.projectionMatrix)
+
+        (ProjectionSaver.doThenRestore<Unit>(batch)) {
+//            batch.transformMatrix = batch.transformMatrix.mul(matrix.getInternals())
+            batch.transformMatrix = batch.transformMatrix.mul(matrix.get())
+            for (child: SceneNodeDrawable in children) child.draw(batch, delta)
+        }
+
 //        for (drawable in drawables)
 //            drawCentered(drawable)(batch, delta)
-        for (child: SceneNodeDrawable in children)
-             child.draw(batch, delta)
-        batch.transformMatrix = orig.getInternals()
+//        batch.transformMatrix = origTransform.getInternals()
     }
 
-    fun preMult(newMat: WrappedMatrix) = TransformDrawable(newMat.mul(matrix), children)
+    fun preMult(newMat: WrappedMatrix) =
+            TransformDrawable(newMat.mul(matrix), children)
 }
 
-/*
-      Transform
-        Rotate
-            Transform
-                Leaf
-        Transform
-        Transform
-            Leaf
-        Leaf
-      ---
-    Transform
-        Rotate/Transform
-            Leaf
-        Transform
-            Leaf
-        Leaf
- */
-
-fun doTransform(node: SceneNode): List<TransformDrawable> =
-        when(node) {
-            is Rotate -> doTransform(node)
-            is Translate -> doTransform(node)
-            is Leaf -> listOf(doTransform(node))
-        }
+fun doTransform(node: SceneNode): List<TransformDrawable> = when (node) {
+    is Rotate -> doTransform(node)
+    is Translate -> doTransform(node)
+    is Leaf -> listOf(doTransform(node))
+}
 
 //fun doTransform(trans: SceneParent, curMatrix: WrappedMatrix = WrappedMatrix()): List<TransformDrawable> {
 fun doTransform(leaf: Leaf): TransformDrawable =
-    TransformDrawable(WrappedMatrix(), listOf(LeafDrawable(leaf.drawable)))
+        TransformDrawable(WrappedMatrix(), listOf(LeafDrawable(leaf.drawable)))
 
 fun doTransform(trans: SceneParent): List<TransformDrawable> {
-//    val newMat = when (trans) {
-//        is Rotate -> curMatrix.rotate(trans.rotation)
-//
-//        is Translate ->  curMatrix.trn(trans.translation.xF, trans
-//                .translation.yF)
-//    }
 
-    val transformChildren =
-        trans.children.flatMap { when (it) {
-//            is Rotate -> doTransform(it, newMat)
+    val transformChildren = trans.children.flatMap {
+        when (it) {
             is Rotate -> doTransform(it)
-//            is Translate -> doTransform(it, newMat)
             is Translate -> doTransform(it)
             is Leaf -> listOf()
-        } }
+        }
+    }
 
-    val leafChildren =
-            trans.children.flatMap { when (it) {
-                is Rotate -> listOf()
-                is Translate -> listOf()
-                is Leaf -> listOf(LeafDrawable(it.drawable))
-            } }
+    val leafChildren = trans.children.flatMap {
+        when (it) {
+            is Rotate -> listOf()
+            is Translate -> listOf()
+            is Leaf -> listOf(LeafDrawable(it.drawable))
+        }
+    }
 
     // If there are no children at all, drop transform.
     return if (transformChildren.isEmpty() && leafChildren.isEmpty()) {
@@ -190,7 +168,8 @@ fun doTransform(trans: SceneParent): List<TransformDrawable> {
     } else {
         val newMat = when (trans) {
             is Rotate -> WrappedMatrix().rotate(trans.rotation)
-            is Translate -> WrappedMatrix().trn(trans.translation.xF, trans.translation.yF)
+            is Translate -> WrappedMatrix().trn(trans.translation.xF,
+                    trans.translation.yF)
         }
 
         // If there are no leaf children, merge this transform with its child

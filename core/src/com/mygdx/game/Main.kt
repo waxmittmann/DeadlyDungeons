@@ -38,7 +38,9 @@ class Main : ChangeScreen, Game() {
     private lateinit var screenChanger: ScreenChanger
 
     override fun create() {
+//        val windowWidth = 2400
         val windowWidth = 1200
+//        val windowHeight = 1600
         val windowHeight = 800
 
         VisUI.load(VisUI.SkinScale.X1)

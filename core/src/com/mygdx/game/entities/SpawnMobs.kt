@@ -1,6 +1,5 @@
 package com.mygdx.game.entities
 
-import com.mygdx.game.draw.DrawState
 import com.mygdx.game.entities.worldobj.WorldObj
 import com.mygdx.game.entities.worldobj.WorldObjV2
 import com.mygdx.game.util.EightDirectionFns

@@ -1,7 +1,5 @@
 package com.mygdx.game.entities.terrain
 
-import com.mygdx.game.draw.DrawState
-
 
 class ModulusAllocator(private val selection: List<TerrainPrototype>) {
     fun allocate(r: Int, c: Int): TerrainPrototype {
@@ -35,18 +33,18 @@ fun generateTerrain(rowsNr: Int, colsNr: Int,
                     statelessAllocator: (Int, Int) -> TerrainPrototype): MutableList<MutableList<Terrain>> {
     val terrainMap = (0 until colsNr).map { col ->
         (0 until rowsNr).map { row ->
-            Terrain(statelessAllocator(row, col), DrawState(0f))
+            Terrain(statelessAllocator(row, col))
         }.toMutableList()
     }.toMutableList()
 
     surroundWithWalls?.let { terrain ->
         (0 until colsNr).map { col ->
-            terrainMap[col][0] = Terrain(terrain, DrawState(0f))
-            terrainMap[col][rowsNr - 1] = Terrain(terrain, DrawState(0f))
+            terrainMap[col][0] = Terrain(terrain)
+            terrainMap[col][rowsNr - 1] = Terrain(terrain)
         }
         (0 until rowsNr).map { row ->
-            terrainMap[0][row] = Terrain(terrain, DrawState(0f))
-            terrainMap[colsNr - 1][row] = Terrain(terrain, DrawState(0f))
+            terrainMap[0][row] = Terrain(terrain)
+            terrainMap[colsNr - 1][row] = Terrain(terrain)
         }
     }
 
