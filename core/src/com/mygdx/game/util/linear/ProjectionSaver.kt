@@ -1,9 +1,8 @@
 package com.mygdx.game.util.linear
 
-import arrow.core.None
-import arrow.core.Option
-import arrow.core.Some
+import arrow.core.*
 import com.badlogic.gdx.graphics.g2d.Batch
+import java.lang.RuntimeException
 
 class ProjectionSaver(private val projection: Option<WrappedMatrix>,
                       private val transform: Option<WrappedMatrix>) {
@@ -34,6 +33,16 @@ class ProjectionSaver(private val projection: Option<WrappedMatrix>,
         fun <S>doThenRestore(batch: Batch): (() -> S) -> (S) = { s: () -> S ->
             val saver: ProjectionSaver = saveBoth(batch)
             val sv = s()
+            saver.restore(batch)
+            sv
+        }
+
+        fun <S>doThenRestoreWithTransformProjection(batch: Batch): (
+                (WrappedMatrix, WrappedMatrix) -> S) -> (S) = { s: (WrappedMatrix, WrappedMatrix) ->
+        S ->
+            val saver: ProjectionSaver = saveBoth(batch)
+            val sv = s(saver.transform.getOrElse { throw RuntimeException("!!!") },
+                    saver.projection.getOrElse { throw RuntimeException("!!!!")})
             saver.restore(batch)
             sv
         }

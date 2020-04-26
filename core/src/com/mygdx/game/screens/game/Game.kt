@@ -1,29 +1,25 @@
 package com.mygdx.game.screens.game
 
-//import com.mygdx.game.entities.worldobj.SceneNodeBuilder
-//import com.mygdx.game.entities.worldobj.TransformedSceneLeaf
-//import com.mygdx.game.entities.worldobj.getLeaves
-//import com.mygdx.game.drawing.scenegraph.getLeaves
+
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.mygdx.game.actions.old.GameState
 import com.mygdx.game.collision.processCollisions
 import com.mygdx.game.drawing.DrawableFns
-import com.mygdx.game.textures.Textures
-import com.mygdx.game.util.singlePixel
-import com.mygdx.game.entities.*
-import com.mygdx.game.input.processInput
-import com.mygdx.game.drawing.scenegraph.SceneGraphBuilder
 import com.mygdx.game.drawing.SceneNodeDrawable
 import com.mygdx.game.drawing.doTransform
+import com.mygdx.game.drawing.scenegraph.SceneGraphBuilder
+import com.mygdx.game.entities.*
+import com.mygdx.game.input.processInput
+import com.mygdx.game.textures.Textures
 import com.mygdx.game.util.borderCircle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.linear.ProjectionSaver
 import com.mygdx.game.util.linear.WrappedMatrix
+import com.mygdx.game.util.singlePixel
 import space.earlygrey.shapedrawer.ShapeDrawer
-//import java.lang.Math.floor
 
 class Game(private val batch: Batch, windowDims: Dims2,
            val textures: Textures) {
@@ -34,12 +30,10 @@ class Game(private val batch: Batch, windowDims: Dims2,
     private var stateTime: Float = 0.0f
     private var spawnState: SpawnMobState = SpawnMobState(0)
 
-    //    private val hierarchicalPrototypeTest: List<TransformedSceneLeaf>
     private val hierarchicalPrototypeTest: List<SceneNodeDrawable>
 
     init {
         // Set up debug cam. Will break on resize.
-//        debugCam = OrthographicCamera(windowDims.width, windowDims.height)
         debugCam = OrthographicCamera(windowDims.width, windowDims.height)
         debugCam.translate(windowDims.width / 2.0f, windowDims.height / 2.0f)
         debugCam.update()
@@ -49,10 +43,8 @@ class Game(private val batch: Batch, windowDims: Dims2,
         it.reset()
 
         val hp2_1 = SceneGraphBuilder()
-//                .translate(100.0,100.0)
                 .translate(300.0, 300.0)
                 .leaf(DrawableFns.create(t.get(0)), Dims2(20.0f, 20.0f))
-                // 1
 
                 .rotate(90)
                 .leaf(DrawableFns.create(t.get(1)), Dims2(20.0f, 20.0f)) // 3
@@ -66,26 +58,20 @@ class Game(private val batch: Batch, windowDims: Dims2,
                 .leaf(DrawableFns.create(t.get(4)), Dims2(20.0f, 20.0f)) // 4
                 .build()
 
-//       hierarchicalPrototypeTest = getLeaves(hp2_1)
-        hierarchicalPrototypeTest =
-                doTransform(hp2_1)
+        hierarchicalPrototypeTest = doTransform(hp2_1)
     }
 
     fun drawScene(world: World) {
         // Draw scene.
-//        val drawer = ObjectDrawer()
         batch.enableBlending()
         world.view.setProjectionMatrix(batch)
-//        println("Originally, :\n${batch.projectionMatrix}\n")
         batch.begin()
+        val shapeDrawer = ShapeDrawer(batch, singlePixel)
 
         (ProjectionSaver.doThenRestore<Unit>(batch)) {
-            val baseWrappedMatrix: WrappedMatrix =
-                    WrappedMatrix.from(batch.projectionMatrix)
-
             draw(batch, world)
 
-            val shapeDrawer = ShapeDrawer(batch, singlePixel)
+            // Draw center where player is.
             borderCircle(shapeDrawer, Color(0f, 1f, 0f, 1f),
                     Color(0f, 0f, 0f, 1f),
                     Point2(world.view.getWindowDims().width / 2.0,
@@ -94,11 +80,14 @@ class Game(private val batch: Batch, windowDims: Dims2,
             for (tp: SceneNodeDrawable in hierarchicalPrototypeTest) {
                 tp.draw(batch, 0f)
             }
+        }
 
+        (ProjectionSaver.doThenRestoreWithTransformProjection<Unit>(
+                batch)) { transform, _ ->
             val it = textures.debugCollection.iterator()
 
             val m = WrappedMatrix().translate(200f, 0f).rotate(30)
-            batch.projectionMatrix = baseWrappedMatrix.mul(m).get()
+            batch.projectionMatrix = transform.mul(m).get()
             batch.draw(it.next(), 0f, 0f, 100f, 100f)
 
             val m2 = WrappedMatrix.from(m).translate(0f, 100f)
@@ -120,16 +109,16 @@ class Game(private val batch: Batch, windowDims: Dims2,
     }
 
     private fun draw(batch: Batch, world: World) =
-        (ProjectionSaver.doThenRestore<Unit>(batch)) {
-            // Should never call draw like this on a single one... akes no sense
-            for (worldObjV2 in world.terrainWorldObjects()) {
-                worldObjV2.worldDrawable().draw(batch, 0.0f)
-            }
+            (ProjectionSaver.doThenRestore<Unit>(batch)) {
+                // Should never call draw like this on a single one... akes no sense
+                for (worldObjV2 in world.terrainWorldObjects()) {
+                    worldObjV2.worldDrawable().draw(batch, 0.0f)
+                }
 
-            val playerWo = world.worldObjects.player
-            batch.transformMatrix.mul(playerWo.transformMatrix().get())
-            playerWo.originTransformDrawables.forEach { it.draw(batch, 0f) }
-       }
+                val playerWo = world.worldObjects.player
+                batch.transformMatrix.mul(playerWo.transformMatrix().get())
+                playerWo.originTransformDrawables.forEach { it.draw(batch, 0f) }
+            }
 
     fun updateState(delta: Float, gameState: GameState) {
         stateTime += delta
