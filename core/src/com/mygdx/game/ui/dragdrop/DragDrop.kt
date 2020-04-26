@@ -37,7 +37,7 @@ class DragDrop<S> {
                     actorFn(false))
 
     fun addSource(source: Source) {
-        println("adding source $source")
+//        println("adding source $source")
 
         visDragDrop.addSource(object : DragAndDrop.Source(source.actor) {
             override fun dragStart(event: InputEvent, x: Float, y: Float,
@@ -75,7 +75,7 @@ class DragDrop<S> {
 
             override fun drop(source: DragAndDrop.Source, payload: Payload,
                               x: Float, y: Float, pointer: Int) {
-                println("Accepted: " + payload.getObject() + " " + x + ", " + y)
+//                println("Accepted: " + payload.getObject() + " " + x + ", " + y)
                 target.acceptedFn(payload.`object` as S)
             }
         })

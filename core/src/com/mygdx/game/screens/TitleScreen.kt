@@ -67,7 +67,7 @@ class TitleScreen(params: TitleScreenParams) : Screen {
         startButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 screenChanger.changeScreen(ScreenId.MAIN_GAME)
-                println("Start pressed.")
+//                println("Start pressed.")
             }
         })
 

@@ -27,7 +27,9 @@ class GameScreen(params: GameScreenParams) : Screen {
     init {
 //        val world = createWorld(params.textures, Point2(300.0, 300.0),
 //        val world = createWorld(params.textures, Point2(1200.0, 300.0),
-        val world = createWorld(params.textures, Point2(300.0, 300.0),
+//        val world = createWorld(params.textures, Point2(300.0, 300.0),
+        val world = createWorld(params.textures, Point2(100.0, 100.0),
+//        val world = createWorld(params.textures, Point2(900.0, 900.0),
                 params.windowDims)
         // -600 to 1200
         // -300 to

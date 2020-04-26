@@ -99,9 +99,20 @@ class WrappedMatrix internal constructor(private val rawMatrix: Matrix4 = Matrix
         return Point2(vt.x.toDouble(), vt.y.toDouble())
     }
 
-    fun transform(rect: Rect2): Rect2 =
-            Rect2.fromPoints(transform(rect.lowerLeft()),
+    // Use only if no rotation... make better
+    fun transform(rect: Rect2): Rect2 {
+
+//        println(rawMatrix)
+//        println("LL: ${rect.lowerLeft()}")
+//        println("UR: ${rect.upperRight()}")
+//
+//        println(rawMatrix)
+//        println("LL-T: ${transform(rect.lowerLeft())}")
+//        println("UR-T: ${transform(rect.upperRight())}")
+
+        return Rect2.fromPoints(transform(rect.lowerLeft()),
                     transform(rect.upperRight()))
+    }
 
     fun setTransform(batch: Batch) {
         batch.transformMatrix = Matrix4(rawMatrix)

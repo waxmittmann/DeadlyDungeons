@@ -8,4 +8,8 @@ class Dims2(val width: Float, val height: Float) {
     override fun toString(): String {
         return "($width, $height)"
     }
+
+    fun div(d: Float): Dims2 = Dims2(width / d, height / d)
+
+    fun asVector(): Vec2 = Vec2(width.toDouble(), height.toDouble())
 }

@@ -61,4 +61,8 @@ class Vec2(val x: Double, val y: Double) {
     }
 
     fun perpendicular(): Vec2 = Vec2(-y, x)
+
+    fun div(d: Double): Vec2  = Vec2(x / d, y / d)
+
+    fun invert(): Vec2 = Vec2(-x, -y)
 }

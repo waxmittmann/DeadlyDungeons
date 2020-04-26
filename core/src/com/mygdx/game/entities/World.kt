@@ -8,9 +8,6 @@ import com.mygdx.game.entities.terrain.WeightedAllocator
 import com.mygdx.game.entities.terrain.generateTerrain
 import com.mygdx.game.entities.worldobj.*
 //import com.mygdx.game.entities.worldobj.WorldObj
-import com.mygdx.game.scenegraph.Leaf
-import com.mygdx.game.scenegraph.SimpleDrawable
-import com.mygdx.game.scenegraph.WorldDrawable
 import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.geometry.*
 import kotlin.math.floor
@@ -39,15 +36,14 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
             val tileSize: Int, val terrain: List<List<Terrain>> = listOf(),
             windowDims: Dims2) {
     val view: View
-    val worldObjects: WorldObjs
+    val worldObjects: WorldObjects
 
     init {
         val player: WorldObj<PlayerAttributes> =
                 worldObjFactory.player(playerPos)
-        view = View(playerPos, windowDims)
-//        view = View(playerPos, player.prototype.boundaryDims, Dims2(10000f,
-//                1600f))
-        worldObjects = WorldObjs(player, mobs, emptyList())
+//        view = View(playerPos, windowDims)
+        view = View(player, windowDims)
+        worldObjects = WorldObjects(player, mobs, emptyList())
     }
 
     val width: Int = terrain[0].size * tileSize
@@ -55,8 +51,11 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
 
     // Does not check validity of move
     fun movePlayer(moveBy: Vec2) {
+        println("Moving player: ${worldObjects.player}")
         worldObjects.player.position = worldObjects.player.position.plus(moveBy)
-        view.plus(moveBy)
+        println("Moved player: ${worldObjects.player}")
+        view.updateCamera()
+//        view.plus(moveBy)
     }
 
     fun changePlayerOrientation(direction: EightDirection) {
@@ -64,7 +63,7 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
     }
 
     fun addPlayerBullet() {
-        val midpoint = worldObjects.player.rect.midpoint()
+        val midpoint = worldObjects.player.rect().midpoint()
         worldObjects.addProjectile(worldObjFactory.createBullet(midpoint,
                 worldObjects.player.rotation))
     }
@@ -77,42 +76,37 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
         view.setWindowDims(newDims)
     }
 
-//    fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2): List<DrawableV2.SizedDrawable> {
-//    private fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2): List<WorldSceneNode<TerrainAttributes>> {
-    private fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2):
-        List<WorldAabb<TerrainAttributes>> {
-        return (max(floor(view.ly / tileSize).toInt() - 1,
-                0)..min(
-                floor(view.uy() / tileSize).toInt() + 1, terrains.size - 1)).flatMap { c ->
-            (max(floor(view.lx / tileSize).toInt() - 1, 0)..min(
-                    floor(view.ux() / tileSize).toInt() + 1,
-                    terrains[0].size - 1)).map { r ->
+    private fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2): List<WorldAabb<TerrainAttributes>> {
+        val fromCol = max(floor(view.ly / tileSize).toInt() - 1, 0)
+        val toCol = min(floor(view.uy() / tileSize).toInt() + 1, terrains.size - 1)
+
+        val fromRow = max(floor(view.lx / tileSize).toInt() - 1, 0)
+        val toRow = min(floor(view.ux() / tileSize).toInt() + 1, terrains[0].size - 1)
+
+        return (fromCol..toCol).flatMap { c ->
+            (fromRow..toRow).map { r ->
+//        return (max(floor(view.ly / tileSize).toInt() - 1, 0)..min(floor(view.uy() / tileSize).toInt() + 1, terrains.size - 1)).flatMap { c ->
+//            (max(floor(view.lx / tileSize).toInt() - 1, 0)..min(floor(view.ux() / tileSize).toInt() + 1, terrains[0].size - 1)).map { r ->
 
                 val terrain = terrains[c][r]
 
-                val p = Point2(r * tileSize - view.lx, c * tileSize - view.ly)
+//                val p = Point2(r * tileSize - view.lx, c * tileSize - view.ly)
+                val p =
+                        Point2(r * tileSize.toDouble(), c * tileSize.toDouble())
+                                .minus(Vec2(tileSize / 2.0, tileSize / 2.0))
+
+//                println("$r * $tileSize - ${view.lx}, " +
+//                        "$c * $tileSize - " + "${view.ly}")
+
                 val d = DrawableV2.SizedDrawable(terrain.drawable, Dims2(tileSize.toFloat(),
                         tileSize.toFloat()))
-//                class WorldObjV2<S>(val prototype: SceneNode, val attributes: S,
-//                                    var position: Point2, var rotation: Angle) : AsRect {
-//                WorldSceneNode(Leaf(d), TerrainAttributes(), p)
-                WorldAabb(d, TerrainAttributes(), p)
 
-//                PositionedDrawable(terrain.prototype.drawable, tileSize.toFloat(),
-//                        tileSize.toFloat(), p.x.toFloat(), p.y.toFloat(), 0.0f,
-//                        terrain.drawState)
+                WorldAabb(d, TerrainAttributes(), p)
             }
         }
     }
 
-//    fun terrainDrawable() = terrainPositionedDrawables(terrain, tileSize, view.getViewRect())
-//
-//    fun terrainDrawableAsLeaf(): List<LeafDrawable> =
     fun terrainWorldObjects(): List<WorldObject<TerrainAttributes>> =
             terrainPositionedDrawables(terrain, tileSize, view.getViewRect())
-
-//    fun drawables(): List<SimpleDrawable> =
-//            SimpleDrawable()
-
 }
 

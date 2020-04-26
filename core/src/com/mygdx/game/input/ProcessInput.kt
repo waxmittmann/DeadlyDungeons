@@ -69,7 +69,7 @@ val processKeys: (InputData) -> (Set<Mutation>) = {
 
     // Ui mutations
     if (keys.contains(PressedSpecial.ToggleInventory)) {
-        println("Toggle")
+//        println("Toggle")
         actions.add(toggleInventory())
     }
 

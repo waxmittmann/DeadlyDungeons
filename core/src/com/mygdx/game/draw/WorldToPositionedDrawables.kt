@@ -1,15 +1,5 @@
 package com.mygdx.game.draw
 
-import com.mygdx.game.entities.World
-import com.mygdx.game.entities.terrain.Terrain
-import com.mygdx.game.entities.worldobj.WorldObj
-import com.mygdx.game.entities.worldobj.WorldObjs
-import com.mygdx.game.util.floor
-import com.mygdx.game.util.geometry.Point2
-import com.mygdx.game.util.geometry.Rect2
-import kotlin.math.max
-import kotlin.math.min
-
 /*
 fun worldPositionedDrawables(world: World): List<PositionedDrawable> {
     return terrainPositionedDrawables(world.terrain, world.tileSize,

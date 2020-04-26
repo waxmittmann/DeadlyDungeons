@@ -75,7 +75,7 @@ class Game(private val batch: Batch, windowDims: Dims2,
 //        val drawer = ObjectDrawer()
         batch.enableBlending()
         world.view.setProjectionMatrix(batch)
-        println("Originally, :\n${batch.projectionMatrix}\n")
+//        println("Originally, :\n${batch.projectionMatrix}\n")
         batch.begin()
 
         (ProjectionSaver.doThenRestore<Unit>(batch)) {
@@ -131,8 +131,8 @@ class Game(private val batch: Batch, windowDims: Dims2,
             batch.projectionMatrix = m3.get()
             batch.draw(it.next(), 0f, 0f, 100f, 100f)
 
-            println("10, 10 -> " + m.transform(Point2(10.0, 10.0)))
-            println("0, 0 -> " + m.transform(Point2(0.0, 0.0)))
+//            println("10, 10 -> " + m.transform(Point2(10.0, 10.0)))
+//            println("0, 0 -> " + m.transform(Point2(0.0, 0.0)))
 //        println("0, 0 -> " + m2.transform(Point2(10.0, 10.0)))
 //        println("0, 0 -> " + m3.transform(Point2(10.0, 10.0)))
 

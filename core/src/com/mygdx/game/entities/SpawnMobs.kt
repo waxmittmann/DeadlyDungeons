@@ -1,6 +1,5 @@
 package com.mygdx.game.entities
 
-import com.mygdx.game.entities.worldobj.WorldObj
 import com.mygdx.game.entities.worldobj.WorldSceneNode
 import com.mygdx.game.util.EightDirectionFns
 import com.mygdx.game.util.geometry.Angle
@@ -18,7 +17,7 @@ class SpawnMobs(private val prototypes: Prototypes) {
                 { state ->
                     { curTime ->
                         if (world.worldObjects.mobs.size < maxMobs && state.lastSpawn + 1000 < curTime) {
-                            val mob = WorldObj(prototypes.yeti,
+                            val mob = WorldSceneNode(prototypes.yeti,
                                     MobAttributes(EightDirectionFns.random(),
                                             Vec2.create(1, 1)),
                                     Point2.random(world.width, world.height),

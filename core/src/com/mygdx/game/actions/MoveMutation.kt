@@ -70,7 +70,7 @@ class MoveMutationFactory(val amount: Int) {
 
 fun moveBy(amount: Int, cardinality: FourDirection): WorldMutation = { world ->
     val moveBy = movePlayer(
-            world.worldObjects.player.rect, amount, world.terrain,
+            world.worldObjects.player.rect(), amount, world.terrain,
             { t: Terrain -> t.prototype.attributes.passable },
             amount, cardinality)
     world.movePlayer(moveBy)

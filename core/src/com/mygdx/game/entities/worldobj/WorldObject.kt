@@ -27,7 +27,7 @@ sealed class WorldObject<S> : AsRect {
     abstract var rotation: Angle
 
     override fun toString(): String {
-        return "Rect: $rect, Rotation: $rotation"
+        return "Rect: ${rect()}, Rotation: $rotation"
     }
 
     abstract fun worldDrawable(): WorldDrawable
@@ -36,7 +36,7 @@ sealed class WorldObject<S> : AsRect {
 class WorldAabb<S>(val prototype: DrawableV2.SizedDrawable, override val attributes: S,
                    override var position: Point2, override var rotation: Angle = Angle(0))
     : WorldObject<S>() {
-    override val rect: Rect2 = prototype.size.asRect.plus(position.asVector())
+    override fun rect(): Rect2 = prototype.size.asRect.plus(position.asVector())
 
     override fun worldDrawable(): WorldDrawable = SimpleDrawable(prototype, position)
 }
@@ -46,11 +46,37 @@ class WorldSceneNode<S>(private val prototype: SceneNode, override val attribute
                         override var position: Point2, override var rotation: Angle = Angle(0)) :
         WorldObject<S>() {
 
-    override val rect: Rect2 by lazy {
-        WrappedMatrix()
-                .translate(position.asVector())
-                .rotate(rotation)
-                .transform(prototype.boundaryDims.asRect)
+    override fun rect(): Rect2 {
+        // TODO: not strictly correct since it doesn't rotate the bounding box.
+//        val simp = prototype.boundaryDims.asRect.plus(position.asVector())
+//                .minus(prototype.boundaryDims.div(2f).asVector())
+        val simp = prototype.boundaryDims.asRect
+                .plus(position.asVector())
+                .plus(prototype.boundaryDims.div(2f).asVector())
+
+
+//        val mat = WrappedMatrix()
+//                .translate(position.asVector())
+//                .translate(prototype.boundaryDims.div(2f).asVector().invert())
+//                .rotate(rotation)
+
+//        println("As rect: ${prototype.boundaryDims.asRect}")
+
+//        println("Converting: ${prototype.boundaryDims}")
+//        println("Center: ${position}, Converted: ${mat.transform(position)}")
+//        println("Center: ${position}, Converted: ${mat.transform(Point2(0.0,
+//                0.0))}")
+
+//        println("50/50: (50, 50), Converted: ${mat.transform(Point2(50.0,
+//                50.0))}")
+
+//        val comp = mat.transform(prototype.boundaryDims.asRect)
+//
+//
+//        println("CHECKING!!! $simp $comp")
+//        assert(simp == comp)
+
+        return simp
     }
 
     val originTransformDrawables: List<TransformDrawable> by lazy {

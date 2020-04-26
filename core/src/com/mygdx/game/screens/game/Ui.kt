@@ -55,7 +55,7 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
         fileMenu.addItem(menuItem1)
         menuItem1.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                println("To Menu pressed.")
+//                println("To Menu pressed.")
                 screenChanger.changeScreen(ScreenId.TITLE)
             }
         })
