@@ -4,9 +4,8 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.Matrix4
 import com.mygdx.game.util.geometry.Dims2
-import com.mygdx.game.util.linear.WrappedMatrix
+import com.mygdx.game.util.geometry.Point2
 
 object DrawableV2 {
     sealed class Drawable {
@@ -28,21 +27,46 @@ object DrawableV2 {
             drawable: SizedDrawable): (batch: Batch, deltaTimeSeconds: Float) -> Unit =
             drawCentered(drawable.drawable, drawable.size)
 
+
+    fun drawCentered(drawable: SizedDrawable,
+                     centerPos: Point2): (batch: Batch, deltaTimeSeconds: Float) -> Unit =
+        drawCentered(drawable.drawable, drawable.size, centerPos)
+
+    // Draw centered with center centerPos.
+    fun drawCentered(drawable: Drawable, size: Dims2,
+                     centerPos: Point2): (batch: Batch, deltaTimeSeconds: Float) -> Unit =
+            { batch, deltaTime ->
+                when (drawable) {
+                    is Drawable.DrawableTextureRegion -> batch.draw(
+                            drawable.texture,
+                            centerPos.x.toFloat() - size.width / 2f,
+                            centerPos.y.toFloat() - size.height / 2f,
+                            size.width, size.height)
+
+                    is Drawable.DrawableTexture -> batch.draw(
+                                drawable.texture,
+                                centerPos.x.toFloat() - size.width / 2f,
+                                centerPos.y.toFloat() - size.height / 2f,
+                                size.width, size.height)
+
+                    is Drawable.DrawableAnimation -> {
+                        drawable.timeAt += deltaTime
+                        val frame =
+                                drawable.animation.getKeyFrame(drawable.timeAt,
+                                        true)
+                        batch.draw(
+                                frame,
+                                centerPos.x.toFloat() - size.width / 2f,
+                                centerPos.y.toFloat() - size.height / 2f,
+                                size.width, size.height)
+                    }
+                }
+            }
+
+    // Draw centered at origin. Transform matrix before calling this.
     fun drawCentered(drawable: Drawable,
                      size: Dims2): (batch: Batch, deltaTimeSeconds: Float) -> Unit =
             { batch, deltaTime ->
-                println("Inside draw:\n${batch.projectionMatrix}\n")
-
-
-                val wm = WrappedMatrix(batch.projectionMatrix)
-//                val wm2 = wm.trn(200f, 200f)
-//                batch.projectionMatrix = wm2.get()
-
-                println("Projection. Translate: ${wm.toTranslate()}, Rotate: ${wm.toAngle()}")
-
-//                batch.projectionMatrix = WrappedMatrix().getInternals()
-//                batch.projectionMatrix = WrappedMatrix().get()
-
                 when (drawable) {
                     is Drawable.DrawableTextureRegion -> batch.draw(
                             drawable.texture, -size.width / 2f,

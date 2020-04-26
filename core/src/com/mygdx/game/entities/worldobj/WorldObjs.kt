@@ -4,7 +4,7 @@ import com.mygdx.game.entities.MobAttributes
 import com.mygdx.game.entities.PlayerAttributes
 import com.mygdx.game.entities.ProjectileAttributes
 
-typealias WorldObj<S> = WorldObjV2<S>
+typealias WorldObj<S> = WorldSceneNode<S>
 
 class WorldObjs(val player: WorldObj<PlayerAttributes>,
                 var mobs: List<WorldObj<MobAttributes>>,

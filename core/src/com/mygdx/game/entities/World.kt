@@ -2,21 +2,17 @@ package com.mygdx.game.entities
 
 import com.mygdx.game.draw.DrawableV2
 import com.mygdx.game.draw.Textures
-import com.mygdx.game.entities.WorldObj
 import com.mygdx.game.entities.terrain.Terrain
 import com.mygdx.game.entities.terrain.TerrainAttributes
 import com.mygdx.game.entities.terrain.WeightedAllocator
 import com.mygdx.game.entities.terrain.generateTerrain
-import com.mygdx.game.entities.worldobj.WorldObj
-import com.mygdx.game.entities.worldobj.WorldObjFactory
-import com.mygdx.game.entities.worldobj.WorldObjV2
-import com.mygdx.game.entities.worldobj.WorldObjs
-import com.mygdx.game.scenegraph.LeafDrawable
+import com.mygdx.game.entities.worldobj.*
+//import com.mygdx.game.entities.worldobj.WorldObj
+import com.mygdx.game.scenegraph.Leaf
+import com.mygdx.game.scenegraph.SimpleDrawable
+import com.mygdx.game.scenegraph.WorldDrawable
 import com.mygdx.game.util.EightDirection
-import com.mygdx.game.util.geometry.Dims2
-import com.mygdx.game.util.geometry.Point2
-import com.mygdx.game.util.geometry.Rect2
-import com.mygdx.game.util.geometry.Vec2
+import com.mygdx.game.util.geometry.*
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -82,7 +78,9 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
     }
 
 //    fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2): List<DrawableV2.SizedDrawable> {
-    fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2): List<WorldObjV2<TerrainAttributes>> {
+//    private fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2): List<WorldSceneNode<TerrainAttributes>> {
+    private fun terrainPositionedDrawables(terrains: List<List<Terrain>>, tileSize: Int, view: Rect2):
+        List<WorldAabb<TerrainAttributes>> {
         return (max(floor(view.ly / tileSize).toInt() - 1,
                 0)..min(
                 floor(view.uy() / tileSize).toInt() + 1, terrains.size - 1)).flatMap { c ->
@@ -91,24 +89,14 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
                     terrains[0].size - 1)).map { r ->
 
                 val terrain = terrains[c][r]
-                // Lol this inludes no positiional data.
-                // So useless.
-                // Gotta position it first.../T WFO \
-                // ME WHAT IT do tr oyur you
-                // it' sogos it makes ense like thi.s whta aits it d DO FOR
-                // YOWU!!
-                // Do you wanna in code?
-                // Do you wanna in collision?
-                // Wat it cost ya?
-                // What it do?????????????
-                // WAAAAAAAAAAAAATTTTTT
-                // IT DOOOOOOOOOOOOOO!
-                // wHWTO AIT IT DO !!!!! WHT IT TOT DOD DDODOODOOOO YOOO OH Y
+
                 val p = Point2(r * tileSize - view.lx, c * tileSize - view.ly)
                 val d = DrawableV2.SizedDrawable(terrain.drawable, Dims2(tileSize.toFloat(),
                         tileSize.toFloat()))
-
-                WorldObjV2<TerrainAttributes>()
+//                class WorldObjV2<S>(val prototype: SceneNode, val attributes: S,
+//                                    var position: Point2, var rotation: Angle) : AsRect {
+//                WorldSceneNode(Leaf(d), TerrainAttributes(), p)
+                WorldAabb(d, TerrainAttributes(), p)
 
 //                PositionedDrawable(terrain.prototype.drawable, tileSize.toFloat(),
 //                        tileSize.toFloat(), p.x.toFloat(), p.y.toFloat(), 0.0f,
@@ -117,11 +105,14 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
         }
     }
 
-    fun terrainDrawable(): List<DrawableV2.SizedDrawable> = terrainPositionedDrawables(terrain, tileSize, view.getViewRect())
-
-    fun terrainDrawableAsLeaf(): List<LeafDrawable> =
+//    fun terrainDrawable() = terrainPositionedDrawables(terrain, tileSize, view.getViewRect())
+//
+//    fun terrainDrawableAsLeaf(): List<LeafDrawable> =
+    fun terrainWorldObjects(): List<WorldObject<TerrainAttributes>> =
             terrainPositionedDrawables(terrain, tileSize, view.getViewRect())
-                    .map { LeafDrawable(it) }
+
+//    fun drawables(): List<SimpleDrawable> =
+//            SimpleDrawable()
 
 }
 

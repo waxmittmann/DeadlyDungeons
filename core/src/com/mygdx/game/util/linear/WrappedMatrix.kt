@@ -76,10 +76,10 @@ class WrappedMatrix internal constructor(private val rawMatrix: Matrix4 = Matrix
     fun mul(other: WrappedMatrix): WrappedMatrix =
             WrappedMatrix(Matrix4(rawMatrix).mul(other.rawMatrix))
 
-    fun trn(x: Float, y: Float): WrappedMatrix =
+    fun translate(x: Float, y: Float): WrappedMatrix =
             WrappedMatrix(Matrix4(rawMatrix).translate(x, y, 0f))
 
-    fun trn(v: Vec2): WrappedMatrix =
+    fun translate(v: Vec2): WrappedMatrix =
             WrappedMatrix(Matrix4(rawMatrix).translate(v.xF, v.yF, 0f))
 
     fun rotate(degrees: Int): WrappedMatrix = WrappedMatrix(

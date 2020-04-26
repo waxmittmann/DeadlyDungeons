@@ -13,23 +13,17 @@ import com.mygdx.game.draw.DrawableV2
 import com.mygdx.game.draw.Textures
 import com.mygdx.game.draw.singlePixel
 import com.mygdx.game.entities.*
-import com.mygdx.game.entities.terrain.Terrain
 import com.mygdx.game.input.processInput
-import com.mygdx.game.scenegraph.LeafDrawable
 import com.mygdx.game.scenegraph.SceneNodeBuilder
 import com.mygdx.game.scenegraph.SceneNodeDrawable
 import com.mygdx.game.scenegraph.doTransform
 import com.mygdx.game.util.borderCircle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
-import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.linear.ProjectionSaver
 import com.mygdx.game.util.linear.WrappedMatrix
 import space.earlygrey.shapedrawer.ShapeDrawer
 //import java.lang.Math.floor
-import kotlin.math.floor
-import kotlin.math.max
-import kotlin.math.min
 
 class Game(private val batch: Batch, windowDims: Dims2,
            val textures: Textures) {
@@ -121,12 +115,12 @@ class Game(private val batch: Batch, windowDims: Dims2,
             val it = textures.debugCollection.iterator()
 
 //        val m = WrappedMatrix.from(baseWrappedMatrix).trn(200f, 0f).rotate(30)
-            val m = WrappedMatrix().trn(200f, 0f).rotate(30)
+            val m = WrappedMatrix().translate(200f, 0f).rotate(30)
 //            batch.projectionMatrix = baseWrappedMatrix.mul(m).getInternals()
             batch.projectionMatrix = baseWrappedMatrix.mul(m).get()
             batch.draw(it.next(), 0f, 0f, 100f, 100f)
 
-            val m2 = WrappedMatrix.from(m).trn(0f, 100f)
+            val m2 = WrappedMatrix.from(m).translate(0f, 100f)
 //            batch.projectionMatrix = m2.getInternals()
             batch.projectionMatrix = m2.get()
             batch.draw(it.next(), 0f, 0f, 100f, 100f)
@@ -172,20 +166,16 @@ class Game(private val batch: Batch, windowDims: Dims2,
 
     private fun draw(batch: Batch, world: World) =
         (ProjectionSaver.doThenRestore<Unit>(batch)) {
-
-
             // Should never call draw like this on a single one... akes no sense
-            world.terrainDrawableAsLeaf().forEach {  it.draw(batch, 0f) }
+            for (worldObjV2 in world.terrainWorldObjects()) {
+                worldObjV2.worldDrawable().draw(batch, 0.0f)
+//                worldObjV2.originTransformDrawables.forEach { it.draw(batch, 0f) }
+            }
 
             val playerWo = world.worldObjects.player
             batch.transformMatrix.mul(playerWo.transformMatrix().get())
             playerWo.originTransformDrawables.forEach { it.draw(batch, 0f) }
-
-
-//            terrainPositionedDrawables(world.terrain)
-
-//            world.terrain.
-        }
+       }
 
     fun updateState(delta: Float, gameState: GameState) {
         stateTime += delta

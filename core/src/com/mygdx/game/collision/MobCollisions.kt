@@ -5,11 +5,11 @@ import com.mygdx.game.entities.MobAttributes
 import com.mygdx.game.entities.World
 //import com.mygdx.game.entities.worldobj.WorldObj
 //import com.mygdx.game.entities.worldobj.WorldObjV2
-import com.mygdx.game.entities.worldobj.WorldObjV2
+import com.mygdx.game.entities.worldobj.WorldSceneNode
 
 private val collisionDetector = CollisionDetector()
 
-typealias WorldObj<S> = WorldObjV2<S>
+typealias WorldObj<S> = WorldSceneNode<S>
 
 fun processCollisions(world: World) {
 
