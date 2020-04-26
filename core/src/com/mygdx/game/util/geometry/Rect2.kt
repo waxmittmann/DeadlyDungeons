@@ -58,6 +58,8 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
 
     fun midpoint(): Point2 = Point2(lx + width / 2, ly + height / 2)
 
+    val asDims: Dims2 by lazy { Dims2(widthF, heightF) }
+
     val asPoylgon: Polygon2 by lazy {
         PolygonBuilder(Point2(lx, ly)).moveX(width).moveY(height).moveX(-width)
                 .build()
