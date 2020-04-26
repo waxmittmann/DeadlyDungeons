@@ -1,9 +1,9 @@
 package com.mygdx.game.entities.terrain
 
-import com.mygdx.game.draw.DrawableV2
+import com.mygdx.game.draw.Drawable
 
 class Terrain(val prototype: TerrainPrototype) {
-    val drawable: DrawableV2.Drawable = prototype.drawable
+    val drawable: Drawable = prototype.drawable
 
     override fun toString(): String {
         return prototype.toString()

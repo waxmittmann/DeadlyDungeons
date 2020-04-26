@@ -2,7 +2,8 @@ package com.mygdx.game.entities
 
 //import com.mygdx.game.entities.worldobj.WorldObjPrototype
 //import com.mygdx.game.entities.worldobj.WorldObjPrototypeV2
-import com.mygdx.game.draw.DrawableV2
+import com.mygdx.game.draw.Drawable
+import com.mygdx.game.draw.SizedDrawable
 import com.mygdx.game.draw.Textures
 import com.mygdx.game.entities.terrain.TerrainAttributes
 import com.mygdx.game.entities.terrain.TerrainPrototype
@@ -34,7 +35,7 @@ class Prototypes(val textures: Textures) {
 //    val bullet = AabbPrototype(textures.bulletDrawable, Dims2(25f, 25f))
 
     val player = Leaf(
-            DrawableV2.SizedDrawable(textures.playerDrawable, Dims2(50f, 50f)))
-    val yeti = Leaf(DrawableV2.SizedDrawable(textures.yetiDrawable, Dims2(50f, 50f)))
-    val bullet = Leaf(DrawableV2.SizedDrawable(textures.bulletDrawable, Dims2(25f, 25f)))
+            SizedDrawable(textures.playerDrawable, Dims2(50f, 50f)))
+    val yeti = Leaf(SizedDrawable(textures.yetiDrawable, Dims2(50f, 50f)))
+    val bullet = Leaf(SizedDrawable(textures.bulletDrawable, Dims2(25f, 25f)))
 }

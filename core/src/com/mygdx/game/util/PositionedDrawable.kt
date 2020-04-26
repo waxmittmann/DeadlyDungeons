@@ -1,4 +1,4 @@
-package com.mygdx.game.draw
+package com.mygdx.game.util
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch

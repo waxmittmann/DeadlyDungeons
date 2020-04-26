@@ -1,6 +1,7 @@
 package com.mygdx.game.entities
 
-import com.mygdx.game.draw.DrawableV2
+import com.mygdx.game.draw.Drawable
+import com.mygdx.game.draw.SizedDrawable
 import com.mygdx.game.draw.Textures
 import com.mygdx.game.entities.terrain.Terrain
 import com.mygdx.game.entities.terrain.TerrainAttributes
@@ -85,23 +86,16 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
 
         return (fromCol..toCol).flatMap { c ->
             (fromRow..toRow).map { r ->
-//        return (max(floor(view.ly / tileSize).toInt() - 1, 0)..min(floor(view.uy() / tileSize).toInt() + 1, terrains.size - 1)).flatMap { c ->
-//            (max(floor(view.lx / tileSize).toInt() - 1, 0)..min(floor(view.ux() / tileSize).toInt() + 1, terrains[0].size - 1)).map { r ->
-
                 val terrain = terrains[c][r]
 
-//                val p = Point2(r * tileSize - view.lx, c * tileSize - view.ly)
-                val p =
+                val terrainMidpoint =
                         Point2(r * tileSize.toDouble(), c * tileSize.toDouble())
                                 .minus(Vec2(tileSize / 2.0, tileSize / 2.0))
 
-//                println("$r * $tileSize - ${view.lx}, " +
-//                        "$c * $tileSize - " + "${view.ly}")
-
-                val d = DrawableV2.SizedDrawable(terrain.drawable, Dims2(tileSize.toFloat(),
+                val d = SizedDrawable(terrain.drawable, Dims2(tileSize.toFloat(),
                         tileSize.toFloat()))
 
-                WorldAabb(d, TerrainAttributes(), p)
+                WorldAabb(d, TerrainAttributes(), terrainMidpoint)
             }
         }
     }

@@ -1,8 +1,9 @@
 package com.mygdx.game.scenegraph
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.mygdx.game.draw.DrawableV2
-import com.mygdx.game.draw.DrawableV2.drawCentered
+import com.mygdx.game.draw.Drawable
+import com.mygdx.game.draw.DrawableFns.drawCentered
+import com.mygdx.game.draw.SizedDrawable
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Vec2
@@ -13,7 +14,7 @@ abstract class WorldDrawable {
     abstract fun draw(batch: Batch, delta: Float)
 }
 
-class SimpleDrawable(val drawable: DrawableV2.SizedDrawable, val center: Point2)
+class SimpleDrawable(val drawable: SizedDrawable, val center: Point2)
     : WorldDrawable() {
     override fun draw(batch: Batch, delta: Float) {
         (drawCentered(drawable, center))(batch, delta)
@@ -23,7 +24,7 @@ class SimpleDrawable(val drawable: DrawableV2.SizedDrawable, val center: Point2)
 sealed class SceneNodeDrawable : WorldDrawable()
 
 class LeafDrawable(
-        val drawable: DrawableV2.SizedDrawable) : SceneNodeDrawable() {
+        val drawable: SizedDrawable) : SceneNodeDrawable() {
     // Assumes transforms have occurred to position object correctly.
     override fun draw(batch: Batch, delta: Float) {
         drawCentered(drawable)(batch, delta)

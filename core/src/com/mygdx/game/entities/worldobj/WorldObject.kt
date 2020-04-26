@@ -1,6 +1,7 @@
 package com.mygdx.game.entities.worldobj
 
-import com.mygdx.game.draw.DrawableV2
+import com.mygdx.game.draw.Drawable
+import com.mygdx.game.draw.SizedDrawable
 import com.mygdx.game.scenegraph.*
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.AsRect
@@ -33,7 +34,7 @@ sealed class WorldObject<S> : AsRect {
     abstract fun worldDrawable(): WorldDrawable
 }
 
-class WorldAabb<S>(val prototype: DrawableV2.SizedDrawable, override val attributes: S,
+class WorldAabb<S>(val prototype: SizedDrawable, override val attributes: S,
                    override var position: Point2, override var rotation: Angle = Angle(0))
     : WorldObject<S>() {
     override fun rect(): Rect2 = prototype.size.asRect.plus(position.asVector())

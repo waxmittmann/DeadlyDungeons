@@ -1,6 +1,7 @@
 package com.mygdx.game.scenegraph
 
-import com.mygdx.game.draw.DrawableV2
+import com.mygdx.game.draw.Drawable
+import com.mygdx.game.draw.SizedDrawable
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Vec2
@@ -52,10 +53,10 @@ class SceneNodeBuilder {
         return hp
     }
 
-    fun leaf(drawable: DrawableV2.Drawable, size: Dims2): SceneNodeBuilder {
+    fun leaf(drawable: Drawable, size: Dims2): SceneNodeBuilder {
 //        stack.peek().add(Leaf(drawable, size))
         stack.peek().add(Leaf(
-                DrawableV2.SizedDrawable(
+                SizedDrawable(
                         drawable, size)))
         return this
     }

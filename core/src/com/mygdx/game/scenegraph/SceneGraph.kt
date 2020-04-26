@@ -1,7 +1,6 @@
 package com.mygdx.game.scenegraph
 
-//import com.mygdx.game.draw.PositionedDrawable
-import com.mygdx.game.draw.DrawableV2
+import com.mygdx.game.draw.SizedDrawable
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Vec2
@@ -16,8 +15,7 @@ sealed class SceneParent : SceneNode() {
     abstract val children: List<SceneNode>
 }
 
-//class Leaf(val textureRegion: TextureRegion, val size: Dims2) : SceneNode()
-class Leaf(val drawable: DrawableV2.SizedDrawable) : SceneNode() {
+class Leaf(val drawable: SizedDrawable) : SceneNode() {
     override val boundaryDims: Dims2 = drawable.size
 }
 

@@ -9,9 +9,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.mygdx.game.actions.old.GameState
 import com.mygdx.game.collision.processCollisions
-import com.mygdx.game.draw.DrawableV2
+import com.mygdx.game.draw.Drawable
+import com.mygdx.game.draw.DrawableFns
 import com.mygdx.game.draw.Textures
-import com.mygdx.game.draw.singlePixel
+import com.mygdx.game.util.singlePixel
 import com.mygdx.game.entities.*
 import com.mygdx.game.input.processInput
 import com.mygdx.game.scenegraph.SceneNodeBuilder
@@ -51,19 +52,19 @@ class Game(private val batch: Batch, windowDims: Dims2,
         val hp2_1 = SceneNodeBuilder()
 //                .translate(100.0,100.0)
                 .translate(300.0, 300.0)
-                .leaf(DrawableV2.create(t.get(0)), Dims2(20.0f, 20.0f))
+                .leaf(DrawableFns.create(t.get(0)), Dims2(20.0f, 20.0f))
                 // 1
 
                 .rotate(90)
-                .leaf(DrawableV2.create(t.get(1)), Dims2(20.0f, 20.0f)) // 3
+                .leaf(DrawableFns.create(t.get(1)), Dims2(20.0f, 20.0f)) // 3
                 .translate(100.0, 0.0)
-                .leaf(DrawableV2.create(t.get(2)), Dims2(20.0f, 20.0f)) // )
+                .leaf(DrawableFns.create(t.get(2)), Dims2(20.0f, 20.0f)) // )
                 .pop(2)
 
                 .rotate(-90)
-                .leaf(DrawableV2.create(t.get(3)), Dims2(20.0f, 20.0f)) // 3
+                .leaf(DrawableFns.create(t.get(3)), Dims2(20.0f, 20.0f)) // 3
                 .translate(100.0, 0.0)
-                .leaf(DrawableV2.create(t.get(4)), Dims2(20.0f, 20.0f)) // 4
+                .leaf(DrawableFns.create(t.get(4)), Dims2(20.0f, 20.0f)) // 4
                 .build()
 
 //       hierarchicalPrototypeTest = getLeaves(hp2_1)
@@ -82,7 +83,8 @@ class Game(private val batch: Batch, windowDims: Dims2,
             val baseWrappedMatrix: WrappedMatrix =
                     WrappedMatrix.from(batch.projectionMatrix)
 
-            val shapeDrawer = ShapeDrawer(batch, singlePixel)
+            val shapeDrawer = ShapeDrawer(batch,
+                    singlePixel)
 
             // TODO: Replace
             draw(batch, world)
@@ -93,19 +95,8 @@ class Game(private val batch: Batch, windowDims: Dims2,
                     Point2(world.view.getWindowDims().width / 2.0,
                             world.view.getWindowDims().height / 2.0), 5.0f)
 
-//        val pre = Matrix4(batch.projectionMatrix)
-//        for (tp: TransformedSceneLeaf in hierarchicalPrototypeTest) {
             for (tp: SceneNodeDrawable in hierarchicalPrototypeTest) {
-//            batch.projectionMatrix = baseWrappedMatrix.mul(tp.matrix).getInternals()
-//            batch.projectionMatrix =
-//                    baseWrappedMatrix.mul(tp.matrix).getInternals()
-                // Not like this.
-//            drawCentered(tp.drawable, tp.dims)
-
                 tp.draw(batch, 0f)
-
-//            batch.draw(tp.textureRegion, 0f, 0f, tp.rect.widthF,
-//                    tp.rect.heightF)
             }
 
 
