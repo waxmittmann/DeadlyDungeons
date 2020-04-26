@@ -1,9 +1,12 @@
-package com.mygdx.game.draw
+package com.mygdx.game.textures
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.mygdx.game.drawing.Drawable
+import com.mygdx.game.drawing.DrawableAnimation
+import com.mygdx.game.drawing.DrawableFns
 
 interface Textures {
     val rockDrawable: Drawable
@@ -67,6 +70,7 @@ class DefaultTextures : Textures {
     override val mountainDrawable =
             DrawableFns.create(mountainTexture, 65f/30f)
     override val bulletDrawable: Drawable =
-            DrawableAnimation(bulletAnimation, 0.0f, 1f)
+            DrawableAnimation(
+                    bulletAnimation, 0.0f, 1f)
     override val grassDrawable = DrawableFns.create(grassTexture, 1f)
 }

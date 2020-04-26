@@ -1,13 +1,13 @@
-package com.mygdx.game.scenegraph
+package com.mygdx.game.drawing.scenegraph
 
-import com.mygdx.game.draw.Drawable
-import com.mygdx.game.draw.SizedDrawable
+import com.mygdx.game.drawing.Drawable
+import com.mygdx.game.drawing.SizedDrawable
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Vec2
 import java.util.*
 
-class SceneNodeBuilder {
+class SceneGraphBuilder {
     private val root: Translate =
             Translate(
                     Vec2(0.0,
@@ -19,7 +19,7 @@ class SceneNodeBuilder {
         stack.push(root)
     }
 
-    fun translate(x: Double, y: Double): SceneNodeBuilder {
+    fun translate(x: Double, y: Double): SceneGraphBuilder {
         val t = Translate(
                 Vec2(x, y))
         stack.peek().add(t)
@@ -27,7 +27,7 @@ class SceneNodeBuilder {
         return this
     }
 
-    fun rotate(degrees: Int): SceneNodeBuilder {
+    fun rotate(degrees: Int): SceneGraphBuilder {
         val t = Rotate(
                 Angle.create(
                         degrees))
@@ -36,7 +36,7 @@ class SceneNodeBuilder {
         return this
     }
 
-    fun pop(nr: Int = 1): SceneNodeBuilder {
+    fun pop(nr: Int = 1): SceneGraphBuilder {
         if (stack.size <= nr) {
             throw RuntimeException("Cannot pop root")
         }
@@ -44,7 +44,6 @@ class SceneNodeBuilder {
         return this
     }
 
-    //    fun build(): SceneNode {
     fun build(): SceneParent {
         val hp = root
         stack.clear()
@@ -53,8 +52,7 @@ class SceneNodeBuilder {
         return hp
     }
 
-    fun leaf(drawable: Drawable, size: Dims2): SceneNodeBuilder {
-//        stack.peek().add(Leaf(drawable, size))
+    fun leaf(drawable: Drawable, size: Dims2): SceneGraphBuilder {
         stack.peek().add(Leaf(
                 SizedDrawable(
                         drawable, size)))

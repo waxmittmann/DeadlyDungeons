@@ -1,4 +1,4 @@
-package com.mygdx.game.draw
+package com.mygdx.game.textures
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -47,7 +47,6 @@ class TextureCollection(texture: Texture, val cols: Int, val rows: Int) {
         if (c < 0 || c >= cols || r < 0 || r >= rows)
             throw RuntimeException("$r $c is out of bounds (${cols-1}, " +
                     "${rows-1})")
-//        println("Returning $r $c")
         return subTextures[r][c]
     }
 

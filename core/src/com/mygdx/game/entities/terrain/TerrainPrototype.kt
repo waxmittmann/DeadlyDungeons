@@ -1,6 +1,6 @@
 package com.mygdx.game.entities.terrain
 
-import com.mygdx.game.draw.Drawable
+import com.mygdx.game.drawing.Drawable
 
 
 class TerrainAttributes(val passable: Boolean = true) {

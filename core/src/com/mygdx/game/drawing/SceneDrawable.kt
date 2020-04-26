@@ -1,9 +1,8 @@
-package com.mygdx.game.scenegraph
+package com.mygdx.game.drawing
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.mygdx.game.draw.Drawable
-import com.mygdx.game.draw.DrawableFns.drawCentered
-import com.mygdx.game.draw.SizedDrawable
+import com.mygdx.game.drawing.scenegraph.*
+import com.mygdx.game.drawing.DrawableFns.drawCentered
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Vec2
@@ -26,6 +25,8 @@ sealed class SceneNodeDrawable : WorldDrawable()
 class LeafDrawable(
         val drawable: SizedDrawable) : SceneNodeDrawable() {
     // Assumes transforms have occurred to position object correctly.
+    // TODO: This should be protected. LeafDrawable should probably not count
+    // as a WorldDrawable.
     override fun draw(batch: Batch, delta: Float) {
         drawCentered(drawable)(batch, delta)
     }
@@ -46,12 +47,13 @@ class TransformDrawable(val matrix: WrappedMatrix,
                     newMat.mul(matrix), children)
 }
 
-fun translateDrawable(vec: Vec2, children: List<SceneNodeDrawable>):
-        SceneNodeDrawable = TransformDrawable(WrappedMatrix().translate(vec), children)
+fun translateDrawable(vec: Vec2, children: List<SceneNodeDrawable>): SceneNodeDrawable =
+        TransformDrawable(
+                WrappedMatrix().translate(vec), children)
 
-fun rotateDrawable(angle: Angle, children: List<SceneNodeDrawable>):
-        SceneNodeDrawable = TransformDrawable(WrappedMatrix().rotate(angle),
-        children)
+fun rotateDrawable(angle: Angle, children: List<SceneNodeDrawable>): SceneNodeDrawable =
+        TransformDrawable(
+                WrappedMatrix().rotate(angle), children)
 
 fun doTransform(node: SceneNode): List<TransformDrawable> = when (node) {
     is Rotate -> doTransform(

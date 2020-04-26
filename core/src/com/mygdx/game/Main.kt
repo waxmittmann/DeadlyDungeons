@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.kotcrab.vis.ui.VisUI
-import com.mygdx.game.draw.DefaultTextures
+import com.mygdx.game.textures.DefaultTextures
 import com.mygdx.game.screens.game.GameScreen
 import com.mygdx.game.screens.game.GameScreenParams
 import com.mygdx.game.screens.TitleScreen
@@ -38,9 +38,7 @@ class Main : ChangeScreen, Game() {
     private lateinit var screenChanger: ScreenChanger
 
     override fun create() {
-//        val windowWidth = 2400
         val windowWidth = 1200
-//        val windowHeight = 1600
         val windowHeight = 800
 
         VisUI.load(VisUI.SkinScale.X1)

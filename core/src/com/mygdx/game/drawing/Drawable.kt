@@ -1,4 +1,4 @@
-package com.mygdx.game.draw
+package com.mygdx.game.drawing
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
@@ -21,23 +21,23 @@ class DrawableAnimation(val animation: Animation<TextureRegion>,
 class SizedDrawable(val drawable: Drawable, val size: Dims2)
 
 object DrawableFns {
-//    fun from(texture: TextureRegion, ratio: Float) = DrawableTextureRegion(texture, ratio)
-//    fun from(texture: Texture, ratio: Float) = DrawableTexture(texture, ratio)
-
     fun create(v: TextureRegion, ratio: Float = 1f): Drawable =
-            DrawableTextureRegion(v, ratio)
+            DrawableTextureRegion(v,
+                    ratio)
 
     fun create(v: Texture, ratio: Float = 1f): Drawable =
             DrawableTexture(v, ratio)
 
     fun drawCentered(
             drawable: SizedDrawable): (batch: Batch, deltaTimeSeconds: Float) -> Unit =
-            drawCentered(drawable.drawable, drawable.size)
+            drawCentered(
+                    drawable.drawable, drawable.size)
 
 
     fun drawCentered(drawable: SizedDrawable,
                      centerPos: Point2): (batch: Batch, deltaTimeSeconds: Float) -> Unit =
-            drawCentered(drawable.drawable, drawable.size, centerPos)
+            drawCentered(
+                    drawable.drawable, drawable.size, centerPos)
 
     // Draw centered with center centerPos.
     fun drawCentered(drawable: Drawable, size: Dims2,

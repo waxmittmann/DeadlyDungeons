@@ -1,8 +1,7 @@
 package com.mygdx.game.entities
 
-import com.mygdx.game.draw.Drawable
-import com.mygdx.game.draw.SizedDrawable
-import com.mygdx.game.draw.Textures
+import com.mygdx.game.drawing.SizedDrawable
+import com.mygdx.game.textures.Textures
 import com.mygdx.game.entities.terrain.Terrain
 import com.mygdx.game.entities.terrain.TerrainAttributes
 import com.mygdx.game.entities.terrain.WeightedAllocator
@@ -92,8 +91,9 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
                         Point2(r * tileSize.toDouble(), c * tileSize.toDouble())
                                 .minus(Vec2(tileSize / 2.0, tileSize / 2.0))
 
-                val d = SizedDrawable(terrain.drawable, Dims2(tileSize.toFloat(),
-                        tileSize.toFloat()))
+                val d = SizedDrawable(
+                        terrain.drawable,
+                        Dims2(tileSize.toFloat(), tileSize.toFloat()))
 
                 WorldAabb(d, TerrainAttributes(), terrainMidpoint)
             }

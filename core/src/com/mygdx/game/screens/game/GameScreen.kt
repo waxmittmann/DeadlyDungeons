@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.mygdx.game.ScreenChanger
 import com.mygdx.game.actions.old.GameState
-import com.mygdx.game.draw.Textures
+import com.mygdx.game.textures.Textures
 import com.mygdx.game.entities.UiState
 import com.mygdx.game.entities.createWorld
 import com.mygdx.game.util.geometry.Dims2
@@ -25,14 +25,8 @@ class GameScreen(params: GameScreenParams) : Screen {
 
     // TODO: Hmm probably create the world in game
     init {
-//        val world = createWorld(params.textures, Point2(300.0, 300.0),
-//        val world = createWorld(params.textures, Point2(1200.0, 300.0),
-//        val world = createWorld(params.textures, Point2(300.0, 300.0),
         val world = createWorld(params.textures, Point2(100.0, 100.0),
-//        val world = createWorld(params.textures, Point2(900.0, 900.0),
                 params.windowDims)
-        // -600 to 1200
-        // -300 to
         state = GameState(world, UiState.create())
         ui = Ui(batch, params.screenChanger, params.textures)
         game = Game(batch, params.windowDims, params.textures)

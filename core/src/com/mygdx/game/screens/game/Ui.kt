@@ -14,7 +14,7 @@ import com.kotcrab.vis.ui.widget.MenuItem
 import com.kotcrab.vis.ui.widget.VisTable
 import com.mygdx.game.ScreenChanger
 import com.mygdx.game.ScreenId
-import com.mygdx.game.draw.Textures
+import com.mygdx.game.textures.Textures
 import com.mygdx.game.entities.UiState
 import com.mygdx.game.ui.dragdrop.ActorFactory
 import com.mygdx.game.ui.dragdrop.DragDrop

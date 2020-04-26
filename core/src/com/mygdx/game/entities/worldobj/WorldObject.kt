@@ -1,8 +1,8 @@
 package com.mygdx.game.entities.worldobj
 
-import com.mygdx.game.draw.Drawable
-import com.mygdx.game.draw.SizedDrawable
-import com.mygdx.game.scenegraph.*
+import com.mygdx.game.drawing.*
+import com.mygdx.game.drawing.SizedDrawable
+import com.mygdx.game.drawing.scenegraph.*
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.AsRect
 import com.mygdx.game.util.geometry.Point2
@@ -39,7 +39,9 @@ class WorldAabb<S>(val prototype: SizedDrawable, override val attributes: S,
     : WorldObject<S>() {
     override fun rect(): Rect2 = prototype.size.asRect.plus(position.asVector())
 
-    override fun worldDrawable(): WorldDrawable = SimpleDrawable(prototype, position)
+    override fun worldDrawable(): WorldDrawable =
+            SimpleDrawable(prototype,
+                    position)
 }
 
 
@@ -88,9 +90,10 @@ class WorldSceneNode<S>(private val prototype: SceneNode, override val attribute
         WrappedMatrix().translate(position.asVector()).rotate(rotation)
 
     override fun worldDrawable(): WorldDrawable =
-        translateDrawable(position.asVector(), listOf(
-                rotateDrawable(rotation, originTransformDrawables)
-        ))
+            translateDrawable(
+                    position.asVector(),
+                    listOf(rotateDrawable(
+                            rotation, originTransformDrawables)))
 
 }
 

@@ -1,13 +1,5 @@
 package com.mygdx.game.entities.worldobj
 
-import arrow.core.k
-import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.mygdx.game.draw.Drawable
-import com.mygdx.game.scenegraph.SceneNode
-import com.mygdx.game.util.geometry.*
-import com.mygdx.game.util.linear.WrappedMatrix
-import java.util.*
-
 
 //class WorldObjPrototype(val name: String, val drawable: Drawable,
 //                        val size: Dims2) //: HierarchicalPrototype
