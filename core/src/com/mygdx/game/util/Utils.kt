@@ -48,8 +48,6 @@ class Utils(private val tileSize: Int) {
 
     fun rectToIndex(rect: Rect2): Indices {
         val l = pointToIndex(rect.lowerLeft(), floor = true)
-//        val u = pointToIndex(rect.upperRight().minus(Vec2(1.0, 1.0)), floor = false)
-//        val l = pointToIndex(rect.lowerLeft(), floor =false)
         val u = pointToIndex(rect.upperRight().minus(Vec2(1.0, 1.0)),
                 floor = true)
         return Indices(l.first..u.first, l.second..u.second)

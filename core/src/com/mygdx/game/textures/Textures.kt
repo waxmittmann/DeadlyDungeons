@@ -37,6 +37,7 @@ class DefaultTextures : Textures {
                     Animation.PlayMode.LOOP)
 
     // Textures
+    val singlePixel: TextureRegion = TextureRegion(Texture("singlepixel.png"))
     private val avatarTexture: TextureRegion =
             TextureRegion(Texture("Avatar.png"))
     private val yetiTexture: TextureRegion =
@@ -63,14 +64,12 @@ class DefaultTextures : Textures {
             DrawableFns.create(Texture("rock.png"), 1.0f) //Dims2
     override val mudDrawable: Drawable =
             DrawableFns.create(Texture("mud.png"), 1.0f)
-    override val yetiDrawable: Drawable =
-            DrawableFns.create(yetiTexture, 1.0f)
+    override val yetiDrawable: Drawable = DrawableFns.create(yetiTexture, 1.0f)
     override val playerDrawable: Drawable =
             DrawableFns.create(avatarTexture, 1.0f)
     override val mountainDrawable =
-            DrawableFns.create(mountainTexture, 65f/30f)
+            DrawableFns.create(mountainTexture, 65f / 30f)
     override val bulletDrawable: Drawable =
-            DrawableAnimation(
-                    bulletAnimation, 0.0f, 1f)
+            DrawableAnimation(bulletAnimation, 0.0f, 1f)
     override val grassDrawable = DrawableFns.create(grassTexture, 1f)
 }
