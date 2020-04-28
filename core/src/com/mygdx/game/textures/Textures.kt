@@ -19,6 +19,7 @@ interface Textures {
 
     val mountainTexture: TextureRegion
     val bagTexture: TextureRegion
+    val singlePixel: TextureRegion
 
     val debugCollection: TextureCollection
     val itemsCollection: TextureCollection
@@ -37,7 +38,7 @@ class DefaultTextures : Textures {
                     Animation.PlayMode.LOOP)
 
     // Textures
-    val singlePixel: TextureRegion = TextureRegion(Texture("singlepixel.png"))
+    override val singlePixel: TextureRegion = TextureRegion(Texture("singlepixel.png"))
     private val avatarTexture: TextureRegion =
             TextureRegion(Texture("Avatar.png"))
     private val yetiTexture: TextureRegion =

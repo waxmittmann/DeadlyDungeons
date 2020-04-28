@@ -13,7 +13,6 @@ import com.mygdx.game.util.borderCircle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.linear.ProjectionSaver
-import com.mygdx.game.util.singlePixel
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 class Game(private val batch: Batch, windowDims: Dims2,
@@ -24,7 +23,7 @@ class Game(private val batch: Batch, windowDims: Dims2,
             OrthographicCamera(windowDims.width, windowDims.height)
     private var stateTime: Float = 0.0f
     private var spawnState: SpawnMobState = SpawnMobState(0)
-    val shapeDrawer = ShapeDrawer(batch, singlePixel)
+    val shapeDrawer = ShapeDrawer(batch, textures.singlePixel)
 
     init {
         // Set up debug cam. Will break on resize.
@@ -51,7 +50,7 @@ class Game(private val batch: Batch, windowDims: Dims2,
                 world.view.setProjectionMatrix(batch)
 
                 // Draw terrain
-                for (worldObjV2 in world.terrainWorldObjects()) {
+                for (worldObjV2 in WorldFns.terrainWorldObjects(world)) {
                     worldObjV2.worldDrawable().draw(batch, 0.0f)
                 }
 
@@ -74,7 +73,7 @@ class Game(private val batch: Batch, windowDims: Dims2,
         stateTime += delta
         val world = gameState.world
 
-        world.setTime((stateTime * 1000).toLong())
+        world.timeNow = (stateTime * 1000).toLong()
         spawnState = mobSpawner.spawnMobs(world)(spawnState)(
                 (stateTime * 1000).toLong())
         processInput(gameState)
@@ -84,7 +83,8 @@ class Game(private val batch: Batch, windowDims: Dims2,
 
     fun resize(world: World, width: Int, height: Int) {
         // Update world view
-        world.updateWindowSize(Dims2(width.toFloat(), height.toFloat()))
+        WorldFns.updateWindowSize(world, Dims2(width.toFloat(), height
+                .toFloat()))
     }
 
     fun dispose() {}

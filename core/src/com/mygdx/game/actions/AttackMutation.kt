@@ -5,6 +5,7 @@ import arrow.core.Some
 import arrow.core.k
 import com.mygdx.game.collision.CollisionDetector
 import com.mygdx.game.entities.World
+import com.mygdx.game.entities.WorldFns
 
 fun <S> noop(): (World, S, Long) -> S = { _, s, _ -> s }
 
@@ -72,7 +73,7 @@ fun attackTask(start: Long): TimedTask<Unit> {
 val attackMutation: Mutation = fromWorld { world ->
     if (world.worldObjects.player.attributes.lastShot + 200 < world.timeNow) {
         world.worldObjects.player.attributes.lastShot = world.timeNow
-        world.addPlayerBullet()
+        WorldFns.addPlayerBullet(world)
 //        performPlayerAttack();
     }
 }
