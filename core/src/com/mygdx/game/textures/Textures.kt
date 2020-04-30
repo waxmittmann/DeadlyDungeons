@@ -16,6 +16,7 @@ interface Textures {
     val mountainDrawable: Drawable
     val bulletDrawable: Drawable
     val grassDrawable: Drawable
+    val swordDrawable: Drawable
 
     val mountainTexture: TextureRegion
     val bagTexture: TextureRegion
@@ -51,6 +52,8 @@ class DefaultTextures : Textures {
             TextureRegion(Texture("Arrow.png"))
     private val boxedKnightTexture: TextureRegion =
             TextureRegion(Texture("BoxedKnight.png"))
+    private val swordTexture: TextureRegion =
+            TextureRegion(Texture("sword.png"))
 
     override val bagTexture: TextureRegion = TextureRegion(Texture("Bag.png"))
 
@@ -72,5 +75,7 @@ class DefaultTextures : Textures {
             DrawableFns.create(mountainTexture, 65f / 30f)
     override val bulletDrawable: Drawable =
             DrawableAnimation(bulletAnimation, 0.0f, 1f)
-    override val grassDrawable = DrawableFns.create(grassTexture, 1f)
+    override val grassDrawable = DrawableFns.create(grassTexture, 0.65f)
+//    override val swordDrawable = DrawableFns.create(swordTexture, 0.65f)
+    override val swordDrawable = DrawableFns.create(singlePixel, 0.65f)
 }

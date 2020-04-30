@@ -7,30 +7,31 @@ import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Vec2
 import java.util.*
 
-class SceneGraphBuilder {
-    private val root: Translate =
-            Translate(
-                    Vec2(0.0,
-                            0.0))
-    private var stack: Stack<SceneParent> =
-            Stack()
+class SceneGraphBuilder() {
+    private var root: Translate = Translate(Vec2(0.0, 0.0), mutableListOf(),
+            getNextId())
+    private var stack: Stack<SceneParent> = Stack()
+    private var nextId = 0
 
     init {
         stack.push(root)
     }
 
-    fun translate(x: Double, y: Double): SceneGraphBuilder {
-        val t = Translate(
-                Vec2(x, y))
+    private fun getNextId(): String {
+        val id = nextId
+        nextId += 1
+        return id.toString()
+    }
+
+    fun translate(x: Double, y: Double, id: String = getNextId()): SceneGraphBuilder {
+        val t = Translate(Vec2(x, y), mutableListOf(), id)
         stack.peek().add(t)
         stack.push(t)
         return this
     }
 
-    fun rotate(degrees: Int): SceneGraphBuilder {
-        val t = Rotate(
-                Angle.create(
-                        degrees))
+    fun rotate(degrees: Int, id: String = getNextId()): SceneGraphBuilder {
+        val t = Rotate(Angle.create(degrees),  mutableListOf(), id)
         stack.peek().add(t)
         stack.push(t)
         return this
@@ -44,18 +45,16 @@ class SceneGraphBuilder {
         return this
     }
 
-    fun build(): SceneParent {
+    fun build(id: String = getNextId()): SceneParent {
         val hp = root
         stack.clear()
-        stack.push(Translate(
-                Vec2(0.0, 0.0)))
+        root = Translate(Vec2(0.0, 0.0), mutableListOf(), id)
+        stack.push(root)
         return hp
     }
 
-    fun leaf(drawable: Drawable, size: Dims2): SceneGraphBuilder {
-        stack.peek().add(Leaf(
-                SizedDrawable(
-                        drawable, size)))
+    fun leaf(drawable: Drawable, size: Dims2, id: String = getNextId()): SceneGraphBuilder {
+        stack.peek().add(Leaf(SizedDrawable(drawable, size), id))
         return this
     }
 }

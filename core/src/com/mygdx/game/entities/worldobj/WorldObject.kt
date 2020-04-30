@@ -53,7 +53,7 @@ class WorldSceneNode<S>(private val prototype: SceneNode, override val attribute
         // TODO: not strictly correct since it doesn't rotate the bounding box.
 //        val simp = prototype.boundaryDims.asRect.plus(position.asVector())
 //                .minus(prototype.boundaryDims.div(2f).asVector())
-        val simp = prototype.boundaryDims.asRect
+        val smp = prototype.boundaryDims.asRect
                 .plus(position.asVector())
                 .plus(prototype.boundaryDims.div(2f).asVector())
 
@@ -93,7 +93,8 @@ class WorldSceneNode<S>(private val prototype: SceneNode, override val attribute
             translateDrawable(
                     position.asVector(),
                     listOf(rotateDrawable(
-                            rotation, originTransformDrawables)))
+                            rotation, originTransformDrawables, "noid")),
+                    "noid")
 
 }
 

@@ -1,19 +1,14 @@
 package com.mygdx.game.entities
 
-//import com.mygdx.game.entities.worldobj.WorldObjPrototype
-//import com.mygdx.game.entities.worldobj.WorldObjPrototypeV2
 import com.mygdx.game.drawing.SizedDrawable
 import com.mygdx.game.textures.Textures
 import com.mygdx.game.entities.terrain.TerrainAttributes
 import com.mygdx.game.entities.terrain.TerrainPrototype
 import com.mygdx.game.drawing.scenegraph.Leaf
-//import com.mygdx.game.entities.worldobj.AabbPrototype
-//import com.mygdx.game.entities.worldobj.AabbWorldObject
+import com.mygdx.game.drawing.scenegraph.SceneGraphBuilder
+import com.mygdx.game.drawing.scenegraph.SceneParent
 import com.mygdx.game.util.geometry.Dims2
 
-//typealias WorldObj<S> = WorldObjV2<S>
-
-//typealias  WorldObjPrototype = WorldObjPrototypeV2
 
 class Prototypes(val textures: Textures) {
     // Terrain prototypes.
@@ -23,18 +18,19 @@ class Prototypes(val textures: Textures) {
             TerrainAttributes(false))
 
     // GameObj prototypes.
-//    val player = WorldObjPrototype("player", textures.playerDrawable,
-//            Dims2(50f, 50f))
-//    val yeti = WorldObjPrototype("yeti", textures.yetiDrawable, Dims2(50f, 50f))
-//    val bullet = WorldObjPrototype("bullet", textures.bulletDrawable,
-//            Dims2(25f, 25f))
-
-//    val player = AabbPrototype(textures.playerDrawable, Dims2(50f, 50f))
-//    val yeti = AabbPrototype(textures.yetiDrawable, Dims2(50f, 50f))
-//    val bullet = AabbPrototype(textures.bulletDrawable, Dims2(25f, 25f))
-
     val player = Leaf(SizedDrawable(
             textures.playerDrawable, Dims2(50f, 50f)))
+
+    val playerWithSword: SceneParent by lazy {
+       SceneGraphBuilder()
+               .leaf(textures.playerDrawable, Dims2(50f, 50f))
+               .translate(-18.0, 0.0)
+               .rotate(-30)
+               .translate(0.0, 100.0)
+               .leaf(textures.swordDrawable, Dims2(5f, 200f))
+               .build()
+    }
+
     val yeti = Leaf(SizedDrawable(
             textures.yetiDrawable, Dims2(50f, 50f)))
     val bullet = Leaf(SizedDrawable(

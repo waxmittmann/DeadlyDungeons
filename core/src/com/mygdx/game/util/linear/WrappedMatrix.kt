@@ -80,4 +80,8 @@ class WrappedMatrix internal constructor(private val rawMatrix: Matrix4 = Matrix
     fun toScale(): Vec2 {
         return Vec2(rawMatrix.scaleX.toDouble(), rawMatrix.scaleY.toDouble())
     }
+
+    override fun toString(): String {
+        return rawMatrix.toString()
+    }
 }

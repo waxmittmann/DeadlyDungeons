@@ -12,7 +12,7 @@ sealed class Drawable
 class DrawableTextureRegion(val texture: TextureRegion,
                             val ratio: Float) : Drawable()
 
-class DrawableTexture(val texture: Texture, val ratio: Float) : Drawable()
+class DrawableTexture(val texture: Texture, val ratio: Float = 1f) : Drawable()
 
 
 class DrawableAnimation(val animation: Animation<TextureRegion>,
@@ -21,9 +21,9 @@ class DrawableAnimation(val animation: Animation<TextureRegion>,
 class SizedDrawable(val drawable: Drawable, val size: Dims2)
 
 object DrawableFns {
-    fun create(v: TextureRegion, ratio: Float = 1f): Drawable =
+    fun create(v: TextureRegion, heightToWidth: Float = 1f): Drawable =
             DrawableTextureRegion(v,
-                    ratio)
+                    heightToWidth)
 
     fun create(v: Texture, ratio: Float = 1f): Drawable =
             DrawableTexture(v, ratio)

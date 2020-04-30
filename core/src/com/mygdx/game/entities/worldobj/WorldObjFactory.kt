@@ -18,11 +18,11 @@ class WorldObjFactory(private val prototype: Prototypes) {
                 prototype.bullet.boundaryDims.height / 2.0))
         return WorldSceneNode(prototype.bullet,
                 ProjectileAttributes(EightDirection.WEST, vec), pos, Angle(0))
-//                DrawState(0.0f))
     }
 
-    fun player(pos: Point2): WorldSceneNode<PlayerAttributes> =
-            WorldSceneNode(prototype.player,
-                    PlayerAttributes(EightDirection.NORTH, -100), pos, Angle(0))
-//                    DrawState(0f))
+    fun player(pos: Point2): WorldSceneNode<PlayerAttributes> {
+        return WorldSceneNode(prototype.playerWithSword,PlayerAttributes(EightDirection
+                .NORTH, -100), pos, Angle(0))
+
+    }
 }
