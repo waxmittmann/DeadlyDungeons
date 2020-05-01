@@ -1,15 +1,15 @@
 package com.mygdx.game.entities
 
-//import com.mygdx.game.entities.worldobj.WorldObj
+import com.mygdx.game.collision.WorldObject
 import com.mygdx.game.drawing.SizedDrawable
 import com.mygdx.game.entities.terrain.Terrain
 import com.mygdx.game.entities.terrain.TerrainAttributes
 import com.mygdx.game.entities.terrain.WeightedAllocator
 import com.mygdx.game.entities.terrain.generateTerrain
-import com.mygdx.game.entities.worldobj.WorldAabb
+import com.mygdx.game.entities.worldobj.SceneNodeAttributes
 import com.mygdx.game.entities.worldobj.WorldObjFactory
-import com.mygdx.game.entities.worldobj.WorldObject
 import com.mygdx.game.entities.worldobj.WorldObjects
+import com.mygdx.game.entities.worldobj.createAabb
 import com.mygdx.game.textures.Textures
 import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.geometry.Dims2
@@ -37,7 +37,7 @@ fun createWorld(textures: Textures, playerPos: Point2,
             windowDims)
 }
 
-class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
+class World(playerPos: Point2, mobs: List<WorldObject<MobAttributes>>,
             var timeNow: Long, override val worldObjFactory: WorldObjFactory,
             override val tileSize: Int, override val terrain: List<List<Terrain>> = listOf(),
             windowDims: Dims2) : WorldLike {
@@ -48,7 +48,7 @@ class World(playerPos: Point2, mobs: List<WorldObj<MobAttributes>>,
     val height: Int = terrain.size * tileSize
 
     init {
-        val player: WorldObj<PlayerAttributes> =
+        val player: WorldObject<PlayerAttributes> =
                 worldObjFactory.player(playerPos)
         view = View(player, windowDims)
         worldObjects = WorldObjects(player, mobs, emptyList())
@@ -112,7 +112,9 @@ object WorldFns {
 
     fun <S> addPlayerBullet(src: S) where
             S : WorldObjectsSource, S : WorldObjFactorySource {
-        val midpoint = src.worldObjects.player.rect().midpoint()
+        // TODO(wittie): Should this have any transform applied? Right now it
+        // will shoot out of the unrotated center.
+        val midpoint = src.worldObjects.player.aabbBox().midpoint()
         src.worldObjects.addProjectile(
                 src.worldObjFactory.createBullet(midpoint,
                         src.worldObjects.player.rotation))
@@ -133,7 +135,8 @@ object WorldFns {
 
     private fun terrainPositionedDrawables(terrains: List<List<Terrain>>,
                                            tileSize: Int,
-                                           view: Rect2): List<WorldAabb<TerrainAttributes>> {
+                                           view: Rect2):
+            List<WorldObject<TerrainAttributes>> {
         val fromCol = max(floor(view.ly / tileSize).toInt() - 1, 0)
         val toCol =
                 min(floor(view.uy() / tileSize).toInt() + 1, terrains.size - 1)
@@ -153,7 +156,8 @@ object WorldFns {
                 val d = SizedDrawable(terrain.drawable,
                         Dims2(tileSize.toFloat(), tileSize.toFloat()))
 
-                WorldAabb(d, TerrainAttributes(), terrainMidpoint)
+                createAabb(d, TerrainAttributes(), SceneNodeAttributes
+                (), terrainMidpoint)
             }
         }
     }

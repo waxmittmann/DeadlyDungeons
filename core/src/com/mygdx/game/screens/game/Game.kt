@@ -6,17 +6,25 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.mygdx.game.actions.old.GameState
 import com.mygdx.game.collision.processCollisions
+import com.mygdx.game.drawing.DrawableFns.drawCentered
+import com.mygdx.game.drawing.scenegraph.Leaf
+import com.mygdx.game.drawing.scenegraph.Rotate
+import com.mygdx.game.drawing.scenegraph.SceneNode
+import com.mygdx.game.drawing.scenegraph.Translate
 import com.mygdx.game.entities.*
+import com.mygdx.game.entities.worldobj.SceneNodeAttributes
 import com.mygdx.game.input.processInput
 import com.mygdx.game.textures.Textures
 import com.mygdx.game.util.borderCircle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
-import com.mygdx.game.util.linear.ProjectionSaver
+import com.mygdx.game.util.linear.ProjectionSaver.Factory.doThenRestore
+import com.mygdx.game.util.linear.WrappedMatrix
 import space.earlygrey.shapedrawer.ShapeDrawer
 
+
 class Game(private val batch: Batch, windowDims: Dims2,
-           val textures: Textures) {
+        val textures: Textures) {
     private val prototypes: Prototypes = Prototypes(textures)
     private val mobSpawner: SpawnMobs = SpawnMobs(prototypes)
     private val debugCam: OrthographicCamera =
@@ -45,20 +53,47 @@ class Game(private val batch: Batch, windowDims: Dims2,
     }
 
     private fun drawWorld(batch: Batch, world: World) =
-            (ProjectionSaver.doThenRestore<Unit>(batch)) {
+            (doThenRestore<Unit>(batch)) {
+                // TODO(wittie): From param
+                val delta = 0.0f
+
                 // Set view to world camera.
                 world.view.setProjectionMatrix(batch)
 
                 // Draw terrain
                 for (worldObjV2 in WorldFns.terrainWorldObjects(world)) {
-                    worldObjV2.worldDrawable().draw(batch, 0.0f)
+                    drawSceneNode(batch, 0.0f,
+                            worldObjV2.worldPositionedSceneNode(
+                                            SceneNodeAttributes()))
                 }
 
                 // Draw player
                 val playerWo = world.worldObjects.player
-                batch.transformMatrix.mul(playerWo.transformMatrix().get())
-                playerWo.originTransformDrawables.forEach { it.draw(batch, 0f) }
+                drawSceneNode(batch, delta, playerWo.worldPositionedSceneNode(
+                        SceneNodeAttributes()))
             }
+
+    private fun drawSceneNode(batch: Batch, delta: Float,
+            node: SceneNode<SceneNodeAttributes>) {
+        when (node) {
+            is Rotate -> doThenRestore<Unit>(batch)() {
+                batch.transformMatrix = batch.transformMatrix.mul(
+                        WrappedMatrix().rotate(node.rotation).get())
+                node.children.forEach { drawSceneNode(batch, delta, it) }
+            }
+
+            is Translate -> doThenRestore<Unit>(batch)() {
+                batch.transformMatrix = batch.transformMatrix.mul(
+                        WrappedMatrix().translate(node.translation).get())
+                node.children.forEach { drawSceneNode(batch, delta, it) }
+            }
+
+            is Leaf -> {
+                drawCentered(node.drawable, batch, delta)
+            }
+        }
+    }
+
 
     private fun drawCenterPoint(batch: Batch, viewDims: Dims2) {
         // Set view to debug cam.
@@ -83,8 +118,8 @@ class Game(private val batch: Batch, windowDims: Dims2,
 
     fun resize(world: World, width: Int, height: Int) {
         // Update world view
-        WorldFns.updateWindowSize(world, Dims2(width.toFloat(), height
-                .toFloat()))
+        WorldFns.updateWindowSize(world,
+                Dims2(width.toFloat(), height.toFloat()))
     }
 
     fun dispose() {}

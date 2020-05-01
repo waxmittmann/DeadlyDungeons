@@ -29,10 +29,9 @@ object DrawableFns {
             DrawableTexture(v, ratio)
 
     fun drawCentered(
-            drawable: SizedDrawable): (batch: Batch, deltaTimeSeconds: Float) -> Unit =
+            drawable: SizedDrawable, batch: Batch, deltaTimeSeconds: Float)=
             drawCentered(
-                    drawable.drawable, drawable.size)
-
+                    drawable.drawable, drawable.size)(batch, deltaTimeSeconds)
 
     fun drawCentered(drawable: SizedDrawable,
                      centerPos: Point2): (batch: Batch, deltaTimeSeconds: Float) -> Unit =

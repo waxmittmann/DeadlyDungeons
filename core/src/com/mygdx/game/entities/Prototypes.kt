@@ -7,6 +7,7 @@ import com.mygdx.game.entities.terrain.TerrainPrototype
 import com.mygdx.game.drawing.scenegraph.Leaf
 import com.mygdx.game.drawing.scenegraph.SceneGraphBuilder
 import com.mygdx.game.drawing.scenegraph.SceneParent
+import com.mygdx.game.entities.worldobj.SceneNodeAttributes
 import com.mygdx.game.util.geometry.Dims2
 
 
@@ -18,11 +19,13 @@ class Prototypes(val textures: Textures) {
             TerrainAttributes(false))
 
     // GameObj prototypes.
-    val player = Leaf(SizedDrawable(
-            textures.playerDrawable, Dims2(50f, 50f)))
+    val player = Leaf<SceneNodeAttributes>(SizedDrawable(
+            textures.playerDrawable, Dims2(50f, 50f)),
+            attributes = SceneNodeAttributes())
 
-    val playerWithSword: SceneParent by lazy {
-       SceneGraphBuilder()
+    val playerWithSword: SceneParent<SceneNodeAttributes> by lazy {
+       SceneGraphBuilder(
+               sFactory = { SceneNodeAttributes() })
                .leaf(textures.playerDrawable, Dims2(50f, 50f))
                .translate(-18.0, 0.0)
                .rotate(-30)
@@ -32,7 +35,7 @@ class Prototypes(val textures: Textures) {
     }
 
     val yeti = Leaf(SizedDrawable(
-            textures.yetiDrawable, Dims2(50f, 50f)))
+            textures.yetiDrawable, Dims2(50f, 50f)), attributes = SceneNodeAttributes())
     val bullet = Leaf(SizedDrawable(
-            textures.bulletDrawable, Dims2(25f, 25f)))
+            textures.bulletDrawable, Dims2(25f, 25f)), attributes = SceneNodeAttributes())
 }

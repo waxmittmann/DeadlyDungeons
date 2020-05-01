@@ -71,8 +71,10 @@ class MoveMutationFactory(val amount: Int) {
 }
 
 fun moveBy(amount: Int, cardinality: FourDirection): WorldMutation = { world ->
+    // Using UNTRANSFORMED player bounding box at the moment to calculate
+    // distance to terrain.
     val moveBy = movePlayer(
-            world.worldObjects.player.rect(), amount, world.terrain,
+            world.worldObjects.player.aabbBox(), amount, world.terrain,
             { t: Terrain -> t.prototype.attributes.passable },
             amount, cardinality)
     WorldFns.movePlayer(world, moveBy)

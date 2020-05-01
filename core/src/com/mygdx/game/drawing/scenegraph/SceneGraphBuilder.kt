@@ -7,10 +7,10 @@ import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Vec2
 import java.util.*
 
-class SceneGraphBuilder() {
-    private var root: Translate = Translate(Vec2(0.0, 0.0), mutableListOf(),
-            getNextId())
-    private var stack: Stack<SceneParent> = Stack()
+class SceneGraphBuilder<S>(val sFactory: () -> S) {
+    private var root: Translate<S> = Translate(Vec2(0.0, 0.0), mutableListOf(),
+            getNextId(), sFactory())
+    private var stack: Stack<SceneParent<S>> = Stack()
     private var nextId = 0
 
     init {
@@ -23,21 +23,22 @@ class SceneGraphBuilder() {
         return id.toString()
     }
 
-    fun translate(x: Double, y: Double, id: String = getNextId()): SceneGraphBuilder {
-        val t = Translate(Vec2(x, y), mutableListOf(), id)
+    fun translate(x: Double, y: Double, id: String = getNextId()):
+            SceneGraphBuilder<S> {
+        val t = Translate<S>(Vec2(x, y), mutableListOf(), id, sFactory())
         stack.peek().add(t)
         stack.push(t)
         return this
     }
 
-    fun rotate(degrees: Int, id: String = getNextId()): SceneGraphBuilder {
-        val t = Rotate(Angle.create(degrees),  mutableListOf(), id)
+    fun rotate(degrees: Int, id: String = getNextId()): SceneGraphBuilder<S> {
+        val t = Rotate(Angle.create(degrees),  mutableListOf(), id, sFactory())
         stack.peek().add(t)
         stack.push(t)
         return this
     }
 
-    fun pop(nr: Int = 1): SceneGraphBuilder {
+    fun pop(nr: Int = 1): SceneGraphBuilder<S> {
         if (stack.size <= nr) {
             throw RuntimeException("Cannot pop root")
         }
@@ -45,16 +46,17 @@ class SceneGraphBuilder() {
         return this
     }
 
-    fun build(id: String = getNextId()): SceneParent {
+    fun build(id: String = getNextId()): SceneParent<S> {
         val hp = root
         stack.clear()
-        root = Translate(Vec2(0.0, 0.0), mutableListOf(), id)
+        root = Translate<S>(Vec2(0.0, 0.0), mutableListOf(), id, sFactory())
         stack.push(root)
         return hp
     }
 
-    fun leaf(drawable: Drawable, size: Dims2, id: String = getNextId()): SceneGraphBuilder {
-        stack.peek().add(Leaf(SizedDrawable(drawable, size), id))
+    fun leaf(drawable: Drawable, size: Dims2, id: String = getNextId()):
+            SceneGraphBuilder<S> {
+        stack.peek().add(Leaf(SizedDrawable(drawable, size), id, sFactory()))
         return this
     }
 }

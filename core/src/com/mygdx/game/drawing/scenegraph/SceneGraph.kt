@@ -6,27 +6,28 @@ import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Vec2
 import java.lang.System.err
 
-sealed class SceneNode {
+sealed class SceneNode<S> {
     abstract val boundaryDims: Dims2
     abstract val id: String
+    abstract val attributes: S
 }
 
-sealed class SceneParent : SceneNode() {
-    abstract fun add(proto: SceneNode): SceneParent
+sealed class SceneParent<S> : SceneNode<S>() {
+    abstract fun add(proto: SceneNode<S>): SceneParent<S>
 
-    abstract val children: List<SceneNode>
+    abstract val children: List<SceneNode<S>>
 }
 
-class Leaf(val drawable: SizedDrawable, override val id: String = "*noid*") :
-        SceneNode() {
+class Leaf<S>(val drawable: SizedDrawable, override val id: String = "*noid*",
+        override val attributes: S) :
+        SceneNode<S>() {
     override val boundaryDims: Dims2 = drawable.size
 }
 
-class Rotate(val rotation: Angle,
-             override val children: MutableList<SceneNode> = mutableListOf(),
-             override val id: String = "*noid*"
-) : SceneParent() {
-    override fun add(proto: SceneNode): Rotate {
+class Rotate<S>(val rotation: Angle,
+             override val children: MutableList<SceneNode<S>> = mutableListOf(),
+             override val id: String = "*noid*", override val attributes: S) : SceneParent<S>() {
+    override fun add(proto: SceneNode<S>): Rotate<S> {
         children += proto
         return this
     }
@@ -36,10 +37,11 @@ class Rotate(val rotation: Angle,
     }
 }
 
-class Translate(val translation: Vec2,
-                override val children: MutableList<SceneNode> = mutableListOf
-                (), override val id: String = "*noid*") : SceneParent() {
-    override fun add(proto: SceneNode): Translate {
+class Translate<S>(val translation: Vec2,
+                override val children: MutableList<SceneNode<S>> = mutableListOf
+                (), override val id: String = "*noid*", override val attributes: S) :
+        SceneParent<S>() {
+    override fun add(proto: SceneNode<S>): Translate<S> {
         children += proto
         return this
     }
