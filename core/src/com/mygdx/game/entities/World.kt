@@ -97,12 +97,9 @@ object WorldFns {
     // Does not check validity of move
     fun <S> movePlayer(src: S,
                        moveBy: Vec2): Unit where S : WorldObjectsSource, S : ViewSource {
-        println("Moving player: ${src.worldObjects.player}")
         src.worldObjects.player.position =
                 src.worldObjects.player.position.plus(moveBy)
-        println("Moved player: ${src.worldObjects.player}")
         src.view.updateCamera()
-//        view.plus(moveBy)
     }
 
     fun <S> changePlayerOrientation(src: S, direction: EightDirection) where

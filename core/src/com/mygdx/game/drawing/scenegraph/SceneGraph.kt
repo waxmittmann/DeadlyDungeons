@@ -47,9 +47,9 @@ class Translate<S>(val translation: Vec2,
     }
 
     override val boundaryDims: Dims2 by lazy {
-//        throw java.lang.RuntimeException("Whoops not implemented yet")
-        err.println("NOT IMPLE<EMTED YET!!!!")
-        Dims2(0f, 0f)
+        throw java.lang.RuntimeException("Whoops not implemented yet")
+//        err.println("NOT IMPLE<EMTED YET!!!!")
+//        Dims2(0f, 0f)
     }
 }
 

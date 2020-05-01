@@ -7,7 +7,7 @@ import com.mygdx.game.util.geometry.Vec2
 import com.mygdx.game.util.slice
 import kotlin.math.min
 
-val debug = true
+val debug = false
 fun debugln(str: String) {
     if (debug) println(str)
 }
@@ -48,15 +48,10 @@ fun <S> movePlayer(player: Rect2, terrainSize: Double, terrain: List<List<S>>,
         debugln("At $curAmount")
 
         val pi = utils.pointToIndex(player.midpoint(), true)
-        println("Mid: ${player.midpoint()}")
-        println("Pi: $pi")
 
         val (newPlayerRect, newAmount) = calcNewAmountFn(curAmount,
                 amount.toDouble(), player, terrainSize)
         val indices = utils.rectToIndex(newPlayerRect)
-
-        println(newPlayerRect)
-        println(indices)
 
         debugS("NewRect: $newPlayerRect\nNewAmount: $newAmount\nIndices: $indices\n")
 
