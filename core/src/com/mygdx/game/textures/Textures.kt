@@ -41,7 +41,8 @@ class DefaultTextures : Textures {
     // Textures
     override val singlePixel: TextureRegion = TextureRegion(Texture("singlepixel.png"))
     private val avatarTexture: TextureRegion =
-            TextureRegion(Texture("Avatar.png"))
+            TextureRegion(Texture("Arrow.png"))
+//    TextureRegion(Texture("Avatar.png"))
     private val yetiTexture: TextureRegion =
             TextureRegion(Texture("PixelArt.png"))
     override val mountainTexture: TextureRegion =

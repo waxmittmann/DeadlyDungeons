@@ -8,6 +8,7 @@ import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Vec2
+import com.mygdx.game.util.linear.WrappedMatrix
 
 class WorldObjFactory(private val prototype: Prototypes) {
 
@@ -15,8 +16,16 @@ class WorldObjFactory(private val prototype: Prototypes) {
                      angle: Angle): WorldObject<ProjectileAttributes> {
         val mod = 9
         val vec = Vec2.create(0, mod).rotate(angle)
-        val pos = position.minus(Vec2(prototype.bullet.boundaryDims.width / 2.0,
-                prototype.bullet.boundaryDims.height / 2.0))
+
+//        val pos = position.minus(Vec2(prototype.bullet.aabb(WrappedMatrix())
+//                .width /
+//                2.0,
+//                prototype.bullet.aabb(WrappedMatrix()).height / 2.0))
+        val pos = position.minus(Vec2(prototype.bullet.aabb
+                .width /
+                2.0,
+                prototype.bullet.aabb.height / 2.0))
+
         return WorldSceneNode(prototype.bullet,
                 ProjectileAttributes(EightDirection.WEST, vec), pos, Angle(0))
     }

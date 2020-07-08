@@ -7,6 +7,7 @@ import kotlin.random.Random
 
 class Vec2(val x: Double, val y: Double) {
 
+    val asPoint: Point2 by lazy { Point2(x, y) }
     val xF: Float = x.toFloat()
     val yF: Float = y.toFloat()
 

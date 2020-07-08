@@ -24,14 +24,30 @@ class Prototypes(val textures: Textures) {
             attributes = SceneNodeAttributes())
 
     val playerWithSword: SceneParent<SceneNodeAttributes> by lazy {
-       SceneGraphBuilder(
+//        SceneGraphBuilder(
+//                sFactory = { SceneNodeAttributes() })
+//                .leaf(textures.playerDrawable, Dims2(50f, 50f), "player")
+//                .translate(10.0, 0.0, "a")
+//                .leaf(textures.playerDrawable, Dims2(50f, 50f), "player")
+//                .rotate(90, "swordRotate") // TODO: removed
+//                .translate(10.0, 0.0, "a")
+//                .leaf(textures.playerDrawable, Dims2(50f, 50f), "player")
+//                .build()
+
+        SceneGraphBuilder(
                sFactory = { SceneNodeAttributes() })
-               .leaf(textures.playerDrawable, Dims2(50f, 50f))
-               .translate(-18.0, 0.0)
-               .rotate(-30)
-               .translate(0.0, 100.0)
-               .leaf(textures.swordDrawable, Dims2(5f, 200f))
+               .leaf(textures.playerDrawable, Dims2(50f, 50f), "player")
+               .translate(-18.0, 0.0, "preRotateSwordTranslate")
+               .rotate(-30, "swordRotate") // TODO: removed
+//                .rotate(-135, "swordRotate") // TODO: removed
+////               .rotate(-180) // TODO: removed
+////               .translate(0.0, 100.0)
+               .translate(0.0, 30.0, "postRotateSwordTranslate")
+////               .leaf(textures.swordDrawable, Dims2(5f, 200f))
+               .leaf(textures.swordDrawable, Dims2(5f, 60f), "playerSword")
                .build()
+
+
     }
 
     val yeti = Leaf(SizedDrawable(

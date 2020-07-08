@@ -8,22 +8,21 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.kotcrab.vis.ui.widget.Menu
-import com.kotcrab.vis.ui.widget.MenuBar
-import com.kotcrab.vis.ui.widget.MenuItem
-import com.kotcrab.vis.ui.widget.VisTable
+import com.kotcrab.vis.ui.widget.*
 import com.mygdx.game.ScreenChanger
 import com.mygdx.game.ScreenId
 import com.mygdx.game.textures.Textures
 import com.mygdx.game.entities.UiState
 import com.mygdx.game.ui.dragdrop.ActorFactory
 import com.mygdx.game.ui.dragdrop.DragDrop
+import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Rect2
 import kotlin.math.min
 
 
 class Ui(batch: Batch, private val screenChanger: ScreenChanger,
          private val textures: Textures) {
+    private lateinit var cursorPosLabel: VisLabel
     private val menuStage: Stage = Stage(ScreenViewport(), batch)
     private var menuRoot: VisTable = VisTable()
 
@@ -31,7 +30,6 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
 //    private var hudRoot: VisTable = VisTable()
 
     private val testDragAndDropStage: Stage = Stage(ScreenViewport(), batch)
-
 
     private val stages: List<Stage> =
             listOf(menuStage, hudStage, testDragAndDropStage)
@@ -68,13 +66,22 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
     }
 
     private fun setupHud() {
-        val inventoryTable = VisTable()
-        inventoryTable.width = 300f
-        inventoryTable.height = 400f
-        inventoryTable.x = 30f
-        inventoryTable.y = 30f
-        inventoryTable.background = TextureRegionDrawable(textures.bagTexture)
-        hudStage.addActor(inventoryTable)
+        cursorPosLabel = VisLabel()
+        cursorPosLabel.setFontScale(1f)
+        cursorPosLabel.setColor(0f, 1f, 0f, 1f)
+        cursorPosLabel.width = 200f
+        cursorPosLabel.height = 100f
+        cursorPosLabel.x = 50f
+        cursorPosLabel.y = 50f
+        hudStage.addActor(cursorPosLabel)
+
+//        val inventoryTable = VisTable()
+//        inventoryTable.width = 300f
+//        inventoryTable.height = 400f
+//        inventoryTable.x = 30f
+//        inventoryTable.y = 30f
+//        inventoryTable.background = TextureRegionDrawable(textures.bagTexture)
+//        hudStage.addActor(inventoryTable)
     }
 
     private fun setupDragAndDropTest() {
@@ -110,7 +117,17 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
     }
 
     fun drawUi(uiState: UiState) {
+//        cursorPosLabel.setText(uiState.cursorPoint.toString())
+        cursorPosLabel.setText("${uiState.cursorScreenCoord}\n" +
+                "${uiState.cursorGameCoord}\n" +
+                "${uiState.cursorGameCoord.mul(uiState.windowDims.width.toDouble(), 
+                        uiState.windowDims.height.toDouble())}\n" +
+                "${uiState.cursorUnprojected}\n" +
+                "Rotation: ${uiState.playerRotation}")
+//        cursorPosLabel.setText("AAAAA")
+
         drawAndActStage(menuStage)
+        drawAndActStage(hudStage)
 //        menuStage.act(min(Gdx.graphics.deltaTime, 1 / 30f))
 //        menuStage.draw()
 
@@ -123,8 +140,10 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
         }
     }
 
-    fun resize(width: Int, height: Int) =
-            stages.forEach { it.viewport.update(width, height, true) }
+    fun resize(uiState: UiState, width: Int, height: Int) {
+        uiState.windowDims = Dims2(width.toFloat(), height.toFloat())
+        stages.forEach { it.viewport.update(width, height, true) }
+    }
 
     fun dispose() = menuStage.dispose()
 }

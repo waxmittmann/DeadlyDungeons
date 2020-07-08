@@ -1,7 +1,7 @@
 package com.mygdx.game.util.geometry
 
 class Rect2(val lx: Double, val ly: Double, val width: Double,
-            val height: Double) {
+        val height: Double) {
     fun ux(): Double = lx + width
     fun uy(): Double = ly + height
 
@@ -58,11 +58,21 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
 
     fun midpoint(): Point2 = Point2(lx + width / 2, ly + height / 2)
 
+    fun center(): Rect2 = Rect2(lx + width / 2.0, ly + height / 2.0, width /
+            2.0, height / 2.0)
+
     val asDims: Dims2 by lazy { Dims2(widthF, heightF) }
 
-    val asPoylgon: Polygon2 by lazy {
-        PolygonBuilder(Point2(lx, ly)).moveX(width).moveY(height).moveX(-width)
-                .build()
+    val asPoylgon: Polygon2_4 by lazy {
+        Polygon2_4(Point2(lx, ly), Point2(lx + width, ly),
+                Point2(lx + width, ly + height), Point2(lx, ly + height))
+//        PolygonBuilder(Point2(lx, ly)).moveX(width).moveY(height).moveX(-width)
+//                .build()
+    }
+
+    val asPoints: List<Point2> by lazy {
+        listOf(lowerLeft(), upperRight(), Point2(lx, uy()), Point2(ux(),
+                ly))
     }
 
     companion object Factory {
@@ -79,6 +89,12 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
             else create(lx, ly, ux - lx, uy - ly)
         }
 
+        fun fromLowerUpper(lx: Double, ly: Double, ux: Double,
+                uy: Double): Rect2? {
+            return if (lx >= ux || ly >= uy) null
+            else Rect2(lx, ly, ux - lx, uy - ly)
+        }
+
         fun fromPoints(ll: Point2, ur: Point2): Rect2 {
             assert(ll.x <= ur.x)
             assert(ll.y <= ur.y)
@@ -88,6 +104,28 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
         fun create(lowerLeft: Point2, dims: Dims2): Rect2 {
             return Rect2(lowerLeft.x, lowerLeft.y, dims.width.toDouble(),
                     dims.height.toDouble())
+        }
+
+        fun aabbFromRects(p: List<Rect2>) =
+                aabb(p.flatMap { it.asPoints })
+
+        fun aabbFrom(p: List<Polygon2_4>) =
+            aabb(p.flatMap { it.vertices })
+
+        fun aabb(points: List<Point2>): Rect2 {
+            var lx = points[0].x
+            var ly = points[0].y
+            var ux = points[0].x
+            var uy = points[0].y
+
+            for (point in points) {
+                if (point.x < lx) lx = point.x
+                if (point.x > ux) ux = point.x
+                if (point.y < ly) ly = point.y
+                if (point.y > uy) uy = point.y
+            }
+
+            return fromLowerUpper(lx, ly, ux, uy)!!
         }
     }
 }

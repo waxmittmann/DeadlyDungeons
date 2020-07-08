@@ -16,6 +16,7 @@ import com.mygdx.game.entities.worldobj.SceneNodeAttributes
 import com.mygdx.game.input.processInput
 import com.mygdx.game.textures.Textures
 import com.mygdx.game.util.borderCircle
+import com.mygdx.game.util.drawCoord
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.linear.ProjectionSaver.Factory.doThenRestore
@@ -61,31 +62,58 @@ class Game(private val batch: Batch, windowDims: Dims2,
                 world.view.setProjectionMatrix(batch)
 
                 // Draw terrain
-                for (worldObjV2 in WorldFns.terrainWorldObjects(world)) {
+                for (terrainObj in WorldFns.terrainWorldObjects(world)) {
                     drawSceneNode(batch, 0.0f,
-                            worldObjV2.worldPositionedSceneNode(
-                                            SceneNodeAttributes()))
+                            terrainObj.worldPositionedSceneNode(
+                                    SceneNodeAttributes()))
                 }
 
                 // Draw player
                 val playerWo = world.worldObjects.player
                 drawSceneNode(batch, delta, playerWo.worldPositionedSceneNode(
-                        SceneNodeAttributes()))
+                        SceneNodeAttributes()), true)
+                playerWo.debugDraw(shapeDrawer)
+
+                (doThenRestore<Unit>(batch)) {
+//                    batch.projectionMatrix = debugCam.combined
+//                    batch.transformMatrix = Matrix4()
+                    shapeDrawer.setColor(1f, 0f, 0f, 0.5f)
+//                    shapeDrawer.set
+
+                    shapeDrawer.filledRectangle(playerWo.aabbBox().lxF,
+                            playerWo.aabbBox().lyF, playerWo.aabbBox().widthF,
+                            playerWo.aabbBox().heightF)
+
+                    shapeDrawer.setColor(1f, 1f, 0f, 0.5f)
+                    playerWo.points().forEach { shapeDrawer.filledCircle(it
+                            .x.toFloat(), it.y.toFloat(), 3f) }
+
+                }
             }
 
     private fun drawSceneNode(batch: Batch, delta: Float,
-            node: SceneNode<SceneNodeAttributes>) {
+            node: SceneNode<SceneNodeAttributes>, debugDraw: Boolean = false) {
         when (node) {
             is Rotate -> doThenRestore<Unit>(batch)() {
                 batch.transformMatrix = batch.transformMatrix.mul(
                         WrappedMatrix().rotate(node.rotation).get())
-                node.children.forEach { drawSceneNode(batch, delta, it) }
+                if (debugDraw) drawCoord(shapeDrawer)
+//                    drawMatrix(shapeDrawer, WrappedMatrix(batch
+//                            .transformMatrix))
+                node.children.forEach {
+                    drawSceneNode(batch, delta, it, debugDraw)
+                }
             }
 
             is Translate -> doThenRestore<Unit>(batch)() {
                 batch.transformMatrix = batch.transformMatrix.mul(
                         WrappedMatrix().translate(node.translation).get())
-                node.children.forEach { drawSceneNode(batch, delta, it) }
+                if (debugDraw) drawCoord(shapeDrawer)
+//                    drawMatrix(shapeDrawer, WrappedMatrix(batch
+//                            .transformMatrix))
+                node.children.forEach {
+                    drawSceneNode(batch, delta, it, debugDraw)
+                }
             }
 
             is Leaf -> {
@@ -93,7 +121,6 @@ class Game(private val batch: Batch, windowDims: Dims2,
             }
         }
     }
-
 
     private fun drawCenterPoint(batch: Batch, viewDims: Dims2) {
         // Set view to debug cam.

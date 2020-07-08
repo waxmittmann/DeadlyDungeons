@@ -18,6 +18,8 @@ class DrawableTexture(val texture: Texture, val ratio: Float = 1f) : Drawable()
 class DrawableAnimation(val animation: Animation<TextureRegion>,
                         val ratio: Float, var timeAt: Float) : Drawable()
 
+class DebugDrawable(val name: String = ""): Drawable()
+
 class SizedDrawable(val drawable: Drawable, val size: Dims2)
 
 object DrawableFns {

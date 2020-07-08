@@ -150,6 +150,10 @@ object WorldFns {
                         c * tileSize.toDouble()).minus(
                         Vec2(tileSize / 2.0, tileSize / 2.0))
 
+//                val terrainMidpoint = Point2(r * tileSize.toDouble(),
+//                        c * tileSize.toDouble()).plus(
+//                        Vec2(tileSize / 2.0, tileSize / 2.0))
+
                 val d = SizedDrawable(terrain.drawable,
                         Dims2(tileSize.toFloat(), tileSize.toFloat()))
 

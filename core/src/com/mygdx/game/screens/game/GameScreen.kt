@@ -47,7 +47,7 @@ class GameScreen(params: GameScreenParams) : Screen {
 
     override fun resize(width: Int, height: Int) {
         game.resize(state.world, width, height)
-        ui.resize(width, height)
+        ui.resize(state.ui, width, height)
     }
 
     override fun dispose() {

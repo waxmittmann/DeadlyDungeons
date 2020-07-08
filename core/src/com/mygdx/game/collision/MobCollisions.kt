@@ -8,13 +8,14 @@ import com.mygdx.game.entities.worldobj.WorldSceneNode
 
 private val collisionDetector = CollisionDetector()
 
-typealias WorldObject<S> = WorldSceneNode<SceneNodeAttributes, S>
+typealias WorldObject<S> = WorldSceneNode<S>
 
 fun processCollisions(world: World) {
 
     val mobPlayerCollisions: List<WorldObject<MobAttributes>> =
-            collisionDetector.check(world.worldObjects.player,
-                    world.worldObjects.mobs)
+            emptyList()
+//            collisionDetector.check(world.worldObjects.player,
+//                    world.worldObjects.mobs)
 
     world.worldObjects.projectiles =
             world.worldObjects.projectiles.filter { projectile ->

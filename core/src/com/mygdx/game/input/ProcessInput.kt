@@ -63,6 +63,10 @@ val processKeys: (InputData) -> (Set<Mutation>) = {
 
     // Update orientation based on mouse direction.
     actions.add(fromWorld(changeOrientation(it.mousePos)))
+    actions.add { gs ->
+        gs.ui.playerRotation = gs.world.worldObjects.player.rotation
+    }
+    actions.add(cursorMutation(it.mousePos))
 
     // Attack
     if (keys.contains(PressedSpecial.Attack)) actions.add(attackMutation)

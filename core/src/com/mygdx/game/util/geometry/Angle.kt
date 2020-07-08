@@ -1,9 +1,10 @@
 package com.mygdx.game.util.geometry
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D
-import java.lang.Math.PI
-import java.lang.Math.toDegrees
+import java.lang.Math.*
 import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 class Angle internal constructor(val degrees: Int) {
@@ -66,5 +67,21 @@ class Angle internal constructor(val degrees: Int) {
 
     override fun hashCode(): Int {
         return degrees
+    }
+
+    fun transform(c: Point2, p: Point2): Point2 {
+        val xo = (p.x - c.x)
+        val yo = (p.y - c.y)
+
+        val xn = xo * cos(radians) - yo * sin(radians)
+        val yn = yo * cos(radians) + xo * sin(radians)
+
+        return Point2(xn + c.x, yn + c.y)
+    }
+
+    fun invert(): Angle {
+
+        val a = Angle.create(-degrees)
+        return a
     }
 }

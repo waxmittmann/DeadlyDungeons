@@ -75,6 +75,7 @@ fun moveBy(amount: Int, cardinality: FourDirection): WorldMutation = { world ->
     // distance to terrain.
     val moveBy = movePlayer(
             world.worldObjects.player.aabbBox(), amount, world.terrain,
+//            world.worldObjects.player.aabbBox(), amount, world.terrain,
             { t: Terrain -> t.prototype.attributes.passable },
             amount, cardinality)
     WorldFns.movePlayer(world, moveBy)

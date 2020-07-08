@@ -1,5 +1,7 @@
 package com.mygdx.game.util.geometry
 
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import kotlin.random.Random
 
 class Point2(val x: Double, val y: Double) {
@@ -27,4 +29,7 @@ class Point2(val x: Double, val y: Double) {
     }
 
     fun div(d: Double): Point2 = Point2(x / d, y / d)
+    fun mul(xMul: Double, yMul: Double): Point2 = Point2(x * xMul, y * yMul)
+    fun asGdxVector(): Vector3 = Vector3(x.toFloat(), y.toFloat(), 0f)
+    fun asGdxVector2(): Vector2 = Vector2(x.toFloat(), y.toFloat())
 }

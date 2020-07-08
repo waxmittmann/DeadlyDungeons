@@ -35,7 +35,21 @@ class PolygonBuilder(firstPoint: Point2) {
     }
 }
 
-class Polygon2(val vertices: List<Point2>) {
+class Polygon2_4(val p1: Point2, val p2: Point2, val p3: Point2,
+        val p4: Point2) : Polygon2(listOf(p1, p2, p3, p4)) {}
+
+open class Polygon2(val vertices: List<Point2>) {
+
+    companion object Factory {
+        fun _4(p1: Point2, p2: Point2, p3: Point2, p4: Point2): Polygon2_4 {
+            return Polygon2_4(p1, p2, p3, p4)
+        }
+    }
+
+    val asAabb: Rect2 by lazy {
+        Rect2.aabb(vertices)
+    }
+
     val edges: List<Vec2> by lazy {
         val edges = mutableListOf<Vec2>()
         for (i in vertices.indices) {
@@ -53,5 +67,9 @@ class Polygon2(val vertices: List<Point2>) {
     // representations and that's not traditionally 'equals'.
     // Could be made faster by caching a hash value of the set.
     fun samePolygon(other: Polygon2): Boolean = vertexSet == other.vertexSet
+
+    override fun toString(): String {
+        return "(${vertices.map { it.toString() }.joinToString()})"
+    }
 }
 
