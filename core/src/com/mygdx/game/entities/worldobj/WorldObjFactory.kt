@@ -23,12 +23,7 @@ class WorldObjFactory(private val prototype: Prototypes) {
 //                2.0,
 //                prototype.bullet.aabb(WrappedMatrix()).height / 2.0))
         val aabb = calcBoundingBox(prototype.bullet)
-//        val pos = position.minus(Vec2(prototype.bullet.aabb
         val pos = position.minus( aabb.v!!.asVec2().div(2.0))
-//        Vec2(aabb.v.width prototype.bullet.aabb
-//                .width /
-//                2.0,
-//                prototype.bullet.aabb.height / 2.0))
 
         return WorldSceneNode(prototype.bullet,
                 ProjectileAttributes(EightDirection.WEST, vec), pos, Angle(0f))

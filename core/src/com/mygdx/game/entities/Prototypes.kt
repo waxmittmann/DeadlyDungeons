@@ -30,19 +30,8 @@ class Prototypes(val textures: Textures) {
     // GameObj prototypes.
     val player = Leaf(SceneNodeData("player", SizedDrawable(
             textures.playerDrawable, Dims2(50f, 50f))))
-//            attributes = SceneNodeAttributes())
 
     val playerWithSword: GameParentNode by lazy {
-//        SceneGraphBuilder(
-//                sFactory = { SceneNodeAttributes() })
-//                .leaf(textures.playerDrawable, Dims2(50f, 50f), "player")
-//                .translate(10.0, 0.0, "a")
-//                .leaf(textures.playerDrawable, Dims2(50f, 50f), "player")
-//                .rotate(90, "swordRotate") // TODO: removed
-//                .translate(10.0, 0.0, "a")
-//                .leaf(textures.playerDrawable, Dims2(50f, 50f), "player")
-//                .build()
-
         SceneGraphBuilder(dataFactory(), ::dataFactory)
                 .leaf(makeData("player", textures.playerDrawable, Dims2(50f, 50f)))
                 .translate(Vec2(-18.0, 0.0), makeData("preRotateSwordTranslate")) {

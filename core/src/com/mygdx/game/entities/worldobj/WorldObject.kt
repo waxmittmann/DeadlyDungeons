@@ -46,94 +46,18 @@ class WorldSceneNode<T>(val prototype: GameNode,
     // For now, use the untransformed bounding box. But should optionally be
     // able to use the transformed box instead. And possibly to flexibly filter
     // out parts of the prototype.
-//    override fun aabbBox(): Rect2 = untransformedBoundingBox()
     override fun aabbBox(): Rect2 {
-        /*
-//        return transformMatrix().transform(prototype.aabb).asAabb
-//        return positionTransformMatrix().transform(prototype.aabb).asAabb
-//        return positionTransformMatrix().transform(prototype.aabb).asAabb
-//        return centeredTransformMatrix().transform(prototype.aabb).asAabb
-//        return centeredTransformMatrix().transform(prototype.aabb).asAabb
-//        return rotationMatrix().transform(prototype.aabb).asAabb
-//        (-63.00002670288086, 0.0, 50.0, 80.44226837158203)
-        val p = prototype.aabb
-//        println(prototype.aabb)
-
-        val p2 = prototype.aabb3(WrappedMatrix())
-
-        return translationMatrix().mul(rotationMatrix()).transform(prototype
-                .aabb)
-                .asAabb
-        */
-
-
-//        val aabbOrig = prototype.aabb
-//        val aabbCentered = aabbOrig.center()
-//        return translationMatrix().mul(rotationMatrix()).transform(prototype
-//                .aabb.center())
-//                .asAabb
-
-//        return translationMatrix().postMul(rotationMatrix()).transform(prototype
-//                .aabb.center())
-//                .asAabb
-
-
-//        translationMatrix().postMul(rotationMatrix()).transform(calcBoundingBox(prototype).v!!.center())
         return translationMatrix().postMul(rotationMatrix()).transform(calcBoundingBox(prototype).v!!)
-
-//        return prototype.aabb2(transformMatrix())
-//        return prototype.aabb2(centeredTransformMatrix())
-//        return prototype.aabb2(WrappedMatrix())
-//        val transformed = Rect2.aabbFrom(SceneGraphBuilder {
-//            SceneNodeAttributes() }
-//                .translate(position.asVector())
-//                .rotate(rotation)
-//                .merge(prototype)
-//                .build()
-//                .polygon2_4(WrappedMatrix())
-//        )
-
-
-        // Wrong order.... ?
-        /*
-        val protoAabb = prototype.aabb
-        val transformed = transformMatrix().transform(protoAabb.minus(
-                Vec2(protoAabb.asDims.width / 2.0, protoAabb.asDims.height / 2.0)))
-                .asAabb
-        */
-
-
-//        println("Transformed aabb: $transformed")
-//        return transformed
     }
 
     fun translationMatrix(): WrappedMatrix =
-//            WrappedMatrix().translate(position.asVector())
         WrappedMatrix().postTranslate(position.asVector())
 
     fun rotationMatrix(): WrappedMatrix = WrappedMatrix().postRotate(rotation
             .rotate(90f).invert().degrees.toFloat())
 
-//    fun rotationMatrix(): WrappedMatrix = WrappedMatrix().rotate(rotation)
-
-
-
-//    fun rotationMatrix(): WrappedMatrix = WrappedMatrix().rotate(rotation)
-
     fun transformMatrix(): WrappedMatrix =
-//            WrappedMatrix().translate(position.asVector()).rotate(rotation)
-//            WrappedMatrix().translate(position.asVector()).rotate(rotation)
     WrappedMatrix().postTranslate(position.asVector()).postRotate(rotation.invert().degrees.toFloat())
-//                    .rotate(90))
-//    WrappedMatrix().translate(position.asVector())
-
-    /*
-    fun centeredTransformMatrix(): WrappedMatrix =
-//            WrappedMatrix().translate(position.asVector()).rotate(rotation)
-            transformMatrix().postTranslate(+prototype.aabb.widthF / 2f,
-                    +prototype.aabb.heightF / 2f)
-//    WrappedMatrix().translate(position.asVector())
-     */
 
     fun worldPositionedSceneNode(
             uVal: SceneNodeAttributes): GameNode =

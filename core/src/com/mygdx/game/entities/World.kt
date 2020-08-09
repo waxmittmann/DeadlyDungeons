@@ -78,21 +78,8 @@ interface WorldObjFactorySource {
 interface WorldLike : WorldObjectsSource, ViewSource, TerrainSource,
         TileSizeSource, WorldObjFactorySource
 
-//object WorldObjectsSource: Source<WorldObject<out Any>> =Source<WorldObject<out Any>>() {}
 
-
-//interface WorldObjectsSource {
-//    fun worldObjects(): List<WorldObject<out Any>>
-//}
-//
-//interface WorldObjectsSource {
-//    fun worldObjects(): List<WorldObject<out Any>>
-//}
-
-//class WorldFns(val world: World) {
 object WorldFns {
-
-
 
     // Does not check validity of move
     fun <S> movePlayer(src: S,
@@ -116,10 +103,6 @@ object WorldFns {
                 src.worldObjFactory.createBullet(midpoint,
                         src.worldObjects.player.rotation))
     }
-
-//    fun setTime(time: Long) {
-//        timeNow = time
-//    }
 
     fun <S> updateWindowSize(src: S, newDims: Dims2) where S : ViewSource {
         src.view.setWindowDims(newDims)
