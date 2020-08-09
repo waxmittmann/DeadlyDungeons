@@ -3,10 +3,12 @@ package com.mygdx.game.entities.worldobj
 import arrow.core.invalid
 import com.mygdx.game.collision.HasAabbBoundingBox
 import com.mygdx.game.drawing.SizedDrawable
-import com.mygdx.game.drawing.scenegraph.Leaf
-import com.mygdx.game.drawing.scenegraph.Rotate
-import com.mygdx.game.drawing.scenegraph.SceneNode
-import com.mygdx.game.drawing.scenegraph.Translate
+import com.mygdx.game.entities.makeData
+import com.mygdx.game.scenegraph.*
+//import com.mygdx.game.drawing.scenegraph.Leaf
+//import com.mygdx.game.drawing.scenegraph.Rotate
+//import com.mygdx.game.drawing.scenegraph.SceneNode
+//import com.mygdx.game.drawing.scenegraph.Translate
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Rect2
@@ -15,15 +17,15 @@ import com.mygdx.game.util.drawMatrix
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 fun <S> createAabb(sizedDrawable: SizedDrawable, attributes: S,
-        sceneNodeAttributes: SceneNodeAttributes, position: Point2,
-        rotation: Angle = Angle(0)) = WorldSceneNode(
-        Leaf<SceneNodeAttributes>(sizedDrawable,
-                attributes = sceneNodeAttributes), attributes, position,
+                   name: String,
+         position: Point2,
+        rotation: Angle = Angle(0f)) = WorldSceneNode(
+        GameLeaf(makeData(name, sizedDrawable)), attributes, position,
         rotation)
 
-class WorldSceneNode<T>(val prototype: SceneNode<SceneNodeAttributes>,
+class WorldSceneNode<T>(val prototype: GameNode,
         val attributes: T, var position: Point2,
-        var rotation: Angle = Angle(0)) : HasAabbBoundingBox {
+        var rotation: Angle = Angle(0f)) : HasAabbBoundingBox {
 
     // Does not apply position & rotation transformations. So e.g. can be used
     // to check avatar against walls.
@@ -36,10 +38,10 @@ class WorldSceneNode<T>(val prototype: SceneNode<SceneNodeAttributes>,
         drawMatrix(shapeDrawer, transformMatrix())
     }
 
-    fun points(): List<Point2> {
-        val m = translationMatrix().mul(rotationMatrix().rotate(90))
-        return prototype.points.map { m.transform(it) }
-    }
+//    fun points(): List<Point2> {
+//        val m = translationMatrix().mul(rotationMatrix().rotate(90))
+//        return prototype.points.map { m.transform(it) }
+//    }
 
     // For now, use the untransformed bounding box. But should optionally be
     // able to use the transformed box instead. And possibly to flexibly filter
@@ -71,10 +73,13 @@ class WorldSceneNode<T>(val prototype: SceneNode<SceneNodeAttributes>,
 //                .aabb.center())
 //                .asAabb
 
-        return translationMatrix().mul(rotationMatrix()).transform(prototype
-                .aabb.center())
-                .asAabb
+//        return translationMatrix().postMul(rotationMatrix()).transform(prototype
+//                .aabb.center())
+//                .asAabb
 
+
+//        translationMatrix().postMul(rotationMatrix()).transform(calcBoundingBox(prototype).v!!.center())
+        return translationMatrix().postMul(rotationMatrix()).transform(calcBoundingBox(prototype).v!!)
 
 //        return prototype.aabb2(transformMatrix())
 //        return prototype.aabb2(centeredTransformMatrix())
@@ -103,10 +108,11 @@ class WorldSceneNode<T>(val prototype: SceneNode<SceneNodeAttributes>,
     }
 
     fun translationMatrix(): WrappedMatrix =
-            WrappedMatrix().translate(position.asVector())
+//            WrappedMatrix().translate(position.asVector())
+        WrappedMatrix().postTranslate(position.asVector())
 
-    fun rotationMatrix(): WrappedMatrix = WrappedMatrix().rotate(rotation
-            .rotate(90).invert())
+    fun rotationMatrix(): WrappedMatrix = WrappedMatrix().postRotate(rotation
+            .rotate(90f).invert().degrees.toFloat())
 
 //    fun rotationMatrix(): WrappedMatrix = WrappedMatrix().rotate(rotation)
 
@@ -117,20 +123,22 @@ class WorldSceneNode<T>(val prototype: SceneNode<SceneNodeAttributes>,
     fun transformMatrix(): WrappedMatrix =
 //            WrappedMatrix().translate(position.asVector()).rotate(rotation)
 //            WrappedMatrix().translate(position.asVector()).rotate(rotation)
-    WrappedMatrix().translate(position.asVector()).rotate(rotation.invert())
+    WrappedMatrix().postTranslate(position.asVector()).postRotate(rotation.invert().degrees.toFloat())
 //                    .rotate(90))
 //    WrappedMatrix().translate(position.asVector())
 
+    /*
     fun centeredTransformMatrix(): WrappedMatrix =
 //            WrappedMatrix().translate(position.asVector()).rotate(rotation)
-            transformMatrix().translate(+prototype.aabb.widthF / 2f,
+            transformMatrix().postTranslate(+prototype.aabb.widthF / 2f,
                     +prototype.aabb.heightF / 2f)
 //    WrappedMatrix().translate(position.asVector())
+     */
 
     fun worldPositionedSceneNode(
-            uVal: SceneNodeAttributes): SceneNode<SceneNodeAttributes> =
-            Translate<SceneNodeAttributes>(position.asVector(), mutableListOf(
-                    Rotate(rotation, mutableListOf(prototype),
-                            attributes = uVal)), attributes = uVal)
+            uVal: SceneNodeAttributes): GameNode =
+            // TODO(wittie): Is relative correct?
+           RelativeGameTranslation(position.asVector(), mutableListOf(
+                    GameRotation(rotation.degrees.toFloat(), mutableListOf(prototype), makeData(""))), makeData(""))
 }
 

@@ -49,7 +49,7 @@ class ProjectionSaver(private val projection: Option<WrappedMatrix>,
     }
 
     fun restore(batch: Batch) {
-        projection.map { batch.projectionMatrix = it.get() }
-        transform.map { batch.transformMatrix = it.get() }
+        projection.map { batch.projectionMatrix = it.matrix() }
+        transform.map { batch.transformMatrix = it.matrix() }
     }
 }

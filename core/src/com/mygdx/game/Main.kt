@@ -38,16 +38,27 @@ class Main : ChangeScreen, Game() {
     private lateinit var screenChanger: ScreenChanger
 
     override fun create() {
+        println(1)
         val windowWidth = 1200
         val windowHeight = 800
 
         VisUI.load(VisUI.SkinScale.X1)
+
+        println(2)
         Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
         batch = SpriteBatch()
+
+        println(3)
         generator = FreeTypeFontGenerator(
                 Gdx.files.internal("core/assets/fonts/OpenSans-Regular.ttf"))
+
+        println(4)
         screenChanger = ScreenChanger(this)
+
+        println(5)
         textures = DefaultTextures()
+
+        println(6)
         toTitleScreen()
     }
 

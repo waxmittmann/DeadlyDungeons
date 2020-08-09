@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.mygdx.game.actions.old.GameState
 import com.mygdx.game.collision.processCollisions
 import com.mygdx.game.drawing.DrawableFns.drawCentered
-import com.mygdx.game.drawing.scenegraph.Leaf
-import com.mygdx.game.drawing.scenegraph.Rotate
-import com.mygdx.game.drawing.scenegraph.SceneNode
-import com.mygdx.game.drawing.scenegraph.Translate
+//import com.mygdx.game.drawing.scenegraph.Leaf
+//import com.mygdx.game.drawing.scenegraph.Rotate
+//import com.mygdx.game.drawing.scenegraph.SceneNode
+//import com.mygdx.game.drawing.scenegraph.Translate
 import com.mygdx.game.entities.*
 import com.mygdx.game.entities.worldobj.SceneNodeAttributes
 import com.mygdx.game.input.processInput
+import com.mygdx.game.scenegraph.*
 import com.mygdx.game.textures.Textures
 import com.mygdx.game.util.borderCircle
 import com.mygdx.game.util.drawCoord
@@ -49,7 +50,7 @@ class Game(private val batch: Batch, windowDims: Dims2,
         batch.enableBlending()
         batch.begin()
         drawWorld(batch, world)
-        drawCenterPoint(batch, world.view.getViewRect().asDims)
+        drawCenterPoint(batch, world.view.getViewRect().asDims())
         batch.end()
     }
 
@@ -74,6 +75,8 @@ class Game(private val batch: Batch, windowDims: Dims2,
                         SceneNodeAttributes()), true)
                 playerWo.debugDraw(shapeDrawer)
 
+                // TODO(wittie): Replace old bounding-box drawing code
+                /*
                 (doThenRestore<Unit>(batch)) {
 //                    batch.projectionMatrix = debugCam.combined
 //                    batch.transformMatrix = Matrix4()
@@ -89,14 +92,15 @@ class Game(private val batch: Batch, windowDims: Dims2,
                             .x.toFloat(), it.y.toFloat(), 3f) }
 
                 }
+                 */
             }
 
     private fun drawSceneNode(batch: Batch, delta: Float,
-            node: SceneNode<SceneNodeAttributes>, debugDraw: Boolean = false) {
+            node: GameNode, debugDraw: Boolean = false) {
         when (node) {
-            is Rotate -> doThenRestore<Unit>(batch)() {
+            is GameRotation -> doThenRestore<Unit>(batch)() {
                 batch.transformMatrix = batch.transformMatrix.mul(
-                        WrappedMatrix().rotate(node.rotation).get())
+                        WrappedMatrix().postRotate(node.degrees).matrix())
                 if (debugDraw) drawCoord(shapeDrawer)
 //                    drawMatrix(shapeDrawer, WrappedMatrix(batch
 //                            .transformMatrix))
@@ -105,9 +109,9 @@ class Game(private val batch: Batch, windowDims: Dims2,
                 }
             }
 
-            is Translate -> doThenRestore<Unit>(batch)() {
+            is RelativeGameTranslation -> doThenRestore<Unit>(batch)() {
                 batch.transformMatrix = batch.transformMatrix.mul(
-                        WrappedMatrix().translate(node.translation).get())
+                        WrappedMatrix().postTranslate(node.vector).matrix())
                 if (debugDraw) drawCoord(shapeDrawer)
 //                    drawMatrix(shapeDrawer, WrappedMatrix(batch
 //                            .transformMatrix))
@@ -116,8 +120,10 @@ class Game(private val batch: Batch, windowDims: Dims2,
                 }
             }
 
-            is Leaf -> {
-                drawCentered(node.drawable, batch, delta)
+            is AbsoluteGameTranslation -> throw NotImplementedError("Not implemented yet.")
+
+            is GameLeaf -> {
+                drawCentered(node.v.sizedDrawable!!, batch, delta)
             }
         }
     }

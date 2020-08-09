@@ -1,7 +1,7 @@
 package com.mygdx.game.drawing
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.mygdx.game.drawing.scenegraph.*
+import com.mygdx.game.scenegraph.*
 import com.mygdx.game.drawing.DrawableFns.drawCentered
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2

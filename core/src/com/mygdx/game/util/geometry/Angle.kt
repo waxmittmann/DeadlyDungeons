@@ -7,19 +7,19 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 
-class Angle internal constructor(val degrees: Int) {
+class Angle internal constructor(val degrees: Float) {
     val radians: Double = Math.toRadians(degrees.toDouble())
 
     companion object Factory {
-        fun create(degrees: Int): Angle = Angle(0).rotate(degrees)
+        fun create(degrees: Float): Angle = Angle(0f).rotate(degrees)
 
 
         fun create(p: Point2): Angle {
             if (p.x == 0.0) {
                 if (p.y >= 0) {
-                    return create(0)
+                    return create(0f)
                 } else {
-                    return create(180)
+                    return create(180f)
                 }
             }
 
@@ -30,8 +30,8 @@ class Angle internal constructor(val degrees: Int) {
             val radianAngle = Vector2D.angle(up, dir)
             val degreeAngle = toDegrees(radianAngle)
 
-            return if (p.x >= 0) create(degreeAngle.toInt())
-            else create(-degreeAngle.toInt())
+            return if (p.x >= 0) create(degreeAngle.toFloat())
+            else create(-degreeAngle.toFloat())
         }
 
         fun create(up: Vec2, dir: Vec2): Angle {
@@ -41,11 +41,11 @@ class Angle internal constructor(val degrees: Int) {
 
             val acos = acos(abBar / abMag)
 
-            return create((acos / PI * 180.0f).toInt())
+            return create((acos / PI * 180.0f).toFloat())
         }
     }
 
-    fun rotate(degreesBy: Int): Angle {
+    fun rotate(degreesBy: Float): Angle {
         var degreesNew = degrees + degreesBy
         if (degreesNew < 0) degreesNew = 360 - (-degreesNew % 360)
         else if (degreesNew > 360) degreesNew %= 360
@@ -66,7 +66,7 @@ class Angle internal constructor(val degrees: Int) {
     }
 
     override fun hashCode(): Int {
-        return degrees
+        return (degrees * 1000000).toInt()
     }
 
     fun transform(c: Point2, p: Point2): Point2 {
@@ -80,7 +80,6 @@ class Angle internal constructor(val degrees: Int) {
     }
 
     fun invert(): Angle {
-
         val a = Angle.create(-degrees)
         return a
     }

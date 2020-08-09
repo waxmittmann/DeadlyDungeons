@@ -1,7 +1,7 @@
 package com.mygdx.game.util.geometry
 
 class Rect2(val lx: Double, val ly: Double, val width: Double,
-        val height: Double) {
+            val height: Double) {
     fun ux(): Double = lx + width
     fun uy(): Double = ly + height
 
@@ -61,14 +61,34 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
     fun center(): Rect2 = Rect2(lx + width / 2.0, ly + height / 2.0, width /
             2.0, height / 2.0)
 
-    val asDims: Dims2 by lazy { Dims2(widthF, heightF) }
+    fun expand(v: Rect2): Rect2 {
+        val lx = java.lang.Double.min(v.lx, lx)
+        val ly = java.lang.Double.min(v.ly, ly)
+        val ux = java.lang.Double.max(v.ux(), ux())
+        val uy = java.lang.Double.max(v.uy(), uy())
+        return fromLowerUpper(lx, ly, ux, uy)!!
+    }
 
-    val asPoylgon: Polygon2_4 by lazy {
-        Polygon2_4(Point2(lx, ly), Point2(lx + width, ly),
-                Point2(lx + width, ly + height), Point2(lx, ly + height))
+    fun uxF(): Float {
+        return ux().toFloat()
+    }
+
+    fun uyF(): Float {
+        return uy().toFloat()
+    }
+
+    fun asVec2(): Vec2 = Vec2(width, height)
+
+    fun asDims(): Dims2 = Dims2(widthF, heightF)
+
+//    val asDims: Dims2 by lazy { Dims2(widthF, heightF) }
+
+//    val asPoylgon: Polygon2_4 by lazy {
+//        Polygon2_4(Point2(lx, ly), Point2(lx + width, ly),
+//                Point2(lx + width, ly + height), Point2(lx, ly + height))
 //        PolygonBuilder(Point2(lx, ly)).moveX(width).moveY(height).moveX(-width)
 //                .build()
-    }
+//    }
 
     val asPoints: List<Point2> by lazy {
         listOf(lowerLeft(), upperRight(), Point2(lx, uy()), Point2(ux(),
@@ -90,17 +110,18 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
         }
 
         fun fromLowerUpper(lx: Double, ly: Double, ux: Double,
-                uy: Double): Rect2? {
-            return if (lx >= ux || ly >= uy) null
-            else Rect2(lx, ly, ux - lx, uy - ly)
+                           uy: Double): Rect2? {
+            if (lx >= ux || ly >= uy) throw Exception("$lx >= $ux OR $ly >= $uy")
+            return Rect2(lx, ly, ux - lx, uy - ly)
         }
 
         fun fromPoints(ll: Point2, ur: Point2): Rect2 {
-            assert(ll.x <= ur.x)
-            assert(ll.y <= ur.y)
+            assert(ll.x < ur.x)
+            assert(ll.y < ur.y)
             return Rect2(ll.x, ll.y, ur.x - ll.x, ur.y - ll.y)
         }
 
+        // TODO(wittie): Why was this commented out?
         fun create(lowerLeft: Point2, dims: Dims2): Rect2 {
             return Rect2(lowerLeft.x, lowerLeft.y, dims.width.toDouble(),
                     dims.height.toDouble())
@@ -109,9 +130,9 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
         fun aabbFromRects(p: List<Rect2>) =
                 aabb(p.flatMap { it.asPoints })
 
-        fun aabbFrom(p: List<Polygon2_4>) =
-            aabb(p.flatMap { it.vertices })
-
+        //        fun aabbFrom(p: List<Polygon2_4>) =
+//            aabb(p.flatMap { it.vertices })
+//
         fun aabb(points: List<Point2>): Rect2 {
             var lx = points[0].x
             var ly = points[0].y
@@ -129,3 +150,4 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
         }
     }
 }
+

@@ -157,8 +157,7 @@ object WorldFns {
                 val d = SizedDrawable(terrain.drawable,
                         Dims2(tileSize.toFloat(), tileSize.toFloat()))
 
-                createAabb(d, TerrainAttributes(), SceneNodeAttributes
-                (), terrainMidpoint)
+                createAabb(d, TerrainAttributes(), "", terrainMidpoint)
             }
         }
     }

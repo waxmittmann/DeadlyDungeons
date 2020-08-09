@@ -2,6 +2,7 @@ package com.mygdx.game.util
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
+import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Vec2
 import com.mygdx.game.util.linear.WrappedMatrix
@@ -30,7 +31,9 @@ fun drawCoord(shapeDrawer: ShapeDrawer, t: Point2 = Point2(0.0, 0.0)) {
 fun drawMatrix(shapeDrawer: ShapeDrawer, m: WrappedMatrix) {
     val t = m.toTranslate()
     // Invert angle because natively rotation is counter-clockwise.
-    val a = m.toAngle().invert()
+//    val a = m.toAngle().invert()
+    val a = Angle(m.toAngle()).invert()
+//    val a = 360 - m.toAngle()
 
     val t2 = a.transform(t.asPoint, t.plus(Vec2(200.0, 0.0)).asPoint)
     val t3 = a.transform(t.asPoint, t.plus(Vec2(0.0, 200.0)).asPoint)

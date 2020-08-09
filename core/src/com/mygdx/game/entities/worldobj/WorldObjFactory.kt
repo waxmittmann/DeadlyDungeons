@@ -4,6 +4,7 @@ import com.mygdx.game.collision.WorldObject
 import com.mygdx.game.entities.PlayerAttributes
 import com.mygdx.game.entities.ProjectileAttributes
 import com.mygdx.game.entities.Prototypes
+import com.mygdx.game.scenegraph.calcBoundingBox
 import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
@@ -21,18 +22,21 @@ class WorldObjFactory(private val prototype: Prototypes) {
 //                .width /
 //                2.0,
 //                prototype.bullet.aabb(WrappedMatrix()).height / 2.0))
-        val pos = position.minus(Vec2(prototype.bullet.aabb
-                .width /
-                2.0,
-                prototype.bullet.aabb.height / 2.0))
+        val aabb = calcBoundingBox(prototype.bullet)
+//        val pos = position.minus(Vec2(prototype.bullet.aabb
+        val pos = position.minus( aabb.v!!.asVec2().div(2.0))
+//        Vec2(aabb.v.width prototype.bullet.aabb
+//                .width /
+//                2.0,
+//                prototype.bullet.aabb.height / 2.0))
 
         return WorldSceneNode(prototype.bullet,
-                ProjectileAttributes(EightDirection.WEST, vec), pos, Angle(0))
+                ProjectileAttributes(EightDirection.WEST, vec), pos, Angle(0f))
     }
 
     fun player(pos: Point2): WorldObject<PlayerAttributes> {
         return WorldSceneNode(prototype.playerWithSword,PlayerAttributes(EightDirection
-                .NORTH, -100), pos, Angle(0))
+                .NORTH, -100), pos, Angle(0f))
 
     }
 }

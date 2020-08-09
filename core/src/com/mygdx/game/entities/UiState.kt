@@ -15,6 +15,6 @@ class UiState(var showInventory: Boolean,
 
     companion object {
         fun create(): UiState = UiState(false, Point2(0.0, 0.0),
-                Point2(0.0, 0.0), Point2(0.0, 0.0), Angle(0))
+                Point2(0.0, 0.0), Point2(0.0, 0.0), Angle(0f))
     }
 }
