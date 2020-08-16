@@ -9,7 +9,6 @@ import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Vec2
-import com.mygdx.game.util.linear.WrappedMatrix
 
 class WorldObjFactory(private val prototype: Prototypes) {
 

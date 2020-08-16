@@ -1,5 +1,13 @@
 package com.mygdx.game.util.geometry
 
+interface HasDims2 {
+    fun dims(): Dims2
+}
+
+interface MaybeHasDims2 {
+    fun dims(): Dims2?
+}
+
 class Dims2(val width: Float, val height: Float) {
     val asRect: Rect2 by lazy {
         Rect2(0.0, 0.0, width.toDouble(), height.toDouble())

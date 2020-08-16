@@ -1,5 +1,9 @@
 package com.mygdx.game.util.geometry
 
+interface HasRect2 {
+    fun rect(): Rect2
+}
+
 class Rect2(val lx: Double, val ly: Double, val width: Double,
             val height: Double) {
     fun ux(): Double = lx + width
@@ -23,7 +27,7 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
     }
 
     override fun toString(): String {
-        return "($lx, $ly, " + (lx + width) + ", " + (ly + height) + ")"
+        return "($lx, $ly), (${lx + width}, ${ly + height})"
     }
 
     fun moduloX(modX: Int): Rect2 {
@@ -80,6 +84,28 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
     fun asVec2(): Vec2 = Vec2(width, height)
 
     fun asDims(): Dims2 = Dims2(widthF, heightF)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Rect2
+
+        if (lx != other.lx) return false
+        if (ly != other.ly) return false
+        if (width != other.width) return false
+        if (height != other.height) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = lx.hashCode()
+        result = 31 * result + ly.hashCode()
+        result = 31 * result + width.hashCode()
+        result = 31 * result + height.hashCode()
+        return result
+    }
 
 //    val asDims: Dims2 by lazy { Dims2(widthF, heightF) }
 

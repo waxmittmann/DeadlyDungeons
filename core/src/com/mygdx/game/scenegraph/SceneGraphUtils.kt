@@ -1,14 +1,12 @@
 package com.mygdx.game.scenegraph
 
-import com.mygdx.game.util.geometry.Dims2
-import com.mygdx.game.util.geometry.Point2
-import com.mygdx.game.util.geometry.Rect2
+import com.mygdx.game.util.geometry.*
 import com.mygdx.game.util.linear.WrappedMatrix
 import java.lang.Double.min
 import java.lang.Double.max
 
 // TODO(wittie): Any reason to ever postMult = false?
-fun calcBoundingBox(d: GameNode, postMult: Boolean = true, m: WrappedMatrix = WrappedMatrix()):
+fun <S : MaybeHasDims2>calcBoundingBox(d: Node<S>, postMult: Boolean = true, m: WrappedMatrix = WrappedMatrix()):
         Node<Rect2?> {
     return when (d) {
         is Rotation -> {
@@ -25,7 +23,7 @@ fun calcBoundingBox(d: GameNode, postMult: Boolean = true, m: WrappedMatrix = Wr
                     null
                 }
             })
-            Rotation<Rect2?>(d.degrees, mappedChildren, pr)
+            Rotation(d.degrees, mappedChildren, pr)
         }
 
         is Translation -> {
@@ -66,10 +64,9 @@ fun calcBoundingBox(d: GameNode, postMult: Boolean = true, m: WrappedMatrix = Wr
         }
 
         is Leaf -> {
-            if (d.v.sizedDrawable != null) {
+            if (d.v.dims() != null) {
                 // TODO(wittie): Why must this call be null-asserted?
-//                val rect: Rect2 = d.v.sizedDrawable!!.size.asRect
-                val rect: Dims2 = d.v.sizedDrawable!!.size
+                val rect: Dims2 = d.v.dims()!!
                 val ll = m.transform(Point2(-rect.width / 2.0, -rect.height / 2.0))
                 val ul = m.transform(Point2(-rect.width / 2.0, rect.height / 2.0))
                 val ur = m.transform(Point2(rect.width / 2.0, rect.height / 2.0))

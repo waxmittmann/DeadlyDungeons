@@ -4,7 +4,6 @@ import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 
-
 class UiState(var showInventory: Boolean,
         var cursorScreenCoord: Point2,
         var cursorGameCoord: Point2,

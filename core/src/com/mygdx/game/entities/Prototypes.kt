@@ -8,11 +8,11 @@ import com.mygdx.game.entities.terrain.TerrainPrototype
 import com.mygdx.game.entities.worldobj.SceneNodeAttributes
 import com.mygdx.game.scenegraph.*
 import com.mygdx.game.textures.SizedDrawables
-import com.mygdx.game.util.geometry.Dims2
-import com.mygdx.game.util.geometry.Vec2
+import com.mygdx.game.util.geometry.*
 
-
-class SceneNodeData(val name: String, val sizedDrawable: SizedDrawable? = null)
+class SceneNodeData(val name: String, val sizedDrawable: SizedDrawable? = null) : MaybeHasDims2 {
+    override fun dims(): Dims2? = sizedDrawable?.size
+}
 
 fun makeData(name: String, drawable: Drawable, dims: Dims2) = SceneNodeData(name, SizedDrawable(drawable, dims))
 fun makeData(name: String, sizedDrawable: SizedDrawable) = SceneNodeData(name, sizedDrawable)

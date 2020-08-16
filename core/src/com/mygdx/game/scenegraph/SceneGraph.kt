@@ -1,5 +1,6 @@
 package com.mygdx.game.scenegraph
 
+import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.geometry.Vec2
 import java.util.*
 

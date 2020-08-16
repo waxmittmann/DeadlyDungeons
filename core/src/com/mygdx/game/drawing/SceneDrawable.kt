@@ -1,13 +1,8 @@
 package com.mygdx.game.drawing
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.mygdx.game.scenegraph.*
 import com.mygdx.game.drawing.DrawableFns.drawCentered
-import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
-import com.mygdx.game.util.geometry.Vec2
-import com.mygdx.game.util.linear.ProjectionSaver
-import com.mygdx.game.util.linear.WrappedMatrix
 
 abstract class WorldDrawable {
     abstract fun draw(batch: Batch, delta: Float)

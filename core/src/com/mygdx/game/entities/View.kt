@@ -3,17 +3,13 @@ package com.mygdx.game.entities
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Quaternion
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
-import com.brashmonkey.spriter.Player
 import com.mygdx.game.collision.WorldObject
 import com.mygdx.game.util.geometry.Dims2
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Rect2
-import com.mygdx.game.util.geometry.Vec2
-import com.mygdx.game.util.linear.WrappedMatrix
 
 //class View(var viewAt: Point2, private var windowDims: Dims2) {
 class View(val player: WorldObject<PlayerAttributes>, private var windowDims: Dims2) {

@@ -1,6 +1,5 @@
 package com.mygdx.game.entities.worldobj
 
-import arrow.core.invalid
 import com.mygdx.game.collision.HasAabbBoundingBox
 import com.mygdx.game.drawing.SizedDrawable
 import com.mygdx.game.entities.makeData
@@ -12,8 +11,8 @@ import com.mygdx.game.scenegraph.*
 import com.mygdx.game.util.geometry.Angle
 import com.mygdx.game.util.geometry.Point2
 import com.mygdx.game.util.geometry.Rect2
-import com.mygdx.game.util.linear.WrappedMatrix
 import com.mygdx.game.util.drawMatrix
+import com.mygdx.game.util.linear.WrappedMatrix
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 fun <S> createAabb(sizedDrawable: SizedDrawable, attributes: S,
