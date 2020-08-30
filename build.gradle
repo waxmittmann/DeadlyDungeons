@@ -76,6 +76,8 @@ project(":core") {
         implementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
         runtimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 
+        implementation 'org.hamcrest:hamcrest:2.2'
+
         compile "com.kotcrab.vis:vis-ui:$visuiVersion"
 
         api "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"

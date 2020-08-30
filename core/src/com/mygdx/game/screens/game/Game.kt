@@ -30,14 +30,14 @@ class Game(private val batch: Batch, windowDims: Dims2,
     private val prototypes: Prototypes = Prototypes(textures)
     private val mobSpawner: SpawnMobs = SpawnMobs(prototypes)
     private val debugCam: OrthographicCamera =
-            OrthographicCamera(windowDims.width, windowDims.height)
+            OrthographicCamera(windowDims.width.toFloat(), windowDims.height.toFloat())
     private var stateTime: Float = 0.0f
     private var spawnState: SpawnMobState = SpawnMobState(0)
     val shapeDrawer = ShapeDrawer(batch, textures.singlePixel)
 
     init {
         // Set up debug cam. Will break on resize.
-        debugCam.translate(windowDims.width / 2.0f, windowDims.height / 2.0f)
+        debugCam.translate((windowDims.width / 2.0f).toFloat(), (windowDims.height / 2.0f).toFloat())
         debugCam.update()
 
         val it = textures.debugCollection.iterator()
@@ -123,7 +123,7 @@ class Game(private val batch: Batch, windowDims: Dims2,
             is AbsoluteGameTranslation -> throw NotImplementedError("Not implemented yet.")
 
             is GameLeaf -> {
-                drawCentered(node.v.sizedDrawable!!, batch, delta)
+                drawCentered(node.leafVal.sizedDrawable!!, batch, delta)
             }
         }
     }
@@ -152,7 +152,7 @@ class Game(private val batch: Batch, windowDims: Dims2,
     fun resize(world: World, width: Int, height: Int) {
         // Update world view
         WorldFns.updateWindowSize(world,
-                Dims2(width.toFloat(), height.toFloat()))
+                Dims2(width.toDouble(), height.toDouble()))
     }
 
     fun dispose() {}

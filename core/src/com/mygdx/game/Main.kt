@@ -73,7 +73,7 @@ class Main : ChangeScreen, Game() {
                             getCurDims(), batch, screenChanger, textures)))
 
     private fun getCurDims(): Dims2 =
-            Dims2(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+            Dims2(Gdx.graphics.width.toDouble(), Gdx.graphics.height.toDouble())
 
     override fun changeScreen(screen: Screen) = setScreen(screen)
 }

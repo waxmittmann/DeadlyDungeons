@@ -9,7 +9,8 @@ import com.mygdx.game.entities.terrain.generateTerrain
 import com.mygdx.game.entities.worldobj.SceneNodeAttributes
 import com.mygdx.game.entities.worldobj.WorldObjFactory
 import com.mygdx.game.entities.worldobj.WorldObjects
-import com.mygdx.game.entities.worldobj.createAabb
+// TODO: Fix
+//import com.mygdx.game.entities.worldobj.createAabb
 import com.mygdx.game.textures.Textures
 import com.mygdx.game.util.EightDirection
 import com.mygdx.game.util.geometry.Dims2
@@ -36,6 +37,8 @@ fun createWorld(textures: Textures, playerPos: Point2,
     return World(playerPos, emptyList(), 0, worldObjFactory, 50, terrain,
             windowDims)
 }
+
+//class Terrain(val tileSize: Int, )
 
 class World(playerPos: Point2, mobs: List<WorldObject<MobAttributes>>,
             var timeNow: Long, override val worldObjFactory: WorldObjFactory,
@@ -113,7 +116,8 @@ object WorldFns {
             terrainPositionedDrawables(src.terrain, src.tileSize,
                     src.view.getViewRect())
 
-    private fun terrainPositionedDrawables(terrains: List<List<Terrain>>,
+    // Get the terrain drawables inside the view area.
+    fun terrainPositionedDrawables(terrains: List<List<Terrain>>,
                                            tileSize: Int,
                                            view: Rect2):
             List<WorldObject<TerrainAttributes>> {
@@ -125,6 +129,9 @@ object WorldFns {
         val toRow = min(floor(view.ux() / tileSize).toInt() + 1,
                 terrains[0].size - 1)
 
+        // TODO: Fix
+        return listOf()
+        /*
         return (fromCol..toCol).flatMap { c ->
             (fromRow..toRow).map { r ->
                 val terrain = terrains[c][r]
@@ -133,15 +140,12 @@ object WorldFns {
                         c * tileSize.toDouble()).minus(
                         Vec2(tileSize / 2.0, tileSize / 2.0))
 
-//                val terrainMidpoint = Point2(r * tileSize.toDouble(),
-//                        c * tileSize.toDouble()).plus(
-//                        Vec2(tileSize / 2.0, tileSize / 2.0))
-
                 val d = SizedDrawable(terrain.drawable,
                         Dims2(tileSize.toFloat(), tileSize.toFloat()))
 
+                // TODO: fix
                 createAabb(d, TerrainAttributes(), "", terrainMidpoint)
             }
-        }
+        }*/
     }
 }

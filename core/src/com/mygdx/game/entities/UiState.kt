@@ -9,7 +9,7 @@ class UiState(var showInventory: Boolean,
         var cursorGameCoord: Point2,
         var cursorUnprojected: Point2,
         var playerRotation: Angle,
-        var windowDims: Dims2 = Dims2(0f, 0f)
+        var windowDims: Dims2 = Dims2(0.0, 0.0)
         ) {
 
     companion object {

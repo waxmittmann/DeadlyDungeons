@@ -4,54 +4,61 @@ import com.mygdx.game.util.geometry.Rect2
 import com.mygdx.game.util.geometry.Vec2
 import java.util.*
 
-fun unitSceneGraphBuilder(): SceneGraphBuilder<Unit> = SceneGraphBuilder(Unit, { Unit })
+fun unitSceneGraphBuilder(): SceneGraphBuilder<Unit, Unit> = SceneGraphBuilder(Unit, { Unit }, { Unit })
 
-sealed class Node<S> {
-    abstract val v: S
+typealias SameNode<S> = Node<S, S>
+//class SameNode<S> : Node<S, S>()
 
-    abstract fun <T> map(fn: (S) -> T): Node<T>
+fun <S>sameTypeSceneGraphBuilder(s: S, factory: () -> S, factory2: () -> S = factory) = SceneGraphBuilder(s, factory, factory2)
+
+sealed class Node<S, T> {
+//    abstract val v: S
+
+    abstract fun <U, V> map(fn: (S) -> U, fn2: (T) -> V): Node<U, V>
 }
 
-sealed class ParentNode<S> : Node<S>() {
-    abstract val children: MutableList<Node<S>>
+sealed class ParentNode<S, T> : Node<S, T>() {
+    abstract val children: MutableList<Node<S, T>>
+
+    abstract val parentVal: T
 }
 
-class Rotation<S>(val degrees: Float, override val children: MutableList<Node<S>>,
-                  override val v: S) : ParentNode<S>() {
-    override fun <T> map(fn: (S) -> T): Node<T> = Rotation(degrees, children.map { it.map(fn) }.toMutableList(), fn(v))
+class Rotation<S, T>(val degrees: Float, override val children: MutableList<Node<S, T>>,
+                  override val parentVal: T) : ParentNode<S, T>() {
+    override fun <U, V> map(fn: (S) -> U, fn2: (T) -> V): Node<U, V> = Rotation(degrees, children.map { it.map(fn, fn2) }.toMutableList(), fn2(parentVal))
 }
 
-sealed class Translation<S> : ParentNode<S>() {
+sealed class Translation<S, T> : ParentNode<S, T>() {
     abstract val vector: Vec2
-    abstract fun <T> pure(vector: Vec2, children: MutableList<Node<T>>,
-                          v: T): Translation<T>
+//    abstract fun<S, T> pure(vector: Vec2, children: MutableList<Node<S, T>>,
+//                          v: T): Translation<S, T>
 }
 
-class RelativeTranslation<S>(override val vector: Vec2, override val children: MutableList<Node<S>>,
-                             override val v: S) : Translation<S>() {
-    override fun <T> map(fn: (S) -> T): Node<T> = RelativeTranslation(vector,  children.map { it.map(fn) }.toMutableList(), fn(v))
-    override fun <T> pure(vector: Vec2, children: MutableList<Node<T>>, v: T): Translation<T>  = RelativeTranslation(vector, children, v)
+class RelativeTranslation<S, T>(override val vector: Vec2, override val children: MutableList<Node<S, T>>,
+                             override val parentVal: T) : Translation<S, T>() {
+    override fun <U, V> map(fn: (S) -> U, fn2: (T) -> V): Node<U, V> = RelativeTranslation(vector, children.map { it.map(fn, fn2) }.toMutableList(), fn2(parentVal))
+//    override fun pure(vector: Vec2, children: MutableList<Node<S, T>>, v: T): Translation<S, T>  = RelativeTranslation(vector, children, v)
 }
 
-class AbsoluteTranslation<S>(override val vector: Vec2, override val children: MutableList<Node<S>>,
-                             override val v: S) : Translation<S>() {
-    override fun <T> map(fn: (S) -> T): Node<T> = AbsoluteTranslation(vector,  children.map { it.map(fn) }.toMutableList(), fn(v))
-    override fun <T> pure(vector: Vec2, children: MutableList<Node<T>>, v: T): Translation<T>  = AbsoluteTranslation(vector, children, v)
+class AbsoluteTranslation<S, T>(override val vector: Vec2, override val children: MutableList<Node<S, T>>,
+                             override val parentVal: T) : Translation<S, T>() {
+    override fun <U, V> map(fn: (S) -> U, fn2: (T) -> V): Node<U, V> = AbsoluteTranslation(vector, children.map { it.map(fn, fn2) }.toMutableList(), fn2(parentVal))
+//    override fun <T> map(fn: (S) -> T): Node<T> = AbsoluteTranslation(vector,  children.map { it.map(fn) }.toMutableList(), fn(v))
+//    override fun pure(vector: Vec2, children: MutableList<Node<T>>, v: T): Translation<T>  = AbsoluteTranslation(vector, children, v)
 }
 
-class Leaf<S>(
-        override val v: S) : Node<S>() {
-    override fun <T> map(fn: (S) -> T): Node<T> = Leaf(fn(v))
+class Leaf<S, T>(val leafVal: S) : Node<S, T>() {
+    override fun <U, V> map(fn: (S) -> U, fn2: (T) -> V): Node<U, V> = Leaf(fn(leafVal))
 }
 
-class SceneGraphBuilder<S>(v: S, val defaultFactory: () -> S) {
-    var root: ParentNode<S> =
+class SceneGraphBuilder<S, T>(v: T, val defaultLeafFactory: () -> S, val defaultParentFactory: () -> T) {
+    var root: ParentNode<S, T> =
             RelativeTranslation(Vec2(0.0, 0.0), mutableListOf(), v)
-    val stack: Stack<ParentNode<S>> = Stack<ParentNode<S>>()
+    val stack: Stack<ParentNode<S, T>> = Stack()
 
     companion object Factory {
-        fun <S> create(v: S, defaultFactory: () -> S, fn: SceneGraphBuilder<S>.() -> Unit): ParentNode<S> {
-            val sb = SceneGraphBuilder<S>(v, defaultFactory)
+        fun <S, T> create(v: T, defaultLeafFactory: () -> S, defaultParentFactory: () -> T, fn: SceneGraphBuilder<S, T>.() -> Unit): ParentNode<S, T> {
+            val sb = SceneGraphBuilder(v, defaultLeafFactory, defaultParentFactory)
             fn(sb)
             return sb.build()
         }
@@ -61,7 +68,7 @@ class SceneGraphBuilder<S>(v: S, val defaultFactory: () -> S) {
         stack.push(root)
     }
 
-    private fun performTransform(transform: ParentNode<S>, v: S, fn: (SceneGraphBuilder<S>) -> Unit): SceneGraphBuilder<S> {
+    private fun performTransform(transform: ParentNode<S, T>, fn: (SceneGraphBuilder<S, T>) -> Unit): SceneGraphBuilder<S, T> {
         stack.peek().children += transform
         stack.push(transform)
         fn(this)
@@ -69,35 +76,35 @@ class SceneGraphBuilder<S>(v: S, val defaultFactory: () -> S) {
         return this
     }
 
-    fun translate(x: Double, y: Double, v: S = defaultFactory(), fn: SceneGraphBuilder<S>.() -> Unit): SceneGraphBuilder<S> =
+    fun translate(x: Double, y: Double, v: T = defaultParentFactory(), fn: SceneGraphBuilder<S, T>.() -> Unit): SceneGraphBuilder<S, T> =
             translate(Vec2(x, y), v, fn)
 
-    fun translate(vector: Vec2, v: S = defaultFactory(), fn: SceneGraphBuilder<S>.() -> Unit): SceneGraphBuilder<S> =
-            performTransform(RelativeTranslation(vector, mutableListOf(), v), v, fn)
+    fun translate(vector: Vec2, v: T = defaultParentFactory(), fn: SceneGraphBuilder<S, T>.() -> Unit): SceneGraphBuilder<S, T> =
+            performTransform(RelativeTranslation(vector, mutableListOf(), v), fn)
 
-    fun absTranslate(vector: Vec2, v: S = defaultFactory(), fn: SceneGraphBuilder<S>.() -> Unit):
-            SceneGraphBuilder<S> =
-            performTransform(AbsoluteTranslation(vector, mutableListOf(), v), v, fn)
+    fun absTranslate(vector: Vec2, v: T = defaultParentFactory(), fn: SceneGraphBuilder<S, T>.() -> Unit):
+            SceneGraphBuilder<S, T> =
+            performTransform(AbsoluteTranslation(vector, mutableListOf(), v), fn)
 
-    fun rotate(degrees: Float, v: S = defaultFactory(), fn: SceneGraphBuilder<S>.() -> Unit):
-            SceneGraphBuilder<S> =
-            performTransform(Rotation(degrees, mutableListOf(), v), v, fn)
+    fun rotate(degrees: Float, v: T = defaultParentFactory(), fn: SceneGraphBuilder<S, T>.() -> Unit):
+            SceneGraphBuilder<S, T> =
+            performTransform(Rotation(degrees, mutableListOf(), v), fn)
 
-    fun jointRotate(degrees: Float, jointPos: Vec2, v: S = defaultFactory(), fn: SceneGraphBuilder<S>.() -> Unit):
-            SceneGraphBuilder<S> =
+    fun jointRotate(degrees: Float, jointPos: Vec2, v: T = defaultParentFactory(), fn: SceneGraphBuilder<S, T>.() -> Unit):
+            SceneGraphBuilder<S, T> =
             translate(jointPos, v) {
                 rotate(degrees, v) {
                     translate(jointPos.invert(), v, fn)
                 }
             }
 
-    fun leaf(s: S = defaultFactory()):
-            SceneGraphBuilder<S> {
+    fun leaf(s: S = defaultLeafFactory()):
+            SceneGraphBuilder<S, T> {
         stack.peek().children += Leaf(s)
         return this
     }
 
-    fun build(): ParentNode<S> {
+    fun build(): ParentNode<S, T> {
         return root
     }
 }

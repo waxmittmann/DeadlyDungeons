@@ -141,7 +141,7 @@ class Ui(batch: Batch, private val screenChanger: ScreenChanger,
     }
 
     fun resize(uiState: UiState, width: Int, height: Int) {
-        uiState.windowDims = Dims2(width.toFloat(), height.toFloat())
+        uiState.windowDims = Dims2(width.toDouble(), height.toDouble())
         stages.forEach { it.viewport.update(width, height, true) }
     }
 

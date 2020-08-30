@@ -5,6 +5,7 @@ import com.mygdx.game.util.linear.WrappedMatrix
 import java.lang.Double.min
 import java.lang.Double.max
 
+/*
 // TODO(wittie): Any reason to ever postMult = false?
 fun <S : MaybeHasDims2>calcBoundingBox(d: Node<S>, postMult: Boolean = true, m: WrappedMatrix = WrappedMatrix()):
         Node<Rect2?> {
@@ -84,7 +85,7 @@ fun <S : MaybeHasDims2>calcBoundingBox(d: Node<S>, postMult: Boolean = true, m: 
         }
     }
 }
-
+*/
 //fun aabb(node: GameNode): Rect2 {
 //
 //}

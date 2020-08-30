@@ -32,4 +32,22 @@ class Point2(val x: Double, val y: Double) {
     fun mul(xMul: Double, yMul: Double): Point2 = Point2(x * xMul, y * yMul)
     fun asGdxVector(): Vector3 = Vector3(x.toFloat(), y.toFloat(), 0f)
     fun asGdxVector2(): Vector2 = Vector2(x.toFloat(), y.toFloat())
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Point2
+
+        if (x != other.x) return false
+        if (y != other.y) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = x.hashCode()
+        result = 31 * result + y.hashCode()
+        return result
+    }
 }

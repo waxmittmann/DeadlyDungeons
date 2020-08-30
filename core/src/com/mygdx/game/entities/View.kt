@@ -24,12 +24,12 @@ class View(val player: WorldObject<PlayerAttributes>, private var windowDims: Di
 
     fun updateCamera(): Pair<OrthographicCamera, Viewport> {
         val viewCenter = player.position
-        camera = OrthographicCamera(windowDims.width, windowDims.height)
+        camera = OrthographicCamera(windowDims.width.toFloat(), windowDims.height.toFloat())
         camera.position.set(viewCenter.x.toFloat(), viewCenter.y.toFloat(), 0f)
 //        camera.position.set(0f, 0f, 0f)
 //        camera.position.set(500f, 500f, 0f)
 //        camera.zoom = 2.0f
-        viewport = FitViewport(windowDims.width, windowDims.height, camera)
+        viewport = FitViewport(windowDims.width.toFloat(), windowDims.height.toFloat(), camera)
         camera.update()
         return Pair(camera, viewport) // Just for constructor.
     }
@@ -62,7 +62,7 @@ class View(val player: WorldObject<PlayerAttributes>, private var windowDims: Di
         val scale = Vector3()
         camera.combined.getScale(scale)
 
-        val t = Vector3(windowDims.width, windowDims.height, 0f).mul(camera.combined)
+        val t = Vector3(windowDims.width.toFloat(), windowDims.height.toFloat(), 0f).mul(camera.combined)
 
         return "Trans: $trans\nRot: $quaternion\nScale: $scale\nUR: $t"
     }

@@ -6,6 +6,7 @@ import com.mygdx.game.textures.Textures
 import com.mygdx.game.entities.terrain.TerrainAttributes
 import com.mygdx.game.entities.terrain.TerrainPrototype
 import com.mygdx.game.entities.worldobj.SceneNodeAttributes
+import com.mygdx.game.newworld.BBLeaf
 import com.mygdx.game.scenegraph.*
 import com.mygdx.game.textures.SizedDrawables
 import com.mygdx.game.util.geometry.*
@@ -28,23 +29,24 @@ class Prototypes(val textures: Textures) {
             TerrainAttributes(false))
 
     // GameObj prototypes.
-    val player = Leaf(SceneNodeData("player", SizedDrawable(
-            textures.playerDrawable, Dims2(50f, 50f))))
+//    val player = BBLeaf(SceneNodeData("player", SizedDrawable(
+//            textures.playerDrawable, Dims2(50f, 50f))))
+    val player = SizedDrawable(textures.playerDrawable, Dims2(50.0, 50.0))
 
-    val playerWithSword: GameParentNode by lazy {
-        SceneGraphBuilder(dataFactory(), ::dataFactory)
-                .leaf(makeData("player", textures.playerDrawable, Dims2(50f, 50f)))
-                .translate(Vec2(-18.0, 0.0), makeData("preRotateSwordTranslate")) {
-                    rotate(-30f, makeData("swordRotate")) {
-                        translate(Vec2(0.0, 30.0), makeData("postRotateSwordTranslate")) {
-                            leaf(makeData("playerSword", textures.swordDrawable, Dims2(5f, 60f)))
-                        }
-                    }
-                }
-                .build()
-    }
+//    val playerWithSword: GameParentNode by lazy {
+//        SceneGraphBuilder(dataFactory(), ::dataFactory)
+//                .leaf(makeData("player", textures.playerDrawable, Dims2(50f, 50f)))
+//                .translate(Vec2(-18.0, 0.0), makeData("preRotateSwordTranslate")) {
+//                    rotate(-30f, makeData("swordRotate")) {
+//                        translate(Vec2(0.0, 30.0), makeData("postRotateSwordTranslate")) {
+//                            leaf(makeData("playerSword", textures.swordDrawable, Dims2(5f, 60f)))
+//                        }
+//                    }
+//                }
+//                .build()
+//    }
 
-    val yeti = Leaf(makeData("yeti", textures.yetiDrawable, Dims2(50f, 50f)))
+//    val yeti = Leaf(makeData("yeti", textures.yetiDrawable, Dims2(50f, 50f)))
 
-    val bullet = Leaf(makeData("bullet", textures.bulletDrawable, Dims2(25f, 25f)))
+//    val bullet = Leaf(makeData("bullet", textures.bulletDrawable, Dims2(25f, 25f)))
 }

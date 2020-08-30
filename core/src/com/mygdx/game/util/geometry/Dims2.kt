@@ -8,9 +8,13 @@ interface MaybeHasDims2 {
     fun dims(): Dims2?
 }
 
-class Dims2(val width: Float, val height: Float) {
+class Dims2(val width: Double, val height: Double) {
     val asRect: Rect2 by lazy {
         Rect2(0.0, 0.0, width.toDouble(), height.toDouble())
+    }
+
+    val asCenteredRect: Rect2 by lazy {
+        Rect2(-width.toDouble()/2.0, -height.toDouble()/2.0, width.toDouble()/2.0, height.toDouble()/2.0)
     }
 
     override fun toString(): String {

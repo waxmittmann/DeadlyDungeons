@@ -83,7 +83,7 @@ class Rect2(val lx: Double, val ly: Double, val width: Double,
 
     fun asVec2(): Vec2 = Vec2(width, height)
 
-    fun asDims(): Dims2 = Dims2(widthF, heightF)
+    fun asDims(): Dims2 = Dims2(width, height)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
